@@ -1,0 +1,1 @@
+<#@ include file="WAQS.VS14.NET46.Server.Fx.WCFService.Contract.ttinclude"#><#WriteServerFxWCFServiceContract("WAQS.Service.Interfaces", "WAQS.WCFService.Contract");#>
