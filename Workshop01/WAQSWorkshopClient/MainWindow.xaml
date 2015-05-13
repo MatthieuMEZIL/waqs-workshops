@@ -10,7 +10,7 @@
         <ListBox.ItemTemplate>
             <DataTemplate>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding CustomerName}" />
+                    <TextBlock Text="{Binding Name}" />
                     <TextBlock Margin="5,0"
                             Text="{Binding TotalSpent}" />
                 </StackPanel>

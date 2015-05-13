@@ -48,14 +48,14 @@ namespace WAQSWorkshopClient
             Customers = await (from c in _context.Customers.AsAsyncQueryable()
                                select new CustomerInfo
                                {
-                                   CustomerName = c.CompanyName + " " + c.ContactName,
+                                   Name = c.CompanyName + " " + c.ContactName,
                                    TotalSpent = (double?)c.Orders.Sum(o => o.OrderDetails.Sum(od => od.Quantity * od.UnitPrice * (1 - od.Discount))) ?? 0
                                }).ExecuteAsync();
         }
 
         public class CustomerInfo
         {
-            public string CustomerName { get; set; }
+            public string Name { get; set; }
             public double TotalSpent { get; set; }
         }
     }
