@@ -46,6 +46,8 @@ namespace WAQSWorkshopClient
         private async Task LoadCustomersAsync()
         {
             Customers = await (from c in _context.Customers.AsAsyncQueryable()
+                               let totalSpent = c.Orders.Sum(o => o.OrderDetails.Sum(od => od.Quantity * od.UnitPrice * (1 - od.Discount)))
+                               orderby totalSpent descending
                                select new CustomerInfo
                                {
                                    Name = c.CompanyName + " " + c.ContactName,
