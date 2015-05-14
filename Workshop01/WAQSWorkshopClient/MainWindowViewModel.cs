@@ -26,20 +26,20 @@ namespace WAQSWorkshopClient
             _context = context;
         }
 
-        private IEnumerable<CustomerInfo> customers;
+        private IEnumerable<CustomerInfo> _customers;
         public IEnumerable<CustomerInfo> Customers
         {
             get
             {
-                if (customers == null)
+                if (_customers == null)
                 {
                     LoadCustomersAsync().ConfigureAwait(true);
                 }
-                return customers;
+                return _customers;
             }
             private set
             {
-                customers = value;
+                _customers = value;
                 NotifyPropertyChanged.RaisePropertyChanged(nameof(Customers));
             }
         }
