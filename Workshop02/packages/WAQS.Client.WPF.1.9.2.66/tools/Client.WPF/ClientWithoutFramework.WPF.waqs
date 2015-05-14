@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<WAQS.Client EdmxPath="$edmxPath$">
+  <Specifications>
+    <Specification SlnFilePath="$SpecificationsSlnFilePath$" CsprojPath="$SpecificationsCsprojPath$" FolderPath="$SpecificationsFolderPath$" />
+  </Specifications>
+  <DTOs>
+    <DTO SlnFilePath="$DTOSlnFilePath$" CsprojPath="$DTOCsprojPath$" FolderPath="$DTOFolderPath$" />
+  </DTOs>
+  <Entities UTC="false" />
+  <ClientContext WSDL="$svcUrl$?wsdl" />
+  <ClientContextInterfaces />
+  <Framework>
+    <ComponentModel NamespaceName="WAQS.ComponentModel" Generate="false" />
+    <EntitiesTracking NamespaceName="WAQS.EntitiesTracking" Generate="false"/>
+    <ClientContext NamespaceName="WAQS.ClientContext" Generate="false" />
+    <ClientContextInterfaces NamespaceName="WAQS.ClientContext.Interfaces" Generate="false" />
+    <Entities NamespaceName="WAQS.Entities" Generate="false" />
+    <Controls NamespaceName="WAQS.Controls" Generate="false" />
+  </Framework>
+  <WAQS.Server>
+    <Entities SlnFilePath="$ServerEntitiesSlnFilePath$" CsprojPath="$ServerEntitiesCsprojPath$" FolderPath="$ServerEntitiesFolderPath$" NamespaceName="$ServerEntitiesNamespace$" />
+    <Framework>
+      <Common NamespaceName="WAQS.Common" />
+      <Specifications NamespaceName="WAQS.Specifications" />
+      <DALInterfaces NamespaceName="WAQS.DAL.Interfaces" />
+      <ServiceInterfaces NamespaceName="WAQS.Service.Interfaces" />
+    </Framework>
+  </WAQS.Server>
+</WAQS.Client>
