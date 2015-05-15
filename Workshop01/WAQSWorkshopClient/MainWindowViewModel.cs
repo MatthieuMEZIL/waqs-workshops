@@ -51,7 +51,7 @@ namespace WAQSWorkshopClient
                                select new CustomerInfo
                                {
                                    Name = c.CompanyName + " " + c.ContactName,
-                                   TotalSpent = (double?)c.Orders.Sum(o => o.OrderDetails.Sum(od => od.Quantity * od.UnitPrice * (1 - od.Discount))) ?? 0
+                                   TotalSpent = (double?)totalSpent ?? 0
                                }).ExecuteAsync();
         }
 

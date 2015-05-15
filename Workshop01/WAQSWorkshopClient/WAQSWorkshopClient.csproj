@@ -600,7 +600,9 @@
     <None Include="WAQS.Northwind\Northwind.Client.WPF.waqs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="WAQS.Northwind\Includes.tt">

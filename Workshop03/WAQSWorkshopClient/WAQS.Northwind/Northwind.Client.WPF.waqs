@@ -7,7 +7,7 @@
     <DTO SlnFilePath="..\..\WAQSWorkshop.sln" CsprojPath="..\..\WAQSWorkshopServer\WAQSWorkshopServer.csproj" FolderPath="..\..\WAQSWorkshopServer\DTO\" />
   </DTOs>
   <Entities UTC="false" />
-  <ClientContext WSDL="http://localhost:49848/Northwind.svc?wsdl" />
+  <ClientContext WSDL="http://localhost:18103/Northwind.svc?wsdl" />
   <ClientContextInterfaces />
   <Framework>
     <ComponentModel NamespaceName="WAQS.ComponentModel" Generate="true" />
