@@ -1,0 +1,5 @@
+<#@ template language="C#" hostspecific="true"#>
+<#@ include file="WAQS.VS14.Edmx.Utility.ttinclude"#>
+<#@ output extension=".txt"#>
+<#var fileManager = EntityFrameworkTemplateFileManager.Create(this);#>
+<#fileManager.Process();#>

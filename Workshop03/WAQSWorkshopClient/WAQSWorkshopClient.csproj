@@ -1,0 +1,794 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CBF233B3-5A7E-4ECD-834F-5193F8B3D6F8}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WAQSWorkshopClient</RootNamespace>
+    <AssemblyName>WAQSWorkshopClient</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Practices.Unity, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.3.0.1304.1\lib\Net45\Microsoft.Practices.Unity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.3.0.1304.1\lib\Net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Reactive, Version=1.0.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rx-Main.1.0.11226\lib\Net4\System.Reactive.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reactive.Windows.Threading, Version=1.0.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rx-WPF.1.0.11226\lib\Net4\System.Reactive.Windows.Threading.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="CustomerWindow.xaml.cs">
+      <DependentUpon>CustomerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerWindowViewModel.cs" />
+    <Compile Include="MainWindowViewModel.cs" />
+    <Compile Include="WAQS.Northwind\AsyncQueryable.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\AsyncQueryableBase.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\AsyncQueryableExtensions.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\AsyncQueryableInclude.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\AsyncQueryableValue.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\BindableObject.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ComponentModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\BoolToVisibilityConverter.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Controls.Converters.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ByStepQuery.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\Category.cs">
+      <DependentUpon>Northwind.Client.WPF.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\CategoryKeys.cs">
+      <DependentUpon>Keys.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ClientEntitySet.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ClientEntitySetBase.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ClientEntitySetExtensions.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ClientSubEntitySet.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\Criticity.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\CritityConverter.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Controls.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\Customer.cs">
+      <DependentUpon>Northwind.Client.WPF.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\CustomerKeys.cs">
+      <DependentUpon>Keys.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\CustomPropertyDescriptor.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ComponentModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\DataErrorInfo.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ComponentModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\DateConverter.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Controls.Converters.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\DynamicType.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ComponentModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\Employee.cs">
+      <DependentUpon>Northwind.Client.WPF.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\EmployeeKeys.cs">
+      <DependentUpon>Keys.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\EqualityComparer.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Entities.Tracking.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\Error.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ErrorCollection.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ErrorDetail.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ErrorException.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ErrorInfo.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ComponentModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ErrorsBehaviors.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Controls.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ErrorSource.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ExecuteCompletedEventArgs.cs">
+      <DependentUpon>Northwind.Client.WPF.ServiceProxy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ExecuteManyCompletedEventArgs.cs">
+      <DependentUpon>Northwind.Client.WPF.ServiceProxy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ExpressionExtension.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ExtendedPropertiesDictionary.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Entities.Tracking.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\FaultDetail.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\GetDbDateTimeCompletedEventArgs.cs">
+      <DependentUpon>Northwind.Client.WPF.ServiceProxy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\Grouping.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IAsyncQueryable.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IAsyncQueryableBase.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IAsyncQueryableValue.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IBindableObject.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ComponentModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IClientContext.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IClientContextBase.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IClientEntitySet.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IDynamicType.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ComponentModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IEntity.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Entities.Tracking.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IEntityCollection.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Entities.Tracking.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IEntityWithErrors.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Entities.Tracking.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IExpressionTransformer.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IMessageBoxService.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ComponentModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IncludeExpressionVisitor.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IncludeMethodAttribute.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\INorthwindClientContext.cs">
+      <DependentUpon>Northwind.Client.WPF.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\INorthwindService.cs">
+      <DependentUpon>Northwind.Client.WPF.ServiceProxy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\INorthwindServiceChannel.cs">
+      <DependentUpon>Northwind.Client.WPF.ServiceProxy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\INotifyComplexPropertyChanging.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Entities.Tracking.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IntToVisibilityCollapsedIfZeroConverter.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Controls.Converters.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\Invoice.cs">
+      <DependentUpon>Northwind.Client.WPF.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\InvoiceDetail.cs">
+      <DependentUpon>Northwind.Client.WPF.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\InvoiceDetailKeys.cs">
+      <DependentUpon>Keys.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\InvoiceKeys.cs">
+      <DependentUpon>Keys.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IObjectWithChangeTracker.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Entities.Tracking.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IPaginatedQuery.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ISerializableContext.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IsKnownByServerAttribute.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Entities.Tracking.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ITrackableCollection.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\LoadPageCompletedEventArgs.cs">
+      <DependentUpon>Northwind.Client.WPF.ServiceProxy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\LoadPageParameter.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\MaxLengthErrorInfo.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ComponentModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\MaxValueErrorInfo.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ComponentModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\MergeOption.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\MessageBoxService.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Controls.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\MinLengthErrorInfo.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ComponentModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\MinValueErrorInfo.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ComponentModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\NavigationPanel.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Controls.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\NorthwindAsyncQueryableExtension.cs">
+      <DependentUpon>Northwind.Client.WPF.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\NorthwindClientContext.cs">
+      <DependentUpon>Northwind.Client.WPF.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\NorthwindClientContextBase.cs">
+      <DependentUpon>Northwind.Client.WPF.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\NorthwindClientEntitySetExtensions.cs">
+      <DependentUpon>Northwind.Client.WPF.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\NorthwindErrorKeys.cs">
+      <DependentUpon>Northwind.Client.WPF.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\NorthwindErrorsExtension.cs">
+      <DependentUpon>Northwind.Client.WPF.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\NorthwindExpressionTransformer.cs">
+      <DependentUpon>Northwind.Client.WPF.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\NorthwindFaultDetailEntities.cs">
+      <DependentUpon>Northwind.Client.WPF.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\NorthwindQueriesResult.cs">
+      <DependentUpon>Northwind.Client.WPF.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\NorthwindQueryResult.cs">
+      <DependentUpon>Northwind.Client.WPF.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\NorthwindQueryResultPage.cs">
+      <DependentUpon>Northwind.Client.WPF.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\NorthwindSerializableContext.cs">
+      <DependentUpon>Northwind.Client.WPF.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\NorthwindServiceClient.cs">
+      <DependentUpon>Northwind.Client.WPF.ServiceProxy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\NotifyPropertyChanged.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ComponentModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ObjectChangeTracker.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Entities.Tracking.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ObjectList.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Entities.Tracking.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ObjectsAddedToCollectionProperties.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Entities.Tracking.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ObjectsRemovedFromCollectionProperties.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Entities.Tracking.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ObjectState.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Entities.Tracking.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ObjectStateChangedEventArgs.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Entities.Tracking.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ObjectWithChangeTrackerExtensions.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Entities.Tracking.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ObservableDictionary.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Entities.Tracking.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\Order.cs">
+      <DependentUpon>Northwind.Client.WPF.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\OrderDetail.cs">
+      <DependentUpon>Northwind.Client.WPF.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\OrderDetailKeys.cs">
+      <DependentUpon>Keys.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\OrderKeys.cs">
+      <DependentUpon>Keys.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\OriginalValuesDictionary.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Entities.Tracking.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\PaginatedActions.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Controls.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\PaginatedQuery.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ParameterMode.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\PatternErrorInfo.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ComponentModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\Product.cs">
+      <DependentUpon>Northwind.Client.WPF.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ProductKeys.cs">
+      <DependentUpon>Keys.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\PropertyName.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ComponentModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ProxyHelper.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\QueriesSerialization.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\QueryPage.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\QueryResult.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\QueryResultProperty.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\QueryResultRecord.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\QuerySerialization.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\Reference.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\RefreshMode.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\RelayCommand.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ComponentModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ReplaceTypeRewriter.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\RequiredFieldErrorInfo.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ComponentModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SaveChangesCompletedEventArgs.cs">
+      <DependentUpon>Northwind.Client.WPF.ServiceProxy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SavingException.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableBinaryExpression.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableConditionalExpression.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableConstantExpression.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableConstructorExpression.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableEntitySetExpression.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableExpression.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableExpressionBuilder.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableExpressionExtension.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableExpressionRewriter.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableLambdaExpression.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableMemberExpression.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableMemberInitExpression.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableMethodCallExpression.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableParameterExpression.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializablePropertyExpression.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializablePropertyGetterExpression.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializablePropertySetterExpression.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableType.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableTypeBinaryExpression.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableUnaryExpression.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ServerException.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\TimeConverter.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Controls.Converters.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\TrackableCollection.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\TrackableCollectionBase.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Entities.Tracking.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\UIThread.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ComponentModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ValidateBindingOnEnterBehavior.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Controls.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ValidateCategoryCompletedEventArgs.cs">
+      <DependentUpon>Northwind.Client.WPF.ServiceProxy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ValidateCustomerCompletedEventArgs.cs">
+      <DependentUpon>Northwind.Client.WPF.ServiceProxy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ValidateEmployeeCompletedEventArgs.cs">
+      <DependentUpon>Northwind.Client.WPF.ServiceProxy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ValidateErrorInfo.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ComponentModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ValidateInvoiceCompletedEventArgs.cs">
+      <DependentUpon>Northwind.Client.WPF.ServiceProxy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ValidateInvoiceDetailCompletedEventArgs.cs">
+      <DependentUpon>Northwind.Client.WPF.ServiceProxy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ValidateOrderCompletedEventArgs.cs">
+      <DependentUpon>Northwind.Client.WPF.ServiceProxy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ValidateOrderDetailCompletedEventArgs.cs">
+      <DependentUpon>Northwind.Client.WPF.ServiceProxy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ValidateProductCompletedEventArgs.cs">
+      <DependentUpon>Northwind.Client.WPF.ServiceProxy.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\Validators.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ComponentModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ViewModelBase.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ComponentModel.tt</DependentUpon>
+    </Compile>
+    <Page Include="CustomerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="WAQS.Northwind\NavigationPanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <DependentUpon>WAQS.Client.WPF.Fx.Controls.tt</DependentUpon>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+    <None Include="WAQS.Northwind\Northwind.Client.WPF.waqs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="WAQS.Northwind\Includes.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Client.WPF.ClientContext.tt</DependentUpon>
+      <LastGenOutput>Includes.txt</LastGenOutput>
+    </Content>
+    <Resource Include="WAQS.Northwind\WAQS.Client.WPF.Fx.ComponentModel.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WAQS.Client.WPF.Fx.ComponentModel.tt</DependentUpon>
+    </Resource>
+    <Resource Include="WAQS.Northwind\WAQS.Client.WPF.Fx.Entities.Tracking.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WAQS.Client.WPF.Fx.Entities.Tracking.tt</DependentUpon>
+    </Resource>
+    <Resource Include="WAQS.Northwind\WAQS.Client.WPF.Fx.ClientContext.Interfaces.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Resource>
+    <Resource Include="WAQS.Northwind\WAQS.Client.WPF.Fx.ClientContext.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.tt</DependentUpon>
+    </Resource>
+    <Resource Include="WAQS.Northwind\WAQS.Client.WPF.Fx.Entities.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WAQS.Client.WPF.Fx.Entities.tt</DependentUpon>
+    </Resource>
+    <Resource Include="WAQS.Northwind\WAQS.Client.WPF.Fx.Controls.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WAQS.Client.WPF.Fx.Controls.tt</DependentUpon>
+    </Resource>
+    <Resource Include="WAQS.Northwind\WAQS.Client.WPF.Fx.Controls.Converters.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WAQS.Client.WPF.Fx.Controls.Converters.tt</DependentUpon>
+    </Resource>
+    <Resource Include="WAQS.Northwind\Northwind.Client.WPF.DTO.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Northwind.Client.WPF.DTO.tt</DependentUpon>
+    </Resource>
+    <Resource Include="WAQS.Northwind\Northwind.Client.WPF.DTO.Specifications.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Northwind.Client.WPF.DTO.Specifications.tt</DependentUpon>
+    </Resource>
+    <Resource Include="WAQS.Northwind\Northwind.Client.WPF.Entities.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Northwind.Client.WPF.Entities.tt</DependentUpon>
+    </Resource>
+    <Resource Include="WAQS.Northwind\Northwind.Client.WPF.ClientContext.Interfaces.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Northwind.Client.WPF.ClientContext.Interfaces.tt</DependentUpon>
+    </Resource>
+    <Resource Include="WAQS.Northwind\Includes.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Includes.tt</DependentUpon>
+    </Resource>
+    <Content Include="WAQS.Northwind\Keys.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Client.WPF.ClientContext.tt</DependentUpon>
+      <LastGenOutput>Keys.txt</LastGenOutput>
+    </Content>
+    <Resource Include="WAQS.Northwind\Keys.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Keys.tt</DependentUpon>
+    </Resource>
+    <Content Include="WAQS.Northwind\Northwind.Client.WPF.ClientContext.Interfaces.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Client.WPF.tt</DependentUpon>
+      <LastGenOutput>Northwind.Client.WPF.ClientContext.Interfaces.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\Northwind.Client.WPF.ClientContext.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Client.WPF.tt</DependentUpon>
+      <LastGenOutput>Northwind.Client.WPF.ClientContext.txt</LastGenOutput>
+    </Content>
+    <Resource Include="WAQS.Northwind\Northwind.Client.WPF.ClientContext.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Northwind.Client.WPF.ClientContext.tt</DependentUpon>
+    </Resource>
+    <Content Include="WAQS.Northwind\Northwind.Client.WPF.DTO.Specifications.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Client.WPF.tt</DependentUpon>
+      <LastGenOutput>Northwind.Client.WPF.DTO.Specifications.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\Northwind.Client.WPF.DTO.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Client.WPF.tt</DependentUpon>
+      <LastGenOutput>Northwind.Client.WPF.DTO.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\Northwind.Client.WPF.Entities.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Client.WPF.tt</DependentUpon>
+      <LastGenOutput>Northwind.Client.WPF.Entities.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\Northwind.Client.WPF.ServiceProxy.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Client.WPF.tt</DependentUpon>
+      <LastGenOutput>Northwind.Client.WPF.ServiceProxy.txt</LastGenOutput>
+    </Content>
+    <Resource Include="WAQS.Northwind\Northwind.Client.WPF.ServiceProxy.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Northwind.Client.WPF.ServiceProxy.tt</DependentUpon>
+    </Resource>
+    <Content Include="WAQS.Northwind\Northwind.Client.WPF.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Northwind.Client.WPF.txt</LastGenOutput>
+    </Content>
+    <Resource Include="WAQS.Northwind\Northwind.Client.WPF.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Northwind.Client.WPF.tt</DependentUpon>
+    </Resource>
+    <Content Include="WAQS.Northwind\WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Client.WPF.tt</DependentUpon>
+      <LastGenOutput>WAQS.Client.WPF.Fx.ClientContext.Interfaces.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\WAQS.Client.WPF.Fx.ClientContext.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Client.WPF.tt</DependentUpon>
+      <LastGenOutput>WAQS.Client.WPF.Fx.ClientContext.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\WAQS.Client.WPF.Fx.ComponentModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Client.WPF.tt</DependentUpon>
+      <LastGenOutput>WAQS.Client.WPF.Fx.ComponentModel.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\WAQS.Client.WPF.Fx.Controls.Converters.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Client.WPF.tt</DependentUpon>
+      <LastGenOutput>WAQS.Client.WPF.Fx.Controls.Converters.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\WAQS.Client.WPF.Fx.Controls.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Client.WPF.tt</DependentUpon>
+      <LastGenOutput>WAQS.Client.WPF.Fx.Controls.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\WAQS.Client.WPF.Fx.Entities.Tracking.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Client.WPF.tt</DependentUpon>
+      <LastGenOutput>WAQS.Client.WPF.Fx.Entities.Tracking.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\WAQS.Client.WPF.Fx.Entities.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Client.WPF.tt</DependentUpon>
+      <LastGenOutput>WAQS.Client.WPF.Fx.Entities.txt</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
