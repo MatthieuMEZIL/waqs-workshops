@@ -1,0 +1,2 @@
+This file is only used to include the folder in the git repository (empty folder are ignored by git).
+If you follow the workshop instruction, you won't have it.
