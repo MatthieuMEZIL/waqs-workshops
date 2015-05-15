@@ -2,26 +2,31 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
+/Workshop00/.vs
+/Workshop00/packages
 /Workshop00/WAQSWorkshopServer/bin
 /Workshop00/WAQSWorkshopServer/obj
 /Workshop01/.vs
+/Workshop01/packages
 /Workshop01/WAQSWorkshopServer/bin
 /Workshop01/WAQSWorkshopServer/obj
 /Workshop01/WAQSWorkshopClient/bin
 /Workshop01/WAQSWorkshopClient/obj
 /Workshop02/.vs
+/Workshop02/packages
 /Workshop02/WAQSWorkshopServer/bin
 /Workshop02/WAQSWorkshopServer/obj
 /Workshop02/WAQSWorkshopClient/bin
 /Workshop02/WAQSWorkshopClient/obj
 /Workshop03/.vs
+/Workshop03/packages
 /Workshop03/WAQSWorkshopServer/bin
 /Workshop03/WAQSWorkshopServer/obj
 /Workshop03/WAQSWorkshopClient/bin
 /Workshop03/WAQSWorkshopClient/obj
 /Workshop04/.vs
+/Workshop04/packages
 /Workshop04/WAQSWorkshopServer/bin
 /Workshop04/WAQSWorkshopServer/obj
 /Workshop04/WAQSWorkshopClient/bin
 /Workshop04/WAQSWorkshopClient/obj
-/Workshop00/.vs
