@@ -349,6 +349,9 @@
     <Compile Include="WAQS.Northwind\NotifyPropertyChanged.cs">
       <DependentUpon>WAQS.Client.WPF.Fx.ComponentModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="WAQS.Northwind\NumberRoundConverter.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Controls.Converters.tt</DependentUpon>
+    </Compile>
     <Compile Include="WAQS.Northwind\ObjectChangeTracker.cs">
       <DependentUpon>WAQS.Client.WPF.Fx.Entities.Tracking.tt</DependentUpon>
     </Compile>

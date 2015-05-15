@@ -4,10 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WAQSWorkshopClient"
+        xmlns:converters="clr-namespace:WAQS.Controls.Converters"
         mc:Ignorable="d"
         Title="MainWindow"
         Height="350"
         Width="525">
+    <Window.Resources>
+        <converters:NumberRoundConverter x:Key="NumberRoundConverter" />
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -24,7 +28,7 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding Name}" />
                         <TextBlock Margin="5,0"
-                                   Text="{Binding TotalSpent}" />
+                                   Text="{Binding TotalSpent, Converter={StaticResource NumberRoundConverter}}" />
                         <Button Content="Edit"
                                 Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                 CommandParameter="{Binding}" />
