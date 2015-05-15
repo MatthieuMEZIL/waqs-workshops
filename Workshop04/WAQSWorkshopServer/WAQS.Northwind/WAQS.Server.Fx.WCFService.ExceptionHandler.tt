@@ -1,0 +1,1 @@
+<#@ include file="WAQS.VS14.NET46.Server.Fx.WCFService.ExceptionHandler.ttinclude"#><#WriteServerFxWCFServiceExceptionHandler("WAQS.WCFService", "WAQS.WCFService.Contract", "WAQS.Common", "WAQS.WCFService");#>

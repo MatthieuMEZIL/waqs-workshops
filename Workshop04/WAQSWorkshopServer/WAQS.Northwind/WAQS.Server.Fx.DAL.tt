@@ -1,0 +1,1 @@
+<#@ include file="WAQS.VS14.NET46.Server.Fx.DAL.ttinclude"#><#WriteServerFxDAL("WAQS.Entities", "WAQS.DAL.Interfaces", "WAQS.Common", "WAQS.DAL");#>

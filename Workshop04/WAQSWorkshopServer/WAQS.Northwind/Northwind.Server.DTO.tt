@@ -1,0 +1,1 @@
+<#@ include file="WAQS.VS14.NET46.Server.DTO.ttinclude"#><#WriteServerDTOs(new SpecificationPath[] { new SpecificationPath { Sln = @"..\..\WAQSWorkshop.sln", Csproj = @"..\WAQSWorkshopServer.csproj", Folder = @"..\DTO\"} }, "http://Northwind/DTO", "WAQSWorkshopServer");#>

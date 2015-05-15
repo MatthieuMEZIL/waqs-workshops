@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<WAQS.Server EdmxPath="$edmxPath$">
+  <Specifications>
+    <Specification SlnFilePath="$SpecificationsSlnFilePath$" CsprojPath="$SpecificationsCsprojPath$" FolderPath="$SpecificationsFolderPath$" />
+  </Specifications>
+  <Entities SlnFilePath="$EntitiesSlnFilePath$" CsprojPath="$EntitiesCsprojPath$" FolderPath="$EntitiesFolderPath$" Generate="false" />
+  <DAL NamespaceName="$DALNamespace$" Generate="false" />
+  <DALInterfaces NamespaceName="$DALInterfacesNamespace$" Generate="false" />
+  <Service NamespaceName="$ServiceNamespace$" Generate="false" />
+  <ServiceInterfaces NamespaceName="$ServiceInterfacesNamespace$" Generate="false" />
+  <WCFService NamespaceName="$WCFServiceNamespace$" Generate="false" />
+  <WCFServiceContract NamespaceName="$WCFServiceContractNamespace$" Generate="false" />
+  <Web GlobalClassName="Global" />
+  <GlobalContext />
+  <Framework>
+    <Common NamespaceName="WAQS.Common" Generate="false" />
+    <Specifications NamespaceName="WAQS.Specifications" Generate="false" />
+    <Entities NamespaceName="WAQS.Entities" Generate="false" />
+    <DAL NamespaceName="WAQS.DAL" Generate="false" />
+    <DALInterfaces NamespaceName="WAQS.DAL.Interfaces" Generate="false" />
+    <Expressions NamespaceName="WAQS.SerializableExpressions" Generate="false" />
+    <Service NamespaceName="WAQS.Service" Generate="false" />
+    <ServiceInterfaces NamespaceName="WAQS.Service.Interfaces" Generate="false" />
+    <WCFService NamespaceName="WAQS.WCFService" Generate="false" />
+    <WCFServiceContract NamespaceName="WAQS.WCFService.Contract" Generate="false" />
+  </Framework>
+</WAQS.Server>
