@@ -15,7 +15,7 @@ using System.Windows.Data;
 
 namespace WAQS.Controls.Converters
 {
-    public class IntToVisibilityCollapsedIfZeroConverter : IValueConverter
+    public partial class IntToVisibilityCollapsedIfZeroConverter : IValueConverter
     {
     	public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     	{
@@ -24,7 +24,17 @@ namespace WAQS.Controls.Converters
     
     	public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     	{
-    		throw new NotImplementedException();
-    	}
+            object result = null;
+            bool proceed = false;
+            CustomConvertBack(value, targetType, parameter, culture, ref result, ref proceed);
+            if (proceed || result != null)
+            {
+                return result;
+            }
+    
+            throw new NotImplementedException();
+        }
+    
+        partial void CustomConvertBack(object value, Type targetType, object parameter, CultureInfo culture, ref object result, ref bool proceed);
     }
 }
