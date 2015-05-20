@@ -308,8 +308,10 @@ namespace WAQS.ClientContext
         {
             if (disposing)
             {
-                foreach (var entity in AllEntities.ToList())
+    			var allEntities = AllEntities.ToArray();
+    			for (var ei = 0 ; ei < allEntities.Length ; ei++)
                 {
+    				var entity = allEntities[ei];
                     entity.ChangeTracker.AcceptChanges(false); 
                     entity.ChangeTracker.ChangeTrackingEnabled = false;
                     entity.StateChanged -= EntityStateChanged;

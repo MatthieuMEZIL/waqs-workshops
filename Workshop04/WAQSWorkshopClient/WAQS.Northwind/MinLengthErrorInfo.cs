@@ -15,8 +15,8 @@ namespace WAQS.ComponentModel
     {
     	public const string MinLengthErrorCode = "MinLength";
     
-    	public MinLengthErrorInfo(int maxLength)
-    		: base(MinLengthErrorCode)
+    	public MinLengthErrorInfo(string propertyName, int maxLength)
+    		: base(propertyName, MinLengthErrorCode)
     	{
     		MinLength = maxLength;
     	}

@@ -15,8 +15,8 @@ namespace WAQS.ComponentModel
     {
     	public const string PatternErrorCode = "Pattern";
     
-    	public PatternErrorInfo(string pattern)
-    		: base(PatternErrorCode)
+    	public PatternErrorInfo(string propertyName, string pattern)
+    		: base(propertyName, PatternErrorCode)
     	{
     		Pattern = pattern;
     	}

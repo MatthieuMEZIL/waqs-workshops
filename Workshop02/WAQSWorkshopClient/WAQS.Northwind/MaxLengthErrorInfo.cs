@@ -15,8 +15,8 @@ namespace WAQS.ComponentModel
     {
     	public const string MaxLengthErrorCode = "MaxLength";
     
-    	public MaxLengthErrorInfo(int maxLength)
-    		: base(MaxLengthErrorCode)
+    	public MaxLengthErrorInfo(string propertyName, int maxLength)
+    		: base(propertyName, MaxLengthErrorCode)
     	{
     		MaxLength = maxLength;
     	}

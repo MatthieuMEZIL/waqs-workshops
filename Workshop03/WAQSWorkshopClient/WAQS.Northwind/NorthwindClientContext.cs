@@ -155,13 +155,18 @@ namespace WAQSWorkshopClient.ClientContext
                 EntityAttachWithoutChangingStateSubEntities(entity);
                 List<WAQSWorkshopClient.Product> products;
                 if (ProductsCategoryFKsDico.TryGetValue(categoryKeys, out products))
-                    foreach (var e in products)
-                        e.Category = entity;
+                    for (int ei = 0 ; ei < products.Count ; ei++)
+        			{
+                        products[ei].Category = entity;
+        			}
             }
     
-            foreach (var se in entity.Products)
+            for (int sei = 0 ; sei < entity.Products.Count ; sei++)
+    		{
+    			var se = entity.Products[sei];
                 if (! ProductsInternal.Contains(se))
                     ProductsInternal.AttachWithoutChangingState(se, entity.ChangeTracker.State);
+    		}
     
             entity.IsInitializingRelationships = false;
         }
@@ -183,8 +188,9 @@ namespace WAQSWorkshopClient.ClientContext
         private void Category_ProductsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
-                foreach (WAQSWorkshopClient.Product subEntity in e.NewItems)
+                for (int sei = 0 ; sei < e.NewItems.Count ; sei++)
                 {
+    				var subEntity = (WAQSWorkshopClient.Product)e.NewItems[sei];
                     WAQSWorkshopClient.Product se = null;
                     if (!subEntity.IsInitializingRelationships && (se = GetEntityInCache(subEntity)) == null)
                         AttachWithoutChangingState(subEntity);
@@ -209,8 +215,9 @@ namespace WAQSWorkshopClient.ClientContext
             entity.Products.CollectionChanged -= Category_ProductsCollectionChanged;
             ClientEntitySetExtensions.RemoveEntityInDico(entity);
     		RemovePropertyDescriptorToEntity(entity);
-            foreach (var subEntity in ProductsInternal)
+            for (int sei = 0 ; sei < ProductsInternal.Count ; sei++)
             {
+    			var subEntity = ProductsInternal[sei];
                 object originalValue;
                 if (subEntity.ChangeTracker.OriginalValues.TryGetValue("Category", out originalValue) && originalValue == entity)
                     subEntity.ChangeTracker.OriginalValues.Remove("Category");
@@ -236,8 +243,10 @@ namespace WAQSWorkshopClient.ClientContext
         {
             if (entity == entityInCache)
                 return;
-            foreach (var subEntity in entity.Products.ToList())
+    		var entityProductsArray = entity.Products.ToArray();
+            for (int sei = 0 ; sei < entityProductsArray.Length ; sei++)
             {
+    			var subEntity = entityProductsArray[sei];
                 WAQSWorkshopClient.Product subEntityInCache;
                 if (Products.Contains(subEntity))
                     subEntityInCache = subEntity;
@@ -250,8 +259,9 @@ namespace WAQSWorkshopClient.ClientContext
             {
                 List<WAQSWorkshopClient.Product> subEntities;
                 if (ProductsCategoryFKsDico.TryGetValue(new CategoryKeys { Id = entity.Id }, out subEntities))
-                    foreach (var subEntity in subEntities)
+                    for (int sei = 0 ; sei < subEntities.Count ; sei++)
                     {
+    					var subEntity = subEntities[sei];
                         if (subEntity.Category == null)
                             ((ITrackableCollection<Product>)entityInCache.Products).AttachWithoutCheckingIfAlreadyExist(subEntity);
                     }
@@ -363,8 +373,9 @@ namespace WAQSWorkshopClient.ClientContext
                 entity.IsInitializingRelationships = true;
                 value.IsInitializingRelationships = true;
     
-                foreach (var e in entityProducts)
+                for (int ei = 0 ; ei < entityProducts.Count ; ei++)
                 {
+    				var e = entityProducts[ei];
                     if (value.ChangeTracker.State == ObjectState.Detached)
                         GetEntity(e, applyState, defaultState:defaultState, applyDataTransfer:applyDataTransfer);
                     else
@@ -373,9 +384,15 @@ namespace WAQSWorkshopClient.ClientContext
     
                 if (applyState && originalChangeTracker != null && originalChangeTracker != value.ChangeTracker)
                 {
-                    foreach (var modifiedProperty in originalChangeTracker.ModifiedProperties)
+    				
+                    for (int mpi = 0 ; mpi < originalChangeTracker.ModifiedProperties.Count ; mpi ++)
+    				{
+    					var modifiedProperty = originalChangeTracker.ModifiedProperties[mpi];
                         if (! value.ChangeTracker.ModifiedProperties.Contains(modifiedProperty))
+    					{
                             value.ChangeTracker.ModifiedProperties.Add(modifiedProperty);
+    					}
+    				}
                     foreach (var originalValue in originalChangeTracker.OriginalValues)
                     {
                         var originalValueEntity = originalValue.Value as IEntity;
@@ -391,7 +408,10 @@ namespace WAQSWorkshopClient.ClientContext
                         }
                     }
                     foreach (var objectsRemovedToCollectionProperties in originalChangeTracker.ObjectsRemovedFromCollectionProperties)
-                        foreach (IEntity objectsRemovedToCollectionProperty in objectsRemovedToCollectionProperties.Value)
+    				{
+                        for (int orcpvi = 0 ; orcpvi < objectsRemovedToCollectionProperties.Value.Count ; orcpvi++)
+    					{
+    						var objectsRemovedToCollectionProperty = (IEntity)objectsRemovedToCollectionProperties.Value[orcpvi];
                             if (objectsRemovedToCollectionProperty != null)
                             {
                                 var originalState = objectsRemovedToCollectionProperty.ChangeTracker.State;
@@ -407,14 +427,21 @@ namespace WAQSWorkshopClient.ClientContext
                                 if (originalState == ObjectState.Detached)
                                     Detach(removedEntity);
                             }
+    					}
+    				}
                     foreach (var objectsAddedToCollectionProperties in originalChangeTracker.ObjectsAddedToCollectionProperties)
-                        foreach (var objectsAddedToCollectionProperty in objectsAddedToCollectionProperties.Value)
+    				{
+                        for (int oacpvi = 0 ; oacpvi < objectsAddedToCollectionProperties.Value.Count ; oacpvi++)
+    					{
+    						var objectsAddedToCollectionProperty = objectsAddedToCollectionProperties.Value[oacpvi];
                             if (objectsAddedToCollectionProperty != null)
                             {
                                 var addedEntity = (IObjectWithChangeTracker)GetEntity(objectsAddedToCollectionProperty, true, defaultState, applyDataTransfer);
                                 if (value.ChangeTracker.State != ObjectState.Detached)
                                     value.ChangeTracker.RecordAdditionToCollectionProperties(objectsAddedToCollectionProperties.Key, addedEntity);
                             }
+                }
+    				}
                 }
     
                 value.IsInitializingRelationships = false;
@@ -494,9 +521,9 @@ namespace WAQSWorkshopClient.ClientContext
             switch (entity.ChangeTracker.State)
             {
                 case ObjectState.Added:
-                    value.Name = entity.Name;
-                    value.Description = entity.Description;
-                    value.Picture = entity.Picture;
+                                value.Name = entity.Name;
+                                value.Description = entity.Description;
+                                value.Picture = entity.Picture;
     				break;
                 case ObjectState.Deleted:
                     value.ChangeTracker.ChangeTrackingEnabled = false;
@@ -507,6 +534,7 @@ namespace WAQSWorkshopClient.ClientContext
                 case ObjectState.Modified:
                     value.ChangeTracker.ModifiedProperties = entity.ChangeTracker.ModifiedProperties.ToList();
                     foreach (var modifiedPropery in entity.ChangeTracker.ModifiedProperties.Union(entity.ChangeTracker.ValidationProperties))
+    				{
                         switch (modifiedPropery)
                         {
                             case "Name":
@@ -519,6 +547,7 @@ namespace WAQSWorkshopClient.ClientContext
                                 value.Picture = entity.Picture;
                                 break;
                         }
+    				}
                     break;
                 case ObjectState.Unchanged:
                 case ObjectState.CascadeDeleted:
@@ -570,8 +599,10 @@ namespace WAQSWorkshopClient.ClientContext
         {
             if (_categories != null)
             {
-                foreach (var entity in _categories.AllEntities.ToList())
+    			var allEntities = _categories.AllEntities.ToArray();
+                for (int ei = 0 ; ei < allEntities.Length ; ei++)
                 {
+    				var entity = allEntities[ei];
                     entity.Products.CollectionChanged -= Category_ProductsCollectionChanged;
                     EntityDetached(entity);
                 }
@@ -640,21 +671,31 @@ namespace WAQSWorkshopClient.ClientContext
             EntityAttachWithoutChangingStateSubEntities(entity);
             List<WAQSWorkshopClient.Invoice> invoices;
             if (InvoicesCustomerFKsDico.TryGetValue(customerKeys, out invoices))
-                foreach (var e in invoices)
-                    e.Customer = entity;
+                for (int ei = 0 ; ei < invoices.Count ; ei++)
+    			{
+                    invoices[ei].Customer = entity;
+    			}
             List<WAQSWorkshopClient.Order> orders;
             if (OrdersCustomerFKsDico.TryGetValue(customerKeys, out orders))
-                foreach (var e in orders)
-                    e.Customer = entity;
+                for (int ei = 0 ; ei < orders.Count ; ei++)
+    			{
+                    orders[ei].Customer = entity;
+    			}
     
-            foreach (var se in entity.Invoices)
+            for (int sei = 0 ; sei < entity.Invoices.Count ; sei++)
+    		{
+    			var se = entity.Invoices[sei];
                 if (! InvoicesInternal.Contains(se))
                     InvoicesInternal.AttachWithoutChangingState(se, entity.ChangeTracker.State);
+    		}
     
     
-            foreach (var se in entity.Orders)
+            for (int sei = 0 ; sei < entity.Orders.Count ; sei++)
+    		{
+    			var se = entity.Orders[sei];
                 if (! OrdersInternal.Contains(se))
                     OrdersInternal.AttachWithoutChangingState(se, entity.ChangeTracker.State);
+    		}
     
             entity.IsInitializingRelationships = false;
         }
@@ -692,8 +733,9 @@ namespace WAQSWorkshopClient.ClientContext
         private void Customer_InvoicesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
-                foreach (WAQSWorkshopClient.Invoice subEntity in e.NewItems)
+                for (int sei = 0 ; sei < e.NewItems.Count ; sei++)
                 {
+    				var subEntity = (WAQSWorkshopClient.Invoice)e.NewItems[sei];
                     WAQSWorkshopClient.Invoice se = null;
                     if (!subEntity.IsInitializingRelationships && (se = GetEntityInCache(subEntity)) == null)
                         AttachWithoutChangingState(subEntity);
@@ -705,8 +747,9 @@ namespace WAQSWorkshopClient.ClientContext
         private void Customer_OrdersCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
-                foreach (WAQSWorkshopClient.Order subEntity in e.NewItems)
+                for (int sei = 0 ; sei < e.NewItems.Count ; sei++)
                 {
+    				var subEntity = (WAQSWorkshopClient.Order)e.NewItems[sei];
                     WAQSWorkshopClient.Order se = null;
                     if (!subEntity.IsInitializingRelationships && (se = GetEntityInCache(subEntity)) == null)
                         AttachWithoutChangingState(subEntity);
@@ -727,14 +770,16 @@ namespace WAQSWorkshopClient.ClientContext
             entity.Orders.CollectionChanged -= Customer_OrdersCollectionChanged;
             ClientEntitySetExtensions.RemoveEntityInDico(entity);
     		RemovePropertyDescriptorToEntity(entity);
-            foreach (var subEntity in InvoicesInternal)
+            for (int sei = 0 ; sei < InvoicesInternal.Count ; sei++)
             {
+    			var subEntity = InvoicesInternal[sei];
                 object originalValue;
                 if (subEntity.ChangeTracker.OriginalValues.TryGetValue("Customer", out originalValue) && originalValue == entity)
                     subEntity.ChangeTracker.OriginalValues.Remove("Customer");
             }
-            foreach (var subEntity in OrdersInternal)
+            for (int sei = 0 ; sei < OrdersInternal.Count ; sei++)
             {
+    			var subEntity = OrdersInternal[sei];
                 object originalValue;
                 if (subEntity.ChangeTracker.OriginalValues.TryGetValue("Customer", out originalValue) && originalValue == entity)
                     subEntity.ChangeTracker.OriginalValues.Remove("Customer");
@@ -760,8 +805,10 @@ namespace WAQSWorkshopClient.ClientContext
         {
             if (entity == entityInCache)
                 return;
-            foreach (var subEntity in entity.Invoices.ToList())
+    		var entityInvoicesArray = entity.Invoices.ToArray();
+            for (int sei = 0 ; sei < entityInvoicesArray.Length ; sei++)
             {
+    			var subEntity = entityInvoicesArray[sei];
                 WAQSWorkshopClient.Invoice subEntityInCache;
                 if (Invoices.Contains(subEntity))
                     subEntityInCache = subEntity;
@@ -774,14 +821,17 @@ namespace WAQSWorkshopClient.ClientContext
             {
                 List<WAQSWorkshopClient.Invoice> subEntities;
                 if (InvoicesCustomerFKsDico.TryGetValue(new CustomerKeys { Id = entity.Id }, out subEntities))
-                    foreach (var subEntity in subEntities)
+                    for (int sei = 0 ; sei < subEntities.Count ; sei++)
                     {
+    					var subEntity = subEntities[sei];
                         if (subEntity.Customer == null)
                             ((ITrackableCollection<Invoice>)entityInCache.Invoices).AttachWithoutCheckingIfAlreadyExist(subEntity);
                     }
             }
-            foreach (var subEntity in entity.Orders.ToList())
+    		var entityOrdersArray = entity.Orders.ToArray();
+            for (int sei = 0 ; sei < entityOrdersArray.Length ; sei++)
             {
+    			var subEntity = entityOrdersArray[sei];
                 WAQSWorkshopClient.Order subEntityInCache;
                 if (Orders.Contains(subEntity))
                     subEntityInCache = subEntity;
@@ -794,8 +844,9 @@ namespace WAQSWorkshopClient.ClientContext
             {
                 List<WAQSWorkshopClient.Order> subEntities;
                 if (OrdersCustomerFKsDico.TryGetValue(new CustomerKeys { Id = entity.Id }, out subEntities))
-                    foreach (var subEntity in subEntities)
+                    for (int sei = 0 ; sei < subEntities.Count ; sei++)
                     {
+    					var subEntity = subEntities[sei];
                         if (subEntity.Customer == null)
                             ((ITrackableCollection<Order>)entityInCache.Orders).AttachWithoutCheckingIfAlreadyExist(subEntity);
                     }
@@ -907,15 +958,17 @@ namespace WAQSWorkshopClient.ClientContext
                 entity.IsInitializingRelationships = true;
                 value.IsInitializingRelationships = true;
     
-                foreach (var e in entityInvoices)
+                for (int ei = 0 ; ei < entityInvoices.Count ; ei++)
                 {
+    				var e = entityInvoices[ei];
                     if (value.ChangeTracker.State == ObjectState.Detached)
                         GetEntity(e, applyState, defaultState:defaultState, applyDataTransfer:applyDataTransfer);
                     else
                         value.Invoices.Add(GetEntity(e, applyState, defaultState:defaultState, mergeOption: mergeOption, applyDataTransfer:applyDataTransfer));
                 }
-                foreach (var e in entityOrders)
+                for (int ei = 0 ; ei < entityOrders.Count ; ei++)
                 {
+    				var e = entityOrders[ei];
                     if (value.ChangeTracker.State == ObjectState.Detached)
                         GetEntity(e, applyState, defaultState:defaultState, applyDataTransfer:applyDataTransfer);
                     else
@@ -924,9 +977,15 @@ namespace WAQSWorkshopClient.ClientContext
     
                 if (applyState && originalChangeTracker != null && originalChangeTracker != value.ChangeTracker)
                 {
-                    foreach (var modifiedProperty in originalChangeTracker.ModifiedProperties)
+    				
+                    for (int mpi = 0 ; mpi < originalChangeTracker.ModifiedProperties.Count ; mpi ++)
+    				{
+    					var modifiedProperty = originalChangeTracker.ModifiedProperties[mpi];
                         if (! value.ChangeTracker.ModifiedProperties.Contains(modifiedProperty))
+    					{
                             value.ChangeTracker.ModifiedProperties.Add(modifiedProperty);
+    					}
+    				}
                     foreach (var originalValue in originalChangeTracker.OriginalValues)
                     {
                         var originalValueEntity = originalValue.Value as IEntity;
@@ -942,7 +1001,10 @@ namespace WAQSWorkshopClient.ClientContext
                         }
                     }
                     foreach (var objectsRemovedToCollectionProperties in originalChangeTracker.ObjectsRemovedFromCollectionProperties)
-                        foreach (IEntity objectsRemovedToCollectionProperty in objectsRemovedToCollectionProperties.Value)
+    				{
+                        for (int orcpvi = 0 ; orcpvi < objectsRemovedToCollectionProperties.Value.Count ; orcpvi++)
+    					{
+    						var objectsRemovedToCollectionProperty = (IEntity)objectsRemovedToCollectionProperties.Value[orcpvi];
                             if (objectsRemovedToCollectionProperty != null)
                             {
                                 var originalState = objectsRemovedToCollectionProperty.ChangeTracker.State;
@@ -961,14 +1023,21 @@ namespace WAQSWorkshopClient.ClientContext
                                 if (originalState == ObjectState.Detached)
                                     Detach(removedEntity);
                             }
+    					}
+    				}
                     foreach (var objectsAddedToCollectionProperties in originalChangeTracker.ObjectsAddedToCollectionProperties)
-                        foreach (var objectsAddedToCollectionProperty in objectsAddedToCollectionProperties.Value)
+    				{
+                        for (int oacpvi = 0 ; oacpvi < objectsAddedToCollectionProperties.Value.Count ; oacpvi++)
+    					{
+    						var objectsAddedToCollectionProperty = objectsAddedToCollectionProperties.Value[oacpvi];
                             if (objectsAddedToCollectionProperty != null)
                             {
                                 var addedEntity = (IObjectWithChangeTracker)GetEntity(objectsAddedToCollectionProperty, true, defaultState, applyDataTransfer);
                                 if (value.ChangeTracker.State != ObjectState.Detached)
                                     value.ChangeTracker.RecordAdditionToCollectionProperties(objectsAddedToCollectionProperties.Key, addedEntity);
                             }
+                }
+    				}
                 }
     
                 value.IsInitializingRelationships = false;
@@ -1080,17 +1149,17 @@ namespace WAQSWorkshopClient.ClientContext
             switch (entity.ChangeTracker.State)
             {
                 case ObjectState.Added:
-                    value.CompanyName = entity.CompanyName;
-                    value.ContactName = entity.ContactName;
-                    value.ContactTitle = entity.ContactTitle;
-                    value.Address = entity.Address;
-                    value.City = entity.City;
-                    value.Region = entity.Region;
-                    value.PostalCode = entity.PostalCode;
-                    value.Country = entity.Country;
-                    value.Phone = entity.Phone;
-                    value.Fax = entity.Fax;
-                    value.IsVIP = entity.IsVIP;
+                                value.CompanyName = entity.CompanyName;
+                                value.ContactName = entity.ContactName;
+                                value.ContactTitle = entity.ContactTitle;
+                                value.Address = entity.Address;
+                                value.City = entity.City;
+                                value.Region = entity.Region;
+                                value.PostalCode = entity.PostalCode;
+                                value.Country = entity.Country;
+                                value.Phone = entity.Phone;
+                                value.Fax = entity.Fax;
+                                value.IsVIP = entity.IsVIP;
     				break;
                 case ObjectState.Deleted:
                     value.ChangeTracker.ChangeTrackingEnabled = false;
@@ -1109,6 +1178,7 @@ namespace WAQSWorkshopClient.ClientContext
                 case ObjectState.Modified:
                     value.ChangeTracker.ModifiedProperties = entity.ChangeTracker.ModifiedProperties.ToList();
                     foreach (var modifiedPropery in entity.ChangeTracker.ModifiedProperties.Union(entity.ChangeTracker.ValidationProperties))
+    				{
                         switch (modifiedPropery)
                         {
                             case "CompanyName":
@@ -1145,6 +1215,7 @@ namespace WAQSWorkshopClient.ClientContext
                                 value.IsVIP = entity.IsVIP;
                                 break;
                         }
+    				}
                     break;
                 case ObjectState.Unchanged:
                 case ObjectState.CascadeDeleted:
@@ -1198,8 +1269,10 @@ namespace WAQSWorkshopClient.ClientContext
         {
             if (_customers != null)
             {
-                foreach (var entity in _customers.AllEntities.ToList())
+    			var allEntities = _customers.AllEntities.ToArray();
+                for (int ei = 0 ; ei < allEntities.Length ; ei++)
                 {
+    				var entity = allEntities[ei];
                     entity.Invoices.CollectionChanged -= Customer_InvoicesCollectionChanged;
                     entity.Orders.CollectionChanged -= Customer_OrdersCollectionChanged;
                     EntityDetached(entity);
@@ -1325,17 +1398,24 @@ namespace WAQSWorkshopClient.ClientContext
                 EntityAttachWithoutChangingStateSubEntities(entity);
                 List<WAQSWorkshopClient.Employee> employees1;
                 if (EmployeesEmployee1FKsDico.TryGetValue(employeeKeys, out employees1))
-                    foreach (var e in employees1)
-                        e.Employee1 = entity;
+                    for (int ei = 0 ; ei < employees1.Count ; ei++)
+        			{
+                        employees1[ei].Employee1 = entity;
+        			}
                 List<WAQSWorkshopClient.Order> orders;
                 if (OrdersEmployeeFKsDico.TryGetValue(employeeKeys, out orders))
-                    foreach (var e in orders)
-                        e.Employee = entity;
+                    for (int ei = 0 ; ei < orders.Count ; ei++)
+        			{
+                        orders[ei].Employee = entity;
+        			}
             }
     
-            foreach (var se in entity.Employees1)
+            for (int sei = 0 ; sei < entity.Employees1.Count ; sei++)
+    		{
+    			var se = entity.Employees1[sei];
                 if (! EmployeesInternal.Contains(se))
                     EmployeesInternal.AttachWithoutChangingState(se, entity.ChangeTracker.State);
+    		}
     
     
             if (! (entity.Employee1 == null || EmployeesInternal.Contains(entity.Employee1)))
@@ -1355,9 +1435,12 @@ namespace WAQSWorkshopClient.ClientContext
             }
             entity.Employee1FKsChanged += EmployeeEmployee1FKsChanged;
     
-            foreach (var se in entity.Orders)
+            for (int sei = 0 ; sei < entity.Orders.Count ; sei++)
+    		{
+    			var se = entity.Orders[sei];
                 if (! OrdersInternal.Contains(se))
                     OrdersInternal.AttachWithoutChangingState(se, entity.ChangeTracker.State);
+    		}
     
             entity.IsInitializingRelationships = false;
         }
@@ -1407,8 +1490,9 @@ namespace WAQSWorkshopClient.ClientContext
         private void Employee_Employees1CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
-                foreach (WAQSWorkshopClient.Employee subEntity in e.NewItems)
+                for (int sei = 0 ; sei < e.NewItems.Count ; sei++)
                 {
+    				var subEntity = (WAQSWorkshopClient.Employee)e.NewItems[sei];
                     WAQSWorkshopClient.Employee se = null;
                     if (!subEntity.IsInitializingRelationships && (se = GetEntityInCache(subEntity)) == null)
                         AttachWithoutChangingState(subEntity);
@@ -1444,8 +1528,9 @@ namespace WAQSWorkshopClient.ClientContext
         private void Employee_OrdersCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
-                foreach (WAQSWorkshopClient.Order subEntity in e.NewItems)
+                for (int sei = 0 ; sei < e.NewItems.Count ; sei++)
                 {
+    				var subEntity = (WAQSWorkshopClient.Order)e.NewItems[sei];
                     WAQSWorkshopClient.Order se = null;
                     if (!subEntity.IsInitializingRelationships && (se = GetEntityInCache(subEntity)) == null)
                         AttachWithoutChangingState(subEntity);
@@ -1504,14 +1589,16 @@ namespace WAQSWorkshopClient.ClientContext
             entity.NavigationPropertyChanged -= EmployeeNavigationPropertyChanged;
             ClientEntitySetExtensions.RemoveEntityInDico(entity);
     		RemovePropertyDescriptorToEntity(entity);
-            foreach (var subEntity in EmployeesInternal)
+            for (int sei = 0 ; sei < EmployeesInternal.Count ; sei++)
             {
+    			var subEntity = EmployeesInternal[sei];
                 object originalValue;
                 if (subEntity.ChangeTracker.OriginalValues.TryGetValue("Employee1", out originalValue) && originalValue == entity)
                     subEntity.ChangeTracker.OriginalValues.Remove("Employee1");
             }
-            foreach (var subEntity in EmployeesInternal)
+            for (int sei = 0 ; sei < EmployeesInternal.Count ; sei++)
             {
+    			var subEntity = EmployeesInternal[sei];
                 ObjectList originalValues;
                 if (subEntity.ChangeTracker.ObjectsAddedToCollectionProperties.TryGetValue("Employees1", out originalValues) && originalValues.Contains(entity))
                 {
@@ -1526,8 +1613,9 @@ namespace WAQSWorkshopClient.ClientContext
                         subEntity.ChangeTracker.ObjectsRemovedFromCollectionProperties.Remove("Employees1");
                 }
             }
-            foreach (var subEntity in OrdersInternal)
+            for (int sei = 0 ; sei < OrdersInternal.Count ; sei++)
             {
+    			var subEntity = OrdersInternal[sei];
                 object originalValue;
                 if (subEntity.ChangeTracker.OriginalValues.TryGetValue("Employee", out originalValue) && originalValue == entity)
                     subEntity.ChangeTracker.OriginalValues.Remove("Employee");
@@ -1553,8 +1641,10 @@ namespace WAQSWorkshopClient.ClientContext
         {
             if (entity == entityInCache)
                 return;
-            foreach (var subEntity in entity.Employees1.ToList())
+    		var entityEmployees1Array = entity.Employees1.ToArray();
+            for (int sei = 0 ; sei < entityEmployees1Array.Length ; sei++)
             {
+    			var subEntity = entityEmployees1Array[sei];
                 WAQSWorkshopClient.Employee subEntityInCache;
                 if (Employees.Contains(subEntity))
                     subEntityInCache = subEntity;
@@ -1567,8 +1657,9 @@ namespace WAQSWorkshopClient.ClientContext
             {
                 List<WAQSWorkshopClient.Employee> subEntities;
                 if (EmployeesEmployee1FKsDico.TryGetValue(new EmployeeKeys { Id = entity.Id }, out subEntities))
-                    foreach (var subEntity in subEntities)
+                    for (int sei = 0 ; sei < subEntities.Count ; sei++)
                     {
+    					var subEntity = subEntities[sei];
                         if (subEntity.Employee1 == null)
                             ((ITrackableCollection<Employee>)entityInCache.Employees1).AttachWithoutCheckingIfAlreadyExist(subEntity);
                     }
@@ -1591,8 +1682,10 @@ namespace WAQSWorkshopClient.ClientContext
                     entityInCache.Employee1 = parentEntityInCache;
                 }
             }
-            foreach (var subEntity in entity.Orders.ToList())
+    		var entityOrdersArray = entity.Orders.ToArray();
+            for (int sei = 0 ; sei < entityOrdersArray.Length ; sei++)
             {
+    			var subEntity = entityOrdersArray[sei];
                 WAQSWorkshopClient.Order subEntityInCache;
                 if (Orders.Contains(subEntity))
                     subEntityInCache = subEntity;
@@ -1605,8 +1698,9 @@ namespace WAQSWorkshopClient.ClientContext
             {
                 List<WAQSWorkshopClient.Order> subEntities;
                 if (OrdersEmployeeFKsDico.TryGetValue(new EmployeeKeys { Id = entity.Id }, out subEntities))
-                    foreach (var subEntity in subEntities)
+                    for (int sei = 0 ; sei < subEntities.Count ; sei++)
                     {
+    					var subEntity = subEntities[sei];
                         if (subEntity.Employee == null)
                             ((ITrackableCollection<Order>)entityInCache.Orders).AttachWithoutCheckingIfAlreadyExist(subEntity);
                     }
@@ -1722,8 +1816,9 @@ namespace WAQSWorkshopClient.ClientContext
                 entity.IsInitializingRelationships = true;
                 value.IsInitializingRelationships = true;
     
-                foreach (var e in entityEmployees1)
+                for (int ei = 0 ; ei < entityEmployees1.Count ; ei++)
                 {
+    				var e = entityEmployees1[ei];
                     if (value.ChangeTracker.State == ObjectState.Detached)
                         GetEntity(e, applyState, defaultState:defaultState, applyDataTransfer:applyDataTransfer);
                     else
@@ -1736,8 +1831,9 @@ namespace WAQSWorkshopClient.ClientContext
                     else
                         value.Employee1 = GetEntity(entityEmployee1, applyState, defaultState:defaultState, mergeOption: mergeOption, applyDataTransfer:applyDataTransfer);
                 }
-                foreach (var e in entityOrders)
+                for (int ei = 0 ; ei < entityOrders.Count ; ei++)
                 {
+    				var e = entityOrders[ei];
                     if (value.ChangeTracker.State == ObjectState.Detached)
                         GetEntity(e, applyState, defaultState:defaultState, applyDataTransfer:applyDataTransfer);
                     else
@@ -1746,9 +1842,15 @@ namespace WAQSWorkshopClient.ClientContext
     
                 if (applyState && originalChangeTracker != null && originalChangeTracker != value.ChangeTracker)
                 {
-                    foreach (var modifiedProperty in originalChangeTracker.ModifiedProperties)
+    				
+                    for (int mpi = 0 ; mpi < originalChangeTracker.ModifiedProperties.Count ; mpi ++)
+    				{
+    					var modifiedProperty = originalChangeTracker.ModifiedProperties[mpi];
                         if (! value.ChangeTracker.ModifiedProperties.Contains(modifiedProperty))
+    					{
                             value.ChangeTracker.ModifiedProperties.Add(modifiedProperty);
+    					}
+    				}
                     foreach (var originalValue in originalChangeTracker.OriginalValues)
                     {
                         var originalValueEntity = originalValue.Value as IEntity;
@@ -1764,7 +1866,10 @@ namespace WAQSWorkshopClient.ClientContext
                         }
                     }
                     foreach (var objectsRemovedToCollectionProperties in originalChangeTracker.ObjectsRemovedFromCollectionProperties)
-                        foreach (IEntity objectsRemovedToCollectionProperty in objectsRemovedToCollectionProperties.Value)
+    				{
+                        for (int orcpvi = 0 ; orcpvi < objectsRemovedToCollectionProperties.Value.Count ; orcpvi++)
+    					{
+    						var objectsRemovedToCollectionProperty = (IEntity)objectsRemovedToCollectionProperties.Value[orcpvi];
                             if (objectsRemovedToCollectionProperty != null)
                             {
                                 var originalState = objectsRemovedToCollectionProperty.ChangeTracker.State;
@@ -1783,14 +1888,21 @@ namespace WAQSWorkshopClient.ClientContext
                                 if (originalState == ObjectState.Detached)
                                     Detach(removedEntity);
                             }
+    					}
+    				}
                     foreach (var objectsAddedToCollectionProperties in originalChangeTracker.ObjectsAddedToCollectionProperties)
-                        foreach (var objectsAddedToCollectionProperty in objectsAddedToCollectionProperties.Value)
+    				{
+                        for (int oacpvi = 0 ; oacpvi < objectsAddedToCollectionProperties.Value.Count ; oacpvi++)
+    					{
+    						var objectsAddedToCollectionProperty = objectsAddedToCollectionProperties.Value[oacpvi];
                             if (objectsAddedToCollectionProperty != null)
                             {
                                 var addedEntity = (IObjectWithChangeTracker)GetEntity(objectsAddedToCollectionProperty, true, defaultState, applyDataTransfer);
                                 if (value.ChangeTracker.State != ObjectState.Detached)
                                     value.ChangeTracker.RecordAdditionToCollectionProperties(objectsAddedToCollectionProperties.Key, addedEntity);
                             }
+                }
+    				}
                 }
     
                 value.IsInitializingRelationships = false;
@@ -1926,23 +2038,23 @@ namespace WAQSWorkshopClient.ClientContext
             switch (entity.ChangeTracker.State)
             {
                 case ObjectState.Added:
-                    value.LastName = entity.LastName;
-                    value.FirstName = entity.FirstName;
-                    value.Title = entity.Title;
-                    value.TitleOfCourtesy = entity.TitleOfCourtesy;
-                    value.BirthDate = entity.BirthDate;
-                    value.HireDate = entity.HireDate;
-                    value.Address = entity.Address;
-                    value.City = entity.City;
-                    value.Region = entity.Region;
-                    value.PostalCode = entity.PostalCode;
-                    value.Country = entity.Country;
-                    value.HomePhone = entity.HomePhone;
-                    value.Extension = entity.Extension;
-                    value.Photo = entity.Photo;
-                    value.Notes = entity.Notes;
-                    value.ReportsTo = entity.ReportsTo;
-                    value.PhotoPath = entity.PhotoPath;
+                                value.LastName = entity.LastName;
+                                value.FirstName = entity.FirstName;
+                                value.Title = entity.Title;
+                                value.TitleOfCourtesy = entity.TitleOfCourtesy;
+                                value.BirthDate = entity.BirthDate;
+                                value.HireDate = entity.HireDate;
+                                value.Address = entity.Address;
+                                value.City = entity.City;
+                                value.Region = entity.Region;
+                                value.PostalCode = entity.PostalCode;
+                                value.Country = entity.Country;
+                                value.HomePhone = entity.HomePhone;
+                                value.Extension = entity.Extension;
+                                value.Photo = entity.Photo;
+                                value.Notes = entity.Notes;
+                                value.ReportsTo = entity.ReportsTo;
+                                value.PhotoPath = entity.PhotoPath;
     				break;
                 case ObjectState.Deleted:
                     value.ChangeTracker.ChangeTrackingEnabled = false;
@@ -1968,6 +2080,7 @@ namespace WAQSWorkshopClient.ClientContext
                     value.ChangeTracker.ModifiedProperties = entity.ChangeTracker.ModifiedProperties.ToList();
                     value.ReportsTo = entity.ReportsTo;
                     foreach (var modifiedPropery in entity.ChangeTracker.ModifiedProperties.Union(entity.ChangeTracker.ValidationProperties))
+    				{
                         switch (modifiedPropery)
                         {
                             case "LastName":
@@ -2019,6 +2132,7 @@ namespace WAQSWorkshopClient.ClientContext
                                 value.PhotoPath = entity.PhotoPath;
                                 break;
                         }
+    				}
                     break;
                 case ObjectState.Unchanged:
                 case ObjectState.CascadeDeleted:
@@ -2128,8 +2242,10 @@ namespace WAQSWorkshopClient.ClientContext
         {
             if (_employees != null)
             {
-                foreach (var entity in _employees.AllEntities.ToList())
+    			var allEntities = _employees.AllEntities.ToArray();
+                for (int ei = 0 ; ei < allEntities.Length ; ei++)
                 {
+    				var entity = allEntities[ei];
                     entity.Employees1.CollectionChanged -= Employee_Employees1CollectionChanged;
                     entity.Employee1FKsChanged -= EmployeeEmployee1FKsChanged;
                     entity.Orders.CollectionChanged -= Employee_OrdersCollectionChanged;
@@ -2260,8 +2376,10 @@ namespace WAQSWorkshopClient.ClientContext
                 EntityAttachWithoutChangingStateSubEntities(entity);
                 List<WAQSWorkshopClient.InvoiceDetail> invoiceDetails;
                 if (InvoiceDetailsInvoiceFKsDico.TryGetValue(invoiceKeys, out invoiceDetails))
-                    foreach (var e in invoiceDetails)
-                        e.Invoice = entity;
+                    for (int ei = 0 ; ei < invoiceDetails.Count ; ei++)
+        			{
+                        invoiceDetails[ei].Invoice = entity;
+        			}
             }
     
             if (! (entity.Customer == null || CustomersInternal.Contains(entity.Customer)))
@@ -2281,9 +2399,12 @@ namespace WAQSWorkshopClient.ClientContext
             }
             entity.CustomerFKsChanged += InvoiceCustomerFKsChanged;
     
-            foreach (var se in entity.InvoiceDetails)
+            for (int sei = 0 ; sei < entity.InvoiceDetails.Count ; sei++)
+    		{
+    			var se = entity.InvoiceDetails[sei];
                 if (! InvoiceDetailsInternal.Contains(se))
                     InvoiceDetailsInternal.AttachWithoutChangingState(se, entity.ChangeTracker.State);
+    		}
     
     
             if (! (entity.Order == null || OrdersInternal.Contains(entity.Order)))
@@ -2348,8 +2469,9 @@ namespace WAQSWorkshopClient.ClientContext
         private void Invoice_InvoiceDetailsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
-                foreach (WAQSWorkshopClient.InvoiceDetail subEntity in e.NewItems)
+                for (int sei = 0 ; sei < e.NewItems.Count ; sei++)
                 {
+    				var subEntity = (WAQSWorkshopClient.InvoiceDetail)e.NewItems[sei];
                     WAQSWorkshopClient.InvoiceDetail se = null;
                     if (!subEntity.IsInitializingRelationships && (se = GetEntityInCache(subEntity)) == null)
                         AttachWithoutChangingState(subEntity);
@@ -2455,8 +2577,9 @@ namespace WAQSWorkshopClient.ClientContext
             entity.NavigationPropertyChanged -= InvoiceNavigationPropertyChanged;
             ClientEntitySetExtensions.RemoveEntityInDico(entity);
     		RemovePropertyDescriptorToEntity(entity);
-            foreach (var subEntity in CustomersInternal)
+            for (int sei = 0 ; sei < CustomersInternal.Count ; sei++)
             {
+    			var subEntity = CustomersInternal[sei];
                 ObjectList originalValues;
                 if (subEntity.ChangeTracker.ObjectsAddedToCollectionProperties.TryGetValue("Invoices", out originalValues) && originalValues.Contains(entity))
                 {
@@ -2471,14 +2594,16 @@ namespace WAQSWorkshopClient.ClientContext
                         subEntity.ChangeTracker.ObjectsRemovedFromCollectionProperties.Remove("Invoices");
                 }
             }
-            foreach (var subEntity in InvoiceDetailsInternal)
+            for (int sei = 0 ; sei < InvoiceDetailsInternal.Count ; sei++)
             {
+    			var subEntity = InvoiceDetailsInternal[sei];
                 object originalValue;
                 if (subEntity.ChangeTracker.OriginalValues.TryGetValue("Invoice", out originalValue) && originalValue == entity)
                     subEntity.ChangeTracker.OriginalValues.Remove("Invoice");
             }
-            foreach (var subEntity in OrdersInternal)
+            for (int sei = 0 ; sei < OrdersInternal.Count ; sei++)
             {
+    			var subEntity = OrdersInternal[sei];
                 object originalValue;
                 if (subEntity.ChangeTracker.OriginalValues.TryGetValue("Invoice", out originalValue) && originalValue == entity)
                     subEntity.ChangeTracker.OriginalValues.Remove("Invoice");
@@ -2522,8 +2647,10 @@ namespace WAQSWorkshopClient.ClientContext
                     entityInCache.Customer = parentEntityInCache;
                 }
             }
-            foreach (var subEntity in entity.InvoiceDetails.ToList())
+    		var entityInvoiceDetailsArray = entity.InvoiceDetails.ToArray();
+            for (int sei = 0 ; sei < entityInvoiceDetailsArray.Length ; sei++)
             {
+    			var subEntity = entityInvoiceDetailsArray[sei];
                 WAQSWorkshopClient.InvoiceDetail subEntityInCache;
                 if (InvoiceDetails.Contains(subEntity))
                     subEntityInCache = subEntity;
@@ -2536,8 +2663,9 @@ namespace WAQSWorkshopClient.ClientContext
             {
                 List<WAQSWorkshopClient.InvoiceDetail> subEntities;
                 if (InvoiceDetailsInvoiceFKsDico.TryGetValue(new InvoiceKeys { OrderId = entity.OrderId }, out subEntities))
-                    foreach (var subEntity in subEntities)
+                    for (int sei = 0 ; sei < subEntities.Count ; sei++)
                     {
+    					var subEntity = subEntities[sei];
                         if (subEntity.Invoice == null)
                             ((ITrackableCollection<InvoiceDetail>)entityInCache.InvoiceDetails).AttachWithoutCheckingIfAlreadyExist(subEntity);
                     }
@@ -2678,8 +2806,9 @@ namespace WAQSWorkshopClient.ClientContext
                     else
                         value.Customer = GetEntity(entityCustomer, applyState, defaultState:defaultState, mergeOption: mergeOption, applyDataTransfer:applyDataTransfer);
                 }
-                foreach (var e in entityInvoiceDetails)
+                for (int ei = 0 ; ei < entityInvoiceDetails.Count ; ei++)
                 {
+    				var e = entityInvoiceDetails[ei];
                     if (value.ChangeTracker.State == ObjectState.Detached)
                         GetEntity(e, applyState, defaultState:defaultState, applyDataTransfer:applyDataTransfer);
                     else
@@ -2695,9 +2824,15 @@ namespace WAQSWorkshopClient.ClientContext
     
                 if (applyState && originalChangeTracker != null && originalChangeTracker != value.ChangeTracker)
                 {
-                    foreach (var modifiedProperty in originalChangeTracker.ModifiedProperties)
+    				
+                    for (int mpi = 0 ; mpi < originalChangeTracker.ModifiedProperties.Count ; mpi ++)
+    				{
+    					var modifiedProperty = originalChangeTracker.ModifiedProperties[mpi];
                         if (! value.ChangeTracker.ModifiedProperties.Contains(modifiedProperty))
+    					{
                             value.ChangeTracker.ModifiedProperties.Add(modifiedProperty);
+    					}
+    				}
                     foreach (var originalValue in originalChangeTracker.OriginalValues)
                     {
                         var originalValueEntity = originalValue.Value as IEntity;
@@ -2713,7 +2848,10 @@ namespace WAQSWorkshopClient.ClientContext
                         }
                     }
                     foreach (var objectsRemovedToCollectionProperties in originalChangeTracker.ObjectsRemovedFromCollectionProperties)
-                        foreach (IEntity objectsRemovedToCollectionProperty in objectsRemovedToCollectionProperties.Value)
+    				{
+                        for (int orcpvi = 0 ; orcpvi < objectsRemovedToCollectionProperties.Value.Count ; orcpvi++)
+    					{
+    						var objectsRemovedToCollectionProperty = (IEntity)objectsRemovedToCollectionProperties.Value[orcpvi];
                             if (objectsRemovedToCollectionProperty != null)
                             {
                                 var originalState = objectsRemovedToCollectionProperty.ChangeTracker.State;
@@ -2729,14 +2867,21 @@ namespace WAQSWorkshopClient.ClientContext
                                 if (originalState == ObjectState.Detached)
                                     Detach(removedEntity);
                             }
+    					}
+    				}
                     foreach (var objectsAddedToCollectionProperties in originalChangeTracker.ObjectsAddedToCollectionProperties)
-                        foreach (var objectsAddedToCollectionProperty in objectsAddedToCollectionProperties.Value)
+    				{
+                        for (int oacpvi = 0 ; oacpvi < objectsAddedToCollectionProperties.Value.Count ; oacpvi++)
+    					{
+    						var objectsAddedToCollectionProperty = objectsAddedToCollectionProperties.Value[oacpvi];
                             if (objectsAddedToCollectionProperty != null)
                             {
                                 var addedEntity = (IObjectWithChangeTracker)GetEntity(objectsAddedToCollectionProperty, true, defaultState, applyDataTransfer);
                                 if (value.ChangeTracker.State != ObjectState.Detached)
                                     value.ChangeTracker.RecordAdditionToCollectionProperties(objectsAddedToCollectionProperties.Key, addedEntity);
                             }
+                }
+    				}
                 }
     
                 value.IsInitializingRelationships = false;
@@ -2828,12 +2973,12 @@ namespace WAQSWorkshopClient.ClientContext
             switch (entity.ChangeTracker.State)
             {
                 case ObjectState.Added:
-                    value.CustomerId = entity.CustomerId;
-                    value.CustomerCompanyName = entity.CustomerCompanyName;
-                    value.CustomerContactName = entity.CustomerContactName;
-                    value.Total = entity.Total;
-                    value.Dicount = entity.Dicount;
-                    value.Paid = entity.Paid;
+                                value.CustomerId = entity.CustomerId;
+                                value.CustomerCompanyName = entity.CustomerCompanyName;
+                                value.CustomerContactName = entity.CustomerContactName;
+                                value.Total = entity.Total;
+                                value.Dicount = entity.Dicount;
+                                value.Paid = entity.Paid;
     				break;
                 case ObjectState.Deleted:
                     value.ChangeTracker.ChangeTrackingEnabled = false;
@@ -2848,6 +2993,7 @@ namespace WAQSWorkshopClient.ClientContext
                     value.ChangeTracker.ModifiedProperties = entity.ChangeTracker.ModifiedProperties.ToList();
                     value.CustomerId = entity.CustomerId;
                     foreach (var modifiedPropery in entity.ChangeTracker.ModifiedProperties.Union(entity.ChangeTracker.ValidationProperties))
+    				{
                         switch (modifiedPropery)
                         {
                             case "CustomerCompanyName":
@@ -2866,6 +3012,7 @@ namespace WAQSWorkshopClient.ClientContext
                                 value.Paid = entity.Paid;
                                 break;
                         }
+    				}
                     break;
                 case ObjectState.Unchanged:
                 case ObjectState.CascadeDeleted:
@@ -2973,8 +3120,10 @@ namespace WAQSWorkshopClient.ClientContext
         {
             if (_invoices != null)
             {
-                foreach (var entity in _invoices.AllEntities.ToList())
+    			var allEntities = _invoices.AllEntities.ToArray();
+                for (int ei = 0 ; ei < allEntities.Length ; ei++)
                 {
+    				var entity = allEntities[ei];
                     entity.CustomerFKsChanged -= InvoiceCustomerFKsChanged;
                     entity.InvoiceDetails.CollectionChanged -= Invoice_InvoiceDetailsCollectionChanged;
                     entity.NavigationPropertyChanged -= InvoiceNavigationPropertyChanged;
@@ -3265,8 +3414,9 @@ namespace WAQSWorkshopClient.ClientContext
             entity.NavigationPropertyChanged -= InvoiceDetailNavigationPropertyChanged;
             ClientEntitySetExtensions.RemoveEntityInDico(entity);
     		RemovePropertyDescriptorToEntity(entity);
-            foreach (var subEntity in InvoicesInternal)
+            for (int sei = 0 ; sei < InvoicesInternal.Count ; sei++)
             {
+    			var subEntity = InvoicesInternal[sei];
                 ObjectList originalValues;
                 if (subEntity.ChangeTracker.ObjectsAddedToCollectionProperties.TryGetValue("InvoiceDetails", out originalValues) && originalValues.Contains(entity))
                 {
@@ -3281,8 +3431,9 @@ namespace WAQSWorkshopClient.ClientContext
                         subEntity.ChangeTracker.ObjectsRemovedFromCollectionProperties.Remove("InvoiceDetails");
                 }
             }
-            foreach (var subEntity in OrderDetailsInternal)
+            for (int sei = 0 ; sei < OrderDetailsInternal.Count ; sei++)
             {
+    			var subEntity = OrderDetailsInternal[sei];
                 object originalValue;
                 if (subEntity.ChangeTracker.OriginalValues.TryGetValue("InvoiceDetail", out originalValue) && originalValue == entity)
                     subEntity.ChangeTracker.OriginalValues.Remove("InvoiceDetail");
@@ -3470,9 +3621,15 @@ namespace WAQSWorkshopClient.ClientContext
     
                 if (applyState && originalChangeTracker != null && originalChangeTracker != value.ChangeTracker)
                 {
-                    foreach (var modifiedProperty in originalChangeTracker.ModifiedProperties)
+    				
+                    for (int mpi = 0 ; mpi < originalChangeTracker.ModifiedProperties.Count ; mpi ++)
+    				{
+    					var modifiedProperty = originalChangeTracker.ModifiedProperties[mpi];
                         if (! value.ChangeTracker.ModifiedProperties.Contains(modifiedProperty))
+    					{
                             value.ChangeTracker.ModifiedProperties.Add(modifiedProperty);
+    					}
+    				}
                     foreach (var originalValue in originalChangeTracker.OriginalValues)
                     {
                         var originalValueEntity = originalValue.Value as IEntity;
@@ -3488,7 +3645,10 @@ namespace WAQSWorkshopClient.ClientContext
                         }
                     }
                     foreach (var objectsRemovedToCollectionProperties in originalChangeTracker.ObjectsRemovedFromCollectionProperties)
-                        foreach (IEntity objectsRemovedToCollectionProperty in objectsRemovedToCollectionProperties.Value)
+    				{
+                        for (int orcpvi = 0 ; orcpvi < objectsRemovedToCollectionProperties.Value.Count ; orcpvi++)
+    					{
+    						var objectsRemovedToCollectionProperty = (IEntity)objectsRemovedToCollectionProperties.Value[orcpvi];
                             if (objectsRemovedToCollectionProperty != null)
                             {
                                 var originalState = objectsRemovedToCollectionProperty.ChangeTracker.State;
@@ -3498,14 +3658,21 @@ namespace WAQSWorkshopClient.ClientContext
                                 if (originalState == ObjectState.Detached)
                                     Detach(removedEntity);
                             }
+    					}
+    				}
                     foreach (var objectsAddedToCollectionProperties in originalChangeTracker.ObjectsAddedToCollectionProperties)
-                        foreach (var objectsAddedToCollectionProperty in objectsAddedToCollectionProperties.Value)
+    				{
+                        for (int oacpvi = 0 ; oacpvi < objectsAddedToCollectionProperties.Value.Count ; oacpvi++)
+    					{
+    						var objectsAddedToCollectionProperty = objectsAddedToCollectionProperties.Value[oacpvi];
                             if (objectsAddedToCollectionProperty != null)
                             {
                                 var addedEntity = (IObjectWithChangeTracker)GetEntity(objectsAddedToCollectionProperty, true, defaultState, applyDataTransfer);
                                 if (value.ChangeTracker.State != ObjectState.Detached)
                                     value.ChangeTracker.RecordAdditionToCollectionProperties(objectsAddedToCollectionProperties.Key, addedEntity);
                             }
+                }
+    				}
                 }
     
                 value.IsInitializingRelationships = false;
@@ -3593,11 +3760,11 @@ namespace WAQSWorkshopClient.ClientContext
             switch (entity.ChangeTracker.State)
             {
                 case ObjectState.Added:
-                    value.InvoiceId = entity.InvoiceId;
-                    value.UnitPrice = entity.UnitPrice;
-                    value.Quantity = entity.Quantity;
-                    value.Discount = entity.Discount;
-                    value.Amount = entity.Amount;
+                                value.InvoiceId = entity.InvoiceId;
+                                value.UnitPrice = entity.UnitPrice;
+                                value.Quantity = entity.Quantity;
+                                value.Discount = entity.Discount;
+                                value.Amount = entity.Amount;
     				break;
                 case ObjectState.Deleted:
                     value.ChangeTracker.ChangeTrackingEnabled = false;
@@ -3611,6 +3778,7 @@ namespace WAQSWorkshopClient.ClientContext
                     value.ChangeTracker.ModifiedProperties = entity.ChangeTracker.ModifiedProperties.ToList();
                     value.InvoiceId = entity.InvoiceId;
                     foreach (var modifiedPropery in entity.ChangeTracker.ModifiedProperties.Union(entity.ChangeTracker.ValidationProperties))
+    				{
                         switch (modifiedPropery)
                         {
                             case "UnitPrice":
@@ -3626,6 +3794,7 @@ namespace WAQSWorkshopClient.ClientContext
                                 value.Amount = entity.Amount;
                                 break;
                         }
+    				}
                     break;
                 case ObjectState.Unchanged:
                 case ObjectState.CascadeDeleted:
@@ -3723,8 +3892,10 @@ namespace WAQSWorkshopClient.ClientContext
         {
             if (_invoiceDetails != null)
             {
-                foreach (var entity in _invoiceDetails.AllEntities.ToList())
+    			var allEntities = _invoiceDetails.AllEntities.ToArray();
+                for (int ei = 0 ; ei < allEntities.Length ; ei++)
                 {
+    				var entity = allEntities[ei];
                     entity.InvoiceFKsChanged -= InvoiceDetailInvoiceFKsChanged;
                     entity.NavigationPropertyChanged -= InvoiceDetailNavigationPropertyChanged;
                     EntityDetached(entity);
@@ -3858,8 +4029,10 @@ namespace WAQSWorkshopClient.ClientContext
                 EntityAttachWithoutChangingStateSubEntities(entity);
                 List<WAQSWorkshopClient.OrderDetail> orderDetails;
                 if (OrderDetailsOrderFKsDico.TryGetValue(orderKeys, out orderDetails))
-                    foreach (var e in orderDetails)
-                        e.Order = entity;
+                    for (int ei = 0 ; ei < orderDetails.Count ; ei++)
+        			{
+                        orderDetails[ei].Order = entity;
+        			}
             }
     
             if (! (entity.Customer == null || CustomersInternal.Contains(entity.Customer)))
@@ -3909,9 +4082,12 @@ namespace WAQSWorkshopClient.ClientContext
             if (InvoicesDico.TryGetValue(ordersInvoiceKeys, out invoice))
                 entity.Invoice = invoice;
     
-            foreach (var se in entity.OrderDetails)
+            for (int sei = 0 ; sei < entity.OrderDetails.Count ; sei++)
+    		{
+    			var se = entity.OrderDetails[sei];
                 if (! OrderDetailsInternal.Contains(se))
                     OrderDetailsInternal.AttachWithoutChangingState(se, entity.ChangeTracker.State);
+    		}
     
             entity.IsInitializingRelationships = false;
         }
@@ -4001,8 +4177,9 @@ namespace WAQSWorkshopClient.ClientContext
         private void Order_OrderDetailsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
-                foreach (WAQSWorkshopClient.OrderDetail subEntity in e.NewItems)
+                for (int sei = 0 ; sei < e.NewItems.Count ; sei++)
                 {
+    				var subEntity = (WAQSWorkshopClient.OrderDetail)e.NewItems[sei];
                     WAQSWorkshopClient.OrderDetail se = null;
                     if (!subEntity.IsInitializingRelationships && (se = GetEntityInCache(subEntity)) == null)
                         AttachWithoutChangingState(subEntity);
@@ -4115,8 +4292,9 @@ namespace WAQSWorkshopClient.ClientContext
             entity.NavigationPropertyChanged -= OrderNavigationPropertyChanged;
             ClientEntitySetExtensions.RemoveEntityInDico(entity);
     		RemovePropertyDescriptorToEntity(entity);
-            foreach (var subEntity in CustomersInternal)
+            for (int sei = 0 ; sei < CustomersInternal.Count ; sei++)
             {
+    			var subEntity = CustomersInternal[sei];
                 ObjectList originalValues;
                 if (subEntity.ChangeTracker.ObjectsAddedToCollectionProperties.TryGetValue("Orders", out originalValues) && originalValues.Contains(entity))
                 {
@@ -4131,8 +4309,9 @@ namespace WAQSWorkshopClient.ClientContext
                         subEntity.ChangeTracker.ObjectsRemovedFromCollectionProperties.Remove("Orders");
                 }
             }
-            foreach (var subEntity in EmployeesInternal)
+            for (int sei = 0 ; sei < EmployeesInternal.Count ; sei++)
             {
+    			var subEntity = EmployeesInternal[sei];
                 ObjectList originalValues;
                 if (subEntity.ChangeTracker.ObjectsAddedToCollectionProperties.TryGetValue("Orders", out originalValues) && originalValues.Contains(entity))
                 {
@@ -4147,14 +4326,16 @@ namespace WAQSWorkshopClient.ClientContext
                         subEntity.ChangeTracker.ObjectsRemovedFromCollectionProperties.Remove("Orders");
                 }
             }
-            foreach (var subEntity in InvoicesInternal)
+            for (int sei = 0 ; sei < InvoicesInternal.Count ; sei++)
             {
+    			var subEntity = InvoicesInternal[sei];
                 object originalValue;
                 if (subEntity.ChangeTracker.OriginalValues.TryGetValue("Order", out originalValue) && originalValue == entity)
                     subEntity.ChangeTracker.OriginalValues.Remove("Order");
             }
-            foreach (var subEntity in OrderDetailsInternal)
+            for (int sei = 0 ; sei < OrderDetailsInternal.Count ; sei++)
             {
+    			var subEntity = OrderDetailsInternal[sei];
                 object originalValue;
                 if (subEntity.ChangeTracker.OriginalValues.TryGetValue("Order", out originalValue) && originalValue == entity)
                     subEntity.ChangeTracker.OriginalValues.Remove("Order");
@@ -4234,8 +4415,10 @@ namespace WAQSWorkshopClient.ClientContext
                     entityInCache.Invoice = parentEntityInCache;
                 }
             }
-            foreach (var subEntity in entity.OrderDetails.ToList())
+    		var entityOrderDetailsArray = entity.OrderDetails.ToArray();
+            for (int sei = 0 ; sei < entityOrderDetailsArray.Length ; sei++)
             {
+    			var subEntity = entityOrderDetailsArray[sei];
                 WAQSWorkshopClient.OrderDetail subEntityInCache;
                 if (OrderDetails.Contains(subEntity))
                     subEntityInCache = subEntity;
@@ -4248,8 +4431,9 @@ namespace WAQSWorkshopClient.ClientContext
             {
                 List<WAQSWorkshopClient.OrderDetail> subEntities;
                 if (OrderDetailsOrderFKsDico.TryGetValue(new OrderKeys { Id = entity.Id }, out subEntities))
-                    foreach (var subEntity in subEntities)
+                    for (int sei = 0 ; sei < subEntities.Count ; sei++)
                     {
+    					var subEntity = subEntities[sei];
                         if (subEntity.Order == null)
                             ((ITrackableCollection<OrderDetail>)entityInCache.OrderDetails).AttachWithoutCheckingIfAlreadyExist(subEntity);
                     }
@@ -4388,8 +4572,9 @@ namespace WAQSWorkshopClient.ClientContext
                     else
                         value.Invoice = GetEntity(entityInvoice, applyState, defaultState:defaultState, mergeOption: mergeOption, applyDataTransfer:applyDataTransfer);
                 }
-                foreach (var e in entityOrderDetails)
+                for (int ei = 0 ; ei < entityOrderDetails.Count ; ei++)
                 {
+    				var e = entityOrderDetails[ei];
                     if (value.ChangeTracker.State == ObjectState.Detached)
                         GetEntity(e, applyState, defaultState:defaultState, applyDataTransfer:applyDataTransfer);
                     else
@@ -4398,9 +4583,15 @@ namespace WAQSWorkshopClient.ClientContext
     
                 if (applyState && originalChangeTracker != null && originalChangeTracker != value.ChangeTracker)
                 {
-                    foreach (var modifiedProperty in originalChangeTracker.ModifiedProperties)
+    				
+                    for (int mpi = 0 ; mpi < originalChangeTracker.ModifiedProperties.Count ; mpi ++)
+    				{
+    					var modifiedProperty = originalChangeTracker.ModifiedProperties[mpi];
                         if (! value.ChangeTracker.ModifiedProperties.Contains(modifiedProperty))
+    					{
                             value.ChangeTracker.ModifiedProperties.Add(modifiedProperty);
+    					}
+    				}
                     foreach (var originalValue in originalChangeTracker.OriginalValues)
                     {
                         var originalValueEntity = originalValue.Value as IEntity;
@@ -4416,7 +4607,10 @@ namespace WAQSWorkshopClient.ClientContext
                         }
                     }
                     foreach (var objectsRemovedToCollectionProperties in originalChangeTracker.ObjectsRemovedFromCollectionProperties)
-                        foreach (IEntity objectsRemovedToCollectionProperty in objectsRemovedToCollectionProperties.Value)
+    				{
+                        for (int orcpvi = 0 ; orcpvi < objectsRemovedToCollectionProperties.Value.Count ; orcpvi++)
+    					{
+    						var objectsRemovedToCollectionProperty = (IEntity)objectsRemovedToCollectionProperties.Value[orcpvi];
                             if (objectsRemovedToCollectionProperty != null)
                             {
                                 var originalState = objectsRemovedToCollectionProperty.ChangeTracker.State;
@@ -4432,14 +4626,21 @@ namespace WAQSWorkshopClient.ClientContext
                                 if (originalState == ObjectState.Detached)
                                     Detach(removedEntity);
                             }
+    					}
+    				}
                     foreach (var objectsAddedToCollectionProperties in originalChangeTracker.ObjectsAddedToCollectionProperties)
-                        foreach (var objectsAddedToCollectionProperty in objectsAddedToCollectionProperties.Value)
+    				{
+                        for (int oacpvi = 0 ; oacpvi < objectsAddedToCollectionProperties.Value.Count ; oacpvi++)
+    					{
+    						var objectsAddedToCollectionProperty = objectsAddedToCollectionProperties.Value[oacpvi];
                             if (objectsAddedToCollectionProperty != null)
                             {
                                 var addedEntity = (IObjectWithChangeTracker)GetEntity(objectsAddedToCollectionProperty, true, defaultState, applyDataTransfer);
                                 if (value.ChangeTracker.State != ObjectState.Detached)
                                     value.ChangeTracker.RecordAdditionToCollectionProperties(objectsAddedToCollectionProperties.Key, addedEntity);
                             }
+                }
+    				}
                 }
     
                 value.IsInitializingRelationships = false;
@@ -4559,19 +4760,19 @@ namespace WAQSWorkshopClient.ClientContext
             switch (entity.ChangeTracker.State)
             {
                 case ObjectState.Added:
-                    value.CustomerId = entity.CustomerId;
-                    value.EmployeeId = entity.EmployeeId;
-                    value.OrderDate = entity.OrderDate;
-                    value.RequiredDate = entity.RequiredDate;
-                    value.ShippedDate = entity.ShippedDate;
-                    value.ShipVia = entity.ShipVia;
-                    value.Freight = entity.Freight;
-                    value.ShipName = entity.ShipName;
-                    value.ShipAddress = entity.ShipAddress;
-                    value.ShipCity = entity.ShipCity;
-                    value.ShipRegion = entity.ShipRegion;
-                    value.ShipPostalCode = entity.ShipPostalCode;
-                    value.ShipCountry = entity.ShipCountry;
+                                value.CustomerId = entity.CustomerId;
+                                value.EmployeeId = entity.EmployeeId;
+                                value.OrderDate = entity.OrderDate;
+                                value.RequiredDate = entity.RequiredDate;
+                                value.ShippedDate = entity.ShippedDate;
+                                value.ShipVia = entity.ShipVia;
+                                value.Freight = entity.Freight;
+                                value.ShipName = entity.ShipName;
+                                value.ShipAddress = entity.ShipAddress;
+                                value.ShipCity = entity.ShipCity;
+                                value.ShipRegion = entity.ShipRegion;
+                                value.ShipPostalCode = entity.ShipPostalCode;
+                                value.ShipCountry = entity.ShipCountry;
     				break;
                 case ObjectState.Deleted:
                     value.ChangeTracker.ChangeTrackingEnabled = false;
@@ -4594,6 +4795,7 @@ namespace WAQSWorkshopClient.ClientContext
                     value.CustomerId = entity.CustomerId;
                     value.EmployeeId = entity.EmployeeId;
                     foreach (var modifiedPropery in entity.ChangeTracker.ModifiedProperties.Union(entity.ChangeTracker.ValidationProperties))
+    				{
                         switch (modifiedPropery)
                         {
                             case "OrderDate":
@@ -4630,6 +4832,7 @@ namespace WAQSWorkshopClient.ClientContext
                                 value.ShipCountry = entity.ShipCountry;
                                 break;
                         }
+    				}
                     break;
                 case ObjectState.Unchanged:
                 case ObjectState.CascadeDeleted:
@@ -4769,8 +4972,10 @@ namespace WAQSWorkshopClient.ClientContext
         {
             if (_orders != null)
             {
-                foreach (var entity in _orders.AllEntities.ToList())
+    			var allEntities = _orders.AllEntities.ToArray();
+                for (int ei = 0 ; ei < allEntities.Length ; ei++)
                 {
+    				var entity = allEntities[ei];
                     entity.CustomerFKsChanged -= OrderCustomerFKsChanged;
                     entity.EmployeeFKsChanged -= OrderEmployeeFKsChanged;
                     entity.OrderDetails.CollectionChanged -= Order_OrderDetailsCollectionChanged;
@@ -5108,14 +5313,16 @@ namespace WAQSWorkshopClient.ClientContext
             entity.NavigationPropertyChanged -= OrderDetailNavigationPropertyChanged;
             ClientEntitySetExtensions.RemoveEntityInDico(entity);
     		RemovePropertyDescriptorToEntity(entity);
-            foreach (var subEntity in InvoiceDetailsInternal)
+            for (int sei = 0 ; sei < InvoiceDetailsInternal.Count ; sei++)
             {
+    			var subEntity = InvoiceDetailsInternal[sei];
                 object originalValue;
                 if (subEntity.ChangeTracker.OriginalValues.TryGetValue("OrderDetail", out originalValue) && originalValue == entity)
                     subEntity.ChangeTracker.OriginalValues.Remove("OrderDetail");
             }
-            foreach (var subEntity in OrdersInternal)
+            for (int sei = 0 ; sei < OrdersInternal.Count ; sei++)
             {
+    			var subEntity = OrdersInternal[sei];
                 ObjectList originalValues;
                 if (subEntity.ChangeTracker.ObjectsAddedToCollectionProperties.TryGetValue("OrderDetails", out originalValues) && originalValues.Contains(entity))
                 {
@@ -5130,8 +5337,9 @@ namespace WAQSWorkshopClient.ClientContext
                         subEntity.ChangeTracker.ObjectsRemovedFromCollectionProperties.Remove("OrderDetails");
                 }
             }
-            foreach (var subEntity in ProductsInternal)
+            for (int sei = 0 ; sei < ProductsInternal.Count ; sei++)
             {
+    			var subEntity = ProductsInternal[sei];
                 ObjectList originalValues;
                 if (subEntity.ChangeTracker.ObjectsAddedToCollectionProperties.TryGetValue("OrderDetails", out originalValues) && originalValues.Contains(entity))
                 {
@@ -5356,9 +5564,15 @@ namespace WAQSWorkshopClient.ClientContext
     
                 if (applyState && originalChangeTracker != null && originalChangeTracker != value.ChangeTracker)
                 {
-                    foreach (var modifiedProperty in originalChangeTracker.ModifiedProperties)
+    				
+                    for (int mpi = 0 ; mpi < originalChangeTracker.ModifiedProperties.Count ; mpi ++)
+    				{
+    					var modifiedProperty = originalChangeTracker.ModifiedProperties[mpi];
                         if (! value.ChangeTracker.ModifiedProperties.Contains(modifiedProperty))
+    					{
                             value.ChangeTracker.ModifiedProperties.Add(modifiedProperty);
+    					}
+    				}
                     foreach (var originalValue in originalChangeTracker.OriginalValues)
                     {
                         var originalValueEntity = originalValue.Value as IEntity;
@@ -5374,7 +5588,10 @@ namespace WAQSWorkshopClient.ClientContext
                         }
                     }
                     foreach (var objectsRemovedToCollectionProperties in originalChangeTracker.ObjectsRemovedFromCollectionProperties)
-                        foreach (IEntity objectsRemovedToCollectionProperty in objectsRemovedToCollectionProperties.Value)
+    				{
+                        for (int orcpvi = 0 ; orcpvi < objectsRemovedToCollectionProperties.Value.Count ; orcpvi++)
+    					{
+    						var objectsRemovedToCollectionProperty = (IEntity)objectsRemovedToCollectionProperties.Value[orcpvi];
                             if (objectsRemovedToCollectionProperty != null)
                             {
                                 var originalState = objectsRemovedToCollectionProperty.ChangeTracker.State;
@@ -5384,14 +5601,21 @@ namespace WAQSWorkshopClient.ClientContext
                                 if (originalState == ObjectState.Detached)
                                     Detach(removedEntity);
                             }
+    					}
+    				}
                     foreach (var objectsAddedToCollectionProperties in originalChangeTracker.ObjectsAddedToCollectionProperties)
-                        foreach (var objectsAddedToCollectionProperty in objectsAddedToCollectionProperties.Value)
+    				{
+                        for (int oacpvi = 0 ; oacpvi < objectsAddedToCollectionProperties.Value.Count ; oacpvi++)
+    					{
+    						var objectsAddedToCollectionProperty = objectsAddedToCollectionProperties.Value[oacpvi];
                             if (objectsAddedToCollectionProperty != null)
                             {
                                 var addedEntity = (IObjectWithChangeTracker)GetEntity(objectsAddedToCollectionProperty, true, defaultState, applyDataTransfer);
                                 if (value.ChangeTracker.State != ObjectState.Detached)
                                     value.ChangeTracker.RecordAdditionToCollectionProperties(objectsAddedToCollectionProperties.Key, addedEntity);
                             }
+                }
+    				}
                 }
     
                 value.IsInitializingRelationships = false;
@@ -5479,11 +5703,11 @@ namespace WAQSWorkshopClient.ClientContext
             switch (entity.ChangeTracker.State)
             {
                 case ObjectState.Added:
-                    value.OrderId = entity.OrderId;
-                    value.ProductId = entity.ProductId;
-                    value.UnitPrice = entity.UnitPrice;
-                    value.Quantity = entity.Quantity;
-                    value.Discount = entity.Discount;
+                                value.OrderId = entity.OrderId;
+                                value.ProductId = entity.ProductId;
+                                value.UnitPrice = entity.UnitPrice;
+                                value.Quantity = entity.Quantity;
+                                value.Discount = entity.Discount;
     				break;
                 case ObjectState.Deleted:
                     value.ChangeTracker.ChangeTrackingEnabled = false;
@@ -5498,6 +5722,7 @@ namespace WAQSWorkshopClient.ClientContext
                     value.OrderId = entity.OrderId;
                     value.ProductId = entity.ProductId;
                     foreach (var modifiedPropery in entity.ChangeTracker.ModifiedProperties.Union(entity.ChangeTracker.ValidationProperties))
+    				{
                         switch (modifiedPropery)
                         {
                             case "UnitPrice":
@@ -5510,6 +5735,7 @@ namespace WAQSWorkshopClient.ClientContext
                                 value.Discount = entity.Discount;
                                 break;
                         }
+    				}
                     break;
                 case ObjectState.Unchanged:
                 case ObjectState.CascadeDeleted:
@@ -5639,8 +5865,10 @@ namespace WAQSWorkshopClient.ClientContext
         {
             if (_orderDetails != null)
             {
-                foreach (var entity in _orderDetails.AllEntities.ToList())
+    			var allEntities = _orderDetails.AllEntities.ToArray();
+                for (int ei = 0 ; ei < allEntities.Length ; ei++)
                 {
+    				var entity = allEntities[ei];
                     entity.OrderFKsChanged -= OrderDetailOrderFKsChanged;
                     entity.ProductFKsChanged -= OrderDetailProductFKsChanged;
                     entity.NavigationPropertyChanged -= OrderDetailNavigationPropertyChanged;
@@ -5765,13 +5993,18 @@ namespace WAQSWorkshopClient.ClientContext
                 EntityAttachWithoutChangingStateSubEntities(entity);
                 List<WAQSWorkshopClient.OrderDetail> orderDetails;
                 if (OrderDetailsProductFKsDico.TryGetValue(productKeys, out orderDetails))
-                    foreach (var e in orderDetails)
-                        e.Product = entity;
+                    for (int ei = 0 ; ei < orderDetails.Count ; ei++)
+        			{
+                        orderDetails[ei].Product = entity;
+        			}
             }
     
-            foreach (var se in entity.OrderDetails)
+            for (int sei = 0 ; sei < entity.OrderDetails.Count ; sei++)
+    		{
+    			var se = entity.OrderDetails[sei];
                 if (! OrderDetailsInternal.Contains(se))
                     OrderDetailsInternal.AttachWithoutChangingState(se, entity.ChangeTracker.State);
+    		}
     
     
             if (! (entity.Category == null || CategoriesInternal.Contains(entity.Category)))
@@ -5816,8 +6049,9 @@ namespace WAQSWorkshopClient.ClientContext
         private void Product_OrderDetailsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
-                foreach (WAQSWorkshopClient.OrderDetail subEntity in e.NewItems)
+                for (int sei = 0 ; sei < e.NewItems.Count ; sei++)
                 {
+    				var subEntity = (WAQSWorkshopClient.OrderDetail)e.NewItems[sei];
                     WAQSWorkshopClient.OrderDetail se = null;
                     if (!subEntity.IsInitializingRelationships && (se = GetEntityInCache(subEntity)) == null)
                         AttachWithoutChangingState(subEntity);
@@ -5899,14 +6133,16 @@ namespace WAQSWorkshopClient.ClientContext
             entity.NavigationPropertyChanged -= ProductNavigationPropertyChanged;
             ClientEntitySetExtensions.RemoveEntityInDico(entity);
     		RemovePropertyDescriptorToEntity(entity);
-            foreach (var subEntity in OrderDetailsInternal)
+            for (int sei = 0 ; sei < OrderDetailsInternal.Count ; sei++)
             {
+    			var subEntity = OrderDetailsInternal[sei];
                 object originalValue;
                 if (subEntity.ChangeTracker.OriginalValues.TryGetValue("Product", out originalValue) && originalValue == entity)
                     subEntity.ChangeTracker.OriginalValues.Remove("Product");
             }
-            foreach (var subEntity in CategoriesInternal)
+            for (int sei = 0 ; sei < CategoriesInternal.Count ; sei++)
             {
+    			var subEntity = CategoriesInternal[sei];
                 ObjectList originalValues;
                 if (subEntity.ChangeTracker.ObjectsAddedToCollectionProperties.TryGetValue("Products", out originalValues) && originalValues.Contains(entity))
                 {
@@ -5942,8 +6178,10 @@ namespace WAQSWorkshopClient.ClientContext
         {
             if (entity == entityInCache)
                 return;
-            foreach (var subEntity in entity.OrderDetails.ToList())
+    		var entityOrderDetailsArray = entity.OrderDetails.ToArray();
+            for (int sei = 0 ; sei < entityOrderDetailsArray.Length ; sei++)
             {
+    			var subEntity = entityOrderDetailsArray[sei];
                 WAQSWorkshopClient.OrderDetail subEntityInCache;
                 if (OrderDetails.Contains(subEntity))
                     subEntityInCache = subEntity;
@@ -5956,8 +6194,9 @@ namespace WAQSWorkshopClient.ClientContext
             {
                 List<WAQSWorkshopClient.OrderDetail> subEntities;
                 if (OrderDetailsProductFKsDico.TryGetValue(new ProductKeys { Id = entity.Id }, out subEntities))
-                    foreach (var subEntity in subEntities)
+                    for (int sei = 0 ; sei < subEntities.Count ; sei++)
                     {
+    					var subEntity = subEntities[sei];
                         if (subEntity.Product == null)
                             ((ITrackableCollection<OrderDetail>)entityInCache.OrderDetails).AttachWithoutCheckingIfAlreadyExist(subEntity);
                     }
@@ -6089,8 +6328,9 @@ namespace WAQSWorkshopClient.ClientContext
                 entity.IsInitializingRelationships = true;
                 value.IsInitializingRelationships = true;
     
-                foreach (var e in entityOrderDetails)
+                for (int ei = 0 ; ei < entityOrderDetails.Count ; ei++)
                 {
+    				var e = entityOrderDetails[ei];
                     if (value.ChangeTracker.State == ObjectState.Detached)
                         GetEntity(e, applyState, defaultState:defaultState, applyDataTransfer:applyDataTransfer);
                     else
@@ -6106,9 +6346,15 @@ namespace WAQSWorkshopClient.ClientContext
     
                 if (applyState && originalChangeTracker != null && originalChangeTracker != value.ChangeTracker)
                 {
-                    foreach (var modifiedProperty in originalChangeTracker.ModifiedProperties)
+    				
+                    for (int mpi = 0 ; mpi < originalChangeTracker.ModifiedProperties.Count ; mpi ++)
+    				{
+    					var modifiedProperty = originalChangeTracker.ModifiedProperties[mpi];
                         if (! value.ChangeTracker.ModifiedProperties.Contains(modifiedProperty))
+    					{
                             value.ChangeTracker.ModifiedProperties.Add(modifiedProperty);
+    					}
+    				}
                     foreach (var originalValue in originalChangeTracker.OriginalValues)
                     {
                         var originalValueEntity = originalValue.Value as IEntity;
@@ -6124,7 +6370,10 @@ namespace WAQSWorkshopClient.ClientContext
                         }
                     }
                     foreach (var objectsRemovedToCollectionProperties in originalChangeTracker.ObjectsRemovedFromCollectionProperties)
-                        foreach (IEntity objectsRemovedToCollectionProperty in objectsRemovedToCollectionProperties.Value)
+    				{
+                        for (int orcpvi = 0 ; orcpvi < objectsRemovedToCollectionProperties.Value.Count ; orcpvi++)
+    					{
+    						var objectsRemovedToCollectionProperty = (IEntity)objectsRemovedToCollectionProperties.Value[orcpvi];
                             if (objectsRemovedToCollectionProperty != null)
                             {
                                 var originalState = objectsRemovedToCollectionProperty.ChangeTracker.State;
@@ -6140,14 +6389,21 @@ namespace WAQSWorkshopClient.ClientContext
                                 if (originalState == ObjectState.Detached)
                                     Detach(removedEntity);
                             }
+    					}
+    				}
                     foreach (var objectsAddedToCollectionProperties in originalChangeTracker.ObjectsAddedToCollectionProperties)
-                        foreach (var objectsAddedToCollectionProperty in objectsAddedToCollectionProperties.Value)
+    				{
+                        for (int oacpvi = 0 ; oacpvi < objectsAddedToCollectionProperties.Value.Count ; oacpvi++)
+    					{
+    						var objectsAddedToCollectionProperty = objectsAddedToCollectionProperties.Value[oacpvi];
                             if (objectsAddedToCollectionProperty != null)
                             {
                                 var addedEntity = (IObjectWithChangeTracker)GetEntity(objectsAddedToCollectionProperty, true, defaultState, applyDataTransfer);
                                 if (value.ChangeTracker.State != ObjectState.Detached)
                                     value.ChangeTracker.RecordAdditionToCollectionProperties(objectsAddedToCollectionProperties.Key, addedEntity);
                             }
+                }
+    				}
                 }
     
                 value.IsInitializingRelationships = false;
@@ -6239,12 +6495,12 @@ namespace WAQSWorkshopClient.ClientContext
             switch (entity.ChangeTracker.State)
             {
                 case ObjectState.Added:
-                    value.Name = entity.Name;
-                    value.SupplierId = entity.SupplierId;
-                    value.CategoryId = entity.CategoryId;
-                    value.QuantityPerUnit = entity.QuantityPerUnit;
-                    value.UnitPrice = entity.UnitPrice;
-                    value.Discontinued = entity.Discontinued;
+                                value.Name = entity.Name;
+                                value.SupplierId = entity.SupplierId;
+                                value.CategoryId = entity.CategoryId;
+                                value.QuantityPerUnit = entity.QuantityPerUnit;
+                                value.UnitPrice = entity.UnitPrice;
+                                value.Discontinued = entity.Discontinued;
     				break;
                 case ObjectState.Deleted:
                     value.ChangeTracker.ChangeTrackingEnabled = false;
@@ -6259,6 +6515,7 @@ namespace WAQSWorkshopClient.ClientContext
                     value.ChangeTracker.ModifiedProperties = entity.ChangeTracker.ModifiedProperties.ToList();
                     value.CategoryId = entity.CategoryId;
                     foreach (var modifiedPropery in entity.ChangeTracker.ModifiedProperties.Union(entity.ChangeTracker.ValidationProperties))
+    				{
                         switch (modifiedPropery)
                         {
                             case "Name":
@@ -6277,6 +6534,7 @@ namespace WAQSWorkshopClient.ClientContext
                                 value.Discontinued = entity.Discontinued;
                                 break;
                         }
+    				}
                     break;
                 case ObjectState.Unchanged:
                 case ObjectState.CascadeDeleted:
@@ -6374,8 +6632,10 @@ namespace WAQSWorkshopClient.ClientContext
         {
             if (_products != null)
             {
-                foreach (var entity in _products.AllEntities.ToList())
+    			var allEntities = _products.AllEntities.ToArray();
+                for (int ei = 0 ; ei < allEntities.Length ; ei++)
                 {
+    				var entity = allEntities[ei];
                     entity.OrderDetails.CollectionChanged -= Product_OrderDetailsCollectionChanged;
                     entity.CategoryFKsChanged -= ProductCategoryFKsChanged;
                     entity.NavigationPropertyChanged -= ProductNavigationPropertyChanged;
@@ -6496,42 +6756,42 @@ namespace WAQSWorkshopClient.ClientContext
             }
         }
     
-        public override async Task<IEnumerable<T>> ExecuteQueryAsync<T>(IAsyncQueryable<T> query, MergeOption? mergeOption = null, Func<bool> cancel = null)
+        public override async Task<IEnumerable<T>> ExecuteQueryAsync<T>(IAsyncQueryable<T> query, MergeOption? mergeOption = null, Func<bool> cancel = null, GetEntityAsyncOption getEntityOption = GetEntityAsyncOption.NoTrackingOnly)
         { 
             if (mergeOption == null)
                 mergeOption = MergeOption;
             if (mergeOption == MergeOption.NoTracking)
-                return await new NorthwindClientContextNoTracking(ServiceFactory).ExecuteQueryAsync(query);
+                return await new NorthwindClientContextNoTracking(ServiceFactory).ExecuteQueryAsync(query, getEntityOption: getEntityOption);
             else
-                return await base.ExecuteQueryAsync(query, mergeOption);
+                return await base.ExecuteQueryAsync(query, mergeOption, getEntityOption: getEntityOption);
         }
         
-        public override async Task<T> ExecuteQueryAsync<T>(IAsyncQueryableValue<T> query, MergeOption? mergeOption = null, Func<bool> cancel = null)
+        public override async Task<T> ExecuteQueryAsync<T>(IAsyncQueryableValue<T> query, MergeOption? mergeOption = null, Func<bool> cancel = null, GetEntityAsyncOption getEntityOption = GetEntityAsyncOption.NoTrackingOnly)
         {
             if (mergeOption == null)
                 mergeOption = MergeOption;
             if (mergeOption == MergeOption.NoTracking)
-                return await new NorthwindClientContextNoTracking(ServiceFactory).ExecuteQueryAsync(query);
+                return await new NorthwindClientContextNoTracking(ServiceFactory).ExecuteQueryAsync(query, getEntityOption: getEntityOption);
             else
-                return await base.ExecuteQueryAsync(query, mergeOption);
+                return await base.ExecuteQueryAsync(query, mergeOption, getEntityOption: getEntityOption);
         }
     
-        public override async Task<QueryPage<T>> LoadPageAsync<T>(int pageSize, IAsyncQueryable<T> query, LoadPageParameter[] identifiers, MergeOption? mergeOption = null, Func<bool> cancel = null)
+        public override async Task<QueryPage<T>> LoadPageAsync<T>(int pageSize, IAsyncQueryable<T> query, LoadPageParameter[] identifiers, MergeOption? mergeOption = null, Func<bool> cancel = null, GetEntityAsyncOption getEntityOption = GetEntityAsyncOption.NoTrackingOnly)
         {
             if (mergeOption == null)
                 mergeOption = MergeOption;
             if (mergeOption == MergeOption.NoTracking)
-                return await new NorthwindClientContextNoTracking(ServiceFactory).LoadPageAsync<T>(pageSize, query, identifiers, mergeOption);
-            return await base.LoadPageAsync<T>(pageSize, query, identifiers, mergeOption);
+                return await new NorthwindClientContextNoTracking(ServiceFactory).LoadPageAsync<T>(pageSize, query, identifiers, mergeOption, getEntityOption: getEntityOption);
+            return await base.LoadPageAsync<T>(pageSize, query, identifiers, mergeOption, getEntityOption: getEntityOption);
         }
     
-        public override async Task<object[]> ExecuteQueriesAsync(IEnumerable<IAsyncQueryableBase> queries, MergeOption? mergeOption = null, Func<bool> cancel = null)
+        public override async Task<object[]> ExecuteQueriesAsync(IEnumerable<IAsyncQueryableBase> queries, MergeOption? mergeOption = null, Func<bool> cancel = null, GetEntityAsyncOption getEntityOption = GetEntityAsyncOption.NoTrackingOnly)
         {
             if (mergeOption == null)
                 mergeOption = MergeOption;
             if (mergeOption == MergeOption.NoTracking)
-                return await new NorthwindClientContextNoTracking(ServiceFactory).ExecuteQueriesAsync(queries, mergeOption, cancel);
-            return await base.ExecuteQueriesAsync(queries, mergeOption, cancel);
+                return await new NorthwindClientContextNoTracking(ServiceFactory).ExecuteQueriesAsync(queries, mergeOption, cancel, getEntityOption: getEntityOption);
+            return await base.ExecuteQueriesAsync(queries, mergeOption, cancel, getEntityOption: getEntityOption);
         }
     
         protected override object InstanciateAndAttach(Func<object> getValue, MergeOption? mergeOption)

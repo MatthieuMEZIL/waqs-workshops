@@ -1186,15 +1186,16 @@ namespace WAQS.ClientContext
             var many = ((IEnumerable<object>)manyValues[0]).Cast<ManyT>();
     		if (mergeOption == MergeOption.NoTracking)
     		{
-    			var manyList = many.ToArray();
-    			var ones = ((IEnumerable<object>)oneValues).Cast<OneT>().ToArray();
-    			foreach (var one in ones)
+    			var manyArray = many.ToArray();
+    			var ones = ((IEnumerable<object>)oneValues).Cast<OneT>();
+     			foreach (var one in ones)
     			{
-    				for (int i = 0; i < manyList.Length; i++)
+    				for (int mi = 0; mi < manyArray.Length; mi++)
     				{
-    					if (fkTest(one, manyList[i]))
+    					var m = manyArray[mi];
+    					if (fkTest(one, m))
     					{
-    						getTrackableCollection(one).Attach(manyList[i]);
+    						getTrackableCollection(one).Attach(m);
     					}
     				}
     			}
@@ -1273,8 +1274,7 @@ namespace WAQS.ClientContext
             var many = ((IEnumerable<object>)manyValues[0]).Cast<ManyT>();
             if (mergeOption == MergeOption.NoTracking || manyToMany)
             {
-    			var manyList = many.ToArray();
-    			foreach (var manyElt in manyList)
+    			foreach (var manyElt in many)
     			{
     				getTrackableCollection(one).Attach(manyElt);
     			}
@@ -1337,15 +1337,16 @@ namespace WAQS.ClientContext
     		if (mergeOption == MergeOption.NoTracking)
     		{
     			object oneValue = ((IEnumerable<object>)oneValues).Cast<OneT>();
-    			var ones = ((IEnumerable<object>)oneValue).Cast<OneT>().ToArray();
-    			var manyList = value.ToArray();
+    			var ones = ((IEnumerable<object>)oneValue).Cast<OneT>();
+    			var manyArray = value.ToArray();
     			foreach (var one in ones)
     			{
-    				for (int i = 0; i < manyList.Length; i++)
+    				for (int mi = 0; mi < manyArray.Length; mi++)
     				{
-    					if (fkTest(one, manyList[i]))
+    					var m = manyArray[mi];
+    					if (fkTest(one, m))
     					{
-    						getTrackableCollection(one).Attach(manyList[i]);
+    						getTrackableCollection(one).Attach(m);
     					}
     				}
     			}
@@ -1406,15 +1407,16 @@ namespace WAQS.ClientContext
     		var many = ((IEnumerable<object>)manyValues).Cast<ManyT>();
     		if (mergeOption == MergeOption.NoTracking)
     		{
-    			var ones = ((IEnumerable<object>)oneValues).Cast<OneT>().ToArray();
-    			var manyList = many.ToArray();
+    			var ones = ((IEnumerable<object>)oneValues).Cast<OneT>();
+    			var manyArray = many.ToArray();
     			foreach (var one in ones)
     			{
-    				for (int i = 0; i < manyList.Length; i++)
+    				for (int mi = 0; mi < manyArray.Length; mi++)
     				{
-    					if (fkTest(one, manyList[i]))
+    					var m = manyArray[mi];
+    					if (fkTest(one, m))
     					{
-    						getTrackableCollection(one).Attach(manyList[0]);
+    						getTrackableCollection(one).Attach(m);
     					}
     				}
     			}
@@ -1492,15 +1494,15 @@ namespace WAQS.ClientContext
     		if (mergeOption == MergeOption.NoTracking)
     		{
     			var onesArray = ones.Where(e => e != null).ToArray();
-    			var many = ((IEnumerable<object>)manyValues).Cast<ManyT>().ToArray();
-    			for (int i = 0; i < many.Length; i++)
+    			var manyArray = ((IEnumerable<object>)manyValues).Cast<ManyT>().ToArray();
+    			for (int i = 0; i < manyArray.Length; i++)
     			{
-    				var one = onesArray.FirstOrDefault(e => fkTest(many[i], e));
+    				var one = onesArray.FirstOrDefault(e => fkTest(manyArray[i], e));
     				if (one != null)
     				{
-    					many[i].IsInitializingRelationships = true;
-    					setOne(many[i], one);
-    					many[i].IsInitializingRelationships = false;
+    					manyArray[i].IsInitializingRelationships = true;
+    					setOne(manyArray[i], one);
+    					manyArray[i].IsInitializingRelationships = false;
     				}
     			}
     
@@ -1699,8 +1701,8 @@ namespace WAQS.ClientContext
             
         private static object IncludeManyToOneMany<FromT, ToT, KeysT>(object fromValues, object[] toValues, Func<KeysT, ToT> getTo, Func<KeysT, FromT, bool> getFromKey, Func<FromT, IEntityCollection<ToT>> getTrackableCollection)
         {
-            var keys = ((IEnumerable<object>)toValues[0]).Cast<KeysT>().ToList();
-            var froms = ((IEnumerable<object>)fromValues).Cast<FromT>().ToList();
+            var keys = ((IEnumerable<object>)toValues[0]).Cast<KeysT>();
+            var froms = ((IEnumerable<object>)fromValues).Cast<FromT>().ToArray();
             var tos = new List<ToT>();
             foreach (var key in keys)
             {
@@ -1848,8 +1850,8 @@ namespace WAQS.ClientContext
             
         private static object IncludeManyToMany<FromT, ToT, KeysT>(object fromValues, object[] toValues, Func<KeysT, FromT, bool> fromFkTest, Func<KeysT, ToT, bool> toFkTest, Func<FromT, IEntityCollection<ToT>> getTrackableCollection)
         {
-            var froms = ((IEnumerable<object>)fromValues).Cast<FromT>().ToList();
-            var tos = ((IEnumerable<object>)toValues[0]).Cast<ToT>().ToList();
+            var froms = ((IEnumerable<object>)fromValues).Cast<FromT>().ToArray();
+            var tos = ((IEnumerable<object>)toValues[0]).Cast<ToT>().ToArray();
             var keys = ((IEnumerable<object>)toValues[1]).Cast<KeysT>();
             foreach (var key in keys)
             {
@@ -1863,7 +1865,7 @@ namespace WAQS.ClientContext
             
         private static object IncludeManyToOneManyTask<FromT, ToT, KeysT>(object fromValues, object[] toValues, Func<KeysT, FromT, bool> fromFkTest, Func<KeysT, ToT, bool> toFkTest, Func<FromT, IEntityCollection<ToT>> getTrackableCollection)
         {
-            var froms = ((IEnumerable<object>)fromValues).Cast<FromT>().ToList();
+            var froms = ((IEnumerable<object>)fromValues).Cast<FromT>().ToArray();
             var to = (ToT)toValues[0];
             var keys = ((IEnumerable<object>)toValues[1]).Cast<KeysT>();
             foreach (var key in keys)
@@ -1878,7 +1880,7 @@ namespace WAQS.ClientContext
         private static object IncludeOneManyToMany<FromT, ToT, KeysT>(object fromValues, object[] toValues, Func<KeysT, FromT, bool> fromFkTest, Func<KeysT, ToT, bool> toFkTest, Func<FromT, IEntityCollection<ToT>> getTrackableCollection)
         {
             var @from = (FromT)fromValues;
-            var tos = ((IEnumerable<object>)toValues[0]).Cast<ToT>().ToList();
+            var tos = ((IEnumerable<object>)toValues[0]).Cast<ToT>().ToArray();
             var keys = ((IEnumerable<object>)toValues[1]).Cast<KeysT>();
             foreach (var key in keys)
             {
@@ -1951,9 +1953,8 @@ namespace WAQS.ClientContext
     		var froms = ((IEnumerable<object>)fromValues).Cast<FromT>();
     		if (mergeOption == MergeOption.NoTracking)
     		{
-    			var fromsArray = froms.ToArray();
     			var tosArray = ((IEnumerable<object>)toValues[0]).Cast<ToT>().ToArray();
-    			foreach (var from in fromsArray)
+    			foreach (var from in froms)
     			{
     				for (int i = 0; i < tosArray.Length; i++)
     				{

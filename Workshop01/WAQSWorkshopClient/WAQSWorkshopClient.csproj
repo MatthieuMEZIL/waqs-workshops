@@ -186,6 +186,9 @@
     <Compile Include="WAQS.Northwind\GetDbDateTimeCompletedEventArgs.cs">
       <DependentUpon>Northwind.Client.WPF.ServiceProxy.tt</DependentUpon>
     </Compile>
+    <Compile Include="WAQS.Northwind\GetEntityAsyncOption.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
     <Compile Include="WAQS.Northwind\Grouping.cs">
       <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.tt</DependentUpon>
     </Compile>

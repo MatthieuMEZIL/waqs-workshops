@@ -15,8 +15,8 @@ namespace WAQS.ComponentModel
     {
     	public const string MaxValueErrorCode = "MaxValue";
     
-    	public MaxValueErrorInfo(T maxValue)
-    		: base(MaxValueErrorCode)
+    	public MaxValueErrorInfo(string propertyName, T maxValue)
+    		: base(propertyName, MaxValueErrorCode)
     	{
     		MaxValue = maxValue;
     	}

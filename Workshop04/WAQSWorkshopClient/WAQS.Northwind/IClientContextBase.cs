@@ -20,11 +20,11 @@ namespace WAQS.ClientContext.Interfaces
     public interface IClientContextBase : IDisposable
     {
         string Name { get; }
-        Task<IEnumerable<T>> ExecuteQueryAsync<T>(IAsyncQueryable<T> query, MergeOption? mergeOption = null, Func<bool> cancel = null);
-        Task<T> ExecuteQueryAsync<T>(IAsyncQueryableValue<T> query, MergeOption? mergeOption = null, Func<bool> cancel = null);
+        Task<IEnumerable<T>> ExecuteQueryAsync<T>(IAsyncQueryable<T> query, MergeOption? mergeOption = null, Func<bool> cancel = null, GetEntityAsyncOption getEntityOption = GetEntityAsyncOption.NoTrackingOnly);
+        Task<T> ExecuteQueryAsync<T>(IAsyncQueryableValue<T> query, MergeOption? mergeOption = null, Func<bool> cancel = null, GetEntityAsyncOption getEntityOption = GetEntityAsyncOption.NoTrackingOnly);
         Task<object[]> ExecuteQueriesAsync(params IAsyncQueryableBase[] queries);
-        Task<object[]> ExecuteQueriesAsync(IEnumerable<IAsyncQueryableBase> queries, MergeOption? mergeOption = null, Func<bool> cancel = null);
-        Task<QueryPage<T>> LoadPageAsync<T>(int pageSize, IAsyncQueryable<T> query, LoadPageParameter[] identifiers, MergeOption? mergeOption = null, Func<bool> cancel = null);
+        Task<object[]> ExecuteQueriesAsync(IEnumerable<IAsyncQueryableBase> queries, MergeOption? mergeOption = null, Func<bool> cancel = null, GetEntityAsyncOption getEntityOption = GetEntityAsyncOption.NoTrackingOnly);
+        Task<QueryPage<T>> LoadPageAsync<T>(int pageSize, IAsyncQueryable<T> query, LoadPageParameter[] identifiers, MergeOption? mergeOption = null, Func<bool> cancel = null, GetEntityAsyncOption getEntityOption = GetEntityAsyncOption.NoTrackingOnly);
         IExpressionTransformer GetTransformer();
     	void AddProperty<T>(string name, object value) where T : IBindableObject, IDynamicType;
     	void AddProperty<T, PropertyT>(string name, Func<T, PropertyT> get, Action<T, PropertyT> set = null, string[] properties = null) where T : IBindableObject, IDynamicType;

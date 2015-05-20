@@ -15,8 +15,8 @@ namespace WAQS.ComponentModel
     {
     	public const string MinValueErrorCode = "MinValue";
     
-    	public MinValueErrorInfo(T maxValue)
-    		: base(MinValueErrorCode)
+    	public MinValueErrorInfo(string propertyName, T maxValue)
+    		: base(propertyName, MinValueErrorCode)
     	{
     		MinValue = maxValue;
     	}

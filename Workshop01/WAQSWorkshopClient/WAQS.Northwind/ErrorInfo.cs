@@ -13,11 +13,18 @@ namespace WAQS.ComponentModel
 {
     public abstract partial class ErrorInfo
     {
-    	public ErrorInfo(string errorCode)
-    	{
-    		ErrorCode = errorCode;
-    	}
-    		
+        public ErrorInfo(string errorCode)
+        {
+        	ErrorCode = errorCode;
+        }
+        		
+        public ErrorInfo(string propertyName, string errorCode)
+        {
+            PropertyName = propertyName;
+        	ErrorCode = errorCode;
+        }
+        		
+        public string PropertyName { get; private set; }
     	public string ErrorCode { get; private set; }
     	public abstract string Message { get; }
     	

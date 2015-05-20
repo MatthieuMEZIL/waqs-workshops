@@ -73,21 +73,21 @@ namespace WAQSWorkshopClient.ClientContext
         protected abstract WAQSWorkshopClient.Product GetEntity(WAQSWorkshopClient.Product entity, bool applyState, MergeOption? mergeOption = null, bool applyDataTransfer = false);
     
     
-        public virtual async Task<IEnumerable<T>> ExecuteQueryAsync<T>(IAsyncQueryable<T> query, MergeOption? mergeOption = null, Func<bool> cancel = null)
+        public virtual async Task<IEnumerable<T>> ExecuteQueryAsync<T>(IAsyncQueryable<T> query, MergeOption? mergeOption = null, Func<bool> cancel = null, GetEntityAsyncOption getEntityOption = GetEntityAsyncOption.NoTrackingOnly)
         {
-            var value = await ExecuteQueryInternalAsync(query, mergeOption ?? MergeOption.NoTracking, cancel);
+            var value = await ExecuteQueryInternalAsync(query, mergeOption ?? MergeOption.NoTracking, cancel, getEntityOption);
             if (value == null)
                 return new T[0];
             return ((IEnumerable<object>)value).Cast<T>();
         }
         
-        public virtual async Task<T> ExecuteQueryAsync<T>(IAsyncQueryableValue<T> query, MergeOption? mergeOption = null, Func<bool> cancel = null)
+        public virtual async Task<T> ExecuteQueryAsync<T>(IAsyncQueryableValue<T> query, MergeOption? mergeOption = null, Func<bool> cancel = null, GetEntityAsyncOption getEntityOption = GetEntityAsyncOption.NoTrackingOnly)
         {
-            var value = await ExecuteQueryInternalAsync(query, mergeOption ?? MergeOption.NoTracking, cancel);
+            var value = await ExecuteQueryInternalAsync(query, mergeOption ?? MergeOption.NoTracking, cancel, getEntityOption);
             return value == null ? default(T) : (T)value;
         }
     
-        public virtual async Task<QueryPage<T>> LoadPageAsync<T>(int pageSize, IAsyncQueryable<T> query, LoadPageParameter[] identifiers, MergeOption? mergeOption = null, Func<bool> cancel = null)
+        public virtual async Task<QueryPage<T>> LoadPageAsync<T>(int pageSize, IAsyncQueryable<T> query, LoadPageParameter[] identifiers, MergeOption? mergeOption = null, Func<bool> cancel = null, GetEntityAsyncOption getEntityOption = GetEntityAsyncOption.NoTrackingOnly)
         {
             if (identifiers.Length == 0)
                 throw new InvalidOperationException();
@@ -116,7 +116,7 @@ namespace WAQSWorkshopClient.ClientContext
             return ExecuteQueriesAsync(queries.AsEnumerable());
         }
     
-        public virtual async Task<object[]> ExecuteQueriesAsync(IEnumerable<IAsyncQueryableBase> queries, MergeOption? mergeOption = null, Func<bool> cancel = null)
+        public virtual async Task<object[]> ExecuteQueriesAsync(IEnumerable<IAsyncQueryableBase> queries, MergeOption? mergeOption = null, Func<bool> cancel = null, GetEntityAsyncOption getEntityOption = GetEntityAsyncOption.NoTrackingOnly)
         {
             if (mergeOption == null)
                 mergeOption = MergeOption.NoTracking;
@@ -127,7 +127,15 @@ namespace WAQSWorkshopClient.ClientContext
                 var result = await ProxyHelper.ExecuteFuncAsync(ServiceFactory, service => Task.Factory.FromAsync(service.BeginExecuteMany(MakeQueriesSerialization(queries, out includes), null, null), ar => service.EndExecuteMany(ar)), 0);
                 if (IsDisposed || cancel != null && cancel())
                     return null;
+    
+    			if (getEntityOption == GetEntityAsyncOption.AllMergeOption || (mergeOption.Value == MergeOption.NoTracking && (int)getEntityOption >= (int)GetEntityAsyncOption.NoTrackingOnly))
+                {
+    				return await Task.Factory.StartNew(() => GetQueriesResults(queries, includes, result, mergeOption.Value));
+                }
+                else
+                {
                 return GetQueriesResults(queries, includes, result, mergeOption.Value);
+            }
             }
             catch (Exception e)
             {
@@ -157,7 +165,7 @@ namespace WAQSWorkshopClient.ClientContext
             return value;
         }
         
-        private async Task<object> ExecuteQueryInternalAsync(IAsyncQueryableBase query, MergeOption mergeOption, Func<bool> cancel)
+        private async Task<object> ExecuteQueryInternalAsync(IAsyncQueryableBase query, MergeOption mergeOption, Func<bool> cancel, GetEntityAsyncOption getEntityOption)
         {
             ExecutingQuery(query, mergeOption);
             if (IsDisposed || cancel != null && cancel())
@@ -171,16 +179,31 @@ namespace WAQSWorkshopClient.ClientContext
                     if (IsDisposed || cancel != null && cancel())
                         return null;
                     EntitiesGot.Clear();
+    				if (getEntityOption == GetEntityAsyncOption.AllMergeOption || (mergeOption == MergeOption.NoTracking && (int)getEntityOption >= (int)GetEntityAsyncOption.NoTrackingOnly))
+    				{
+    					return await Task.Factory.StartNew(() => 
+    					{
                     var value = InstanciateAndAttach(query, result.QueryResults[0], mergeOption);
                     LoadIncludes(query, value, includes, result, mergeOption);
                     return value;
+    					});
+    				} else {
+    					var value = InstanciateAndAttach(query, result.QueryResults[0], mergeOption);
+    					LoadIncludes(query, value, includes, result, mergeOption);
+    					return value;
+                }
                 }
                 else
                 {
                     var result = await ProxyHelper.ExecuteFuncAsync(ServiceFactory, service => Task.Factory.FromAsync(service.BeginExecute(MakeQuerySerialization(query), null, null), ar => service.EndExecute(ar)), 0);
                     EntitiesGot.Clear();
+                    if (getEntityOption == GetEntityAsyncOption.AllMergeOption || (mergeOption == MergeOption.NoTracking && (int)getEntityOption >= (int)GetEntityAsyncOption.NoTrackingOnly)) 
+    				{
+    					return await Task.Factory.StartNew(() => InstanciateAndAttach(query, result, mergeOption));
+    				} else {
                     return InstanciateAndAttach(query, result, mergeOption);
                 }
+            }
             }
             catch (Exception e)
             {
@@ -489,8 +512,9 @@ namespace WAQSWorkshopClient.ClientContext
                     else if ((ctor = type.GetConstructor(new Type[0])) != null)
                     {
                         var value = ctor.Invoke(new object[0]);
-                        foreach (var recordProperty in record.Properties)
+                        for (int rpi = 0 ; rpi < record.Properties.Count ; rpi++)
                         {
+    						var recordProperty = record.Properties[rpi];
                             var prop = type.GetProperty(recordProperty.PropertyName);
                             prop.SetValue(value, instanciateWithConstructorWithParameters(recordProperty, prop.PropertyType), null);
                         }

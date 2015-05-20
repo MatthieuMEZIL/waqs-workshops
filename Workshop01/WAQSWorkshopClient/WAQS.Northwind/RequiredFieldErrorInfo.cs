@@ -15,8 +15,8 @@ namespace WAQS.ComponentModel
     {
     	public const string RequiredFieldErrorCode = "RequiredField";
     		
-    	public RequiredFieldErrorInfo()
-    		: base(RequiredFieldErrorCode)
+    	public RequiredFieldErrorInfo(string propertyName)
+    		: base(propertyName, RequiredFieldErrorCode)
     	{
     	}
     

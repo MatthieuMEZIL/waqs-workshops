@@ -91,11 +91,13 @@ namespace WAQS.ClientContext
         public static void ClearDico(IClientContext context)
         {
             foreach (var entitySetPerEntityForEntityType in _entitySetPerEntity.Values)
-                foreach (var e in entitySetPerEntityForEntityType.Where(kv => !kv.Value.IsAlive || ((IClientEntitySet)kv.Value.Target).Context == context).Select(kv => kv.Key).ToList())
+    		{
+                foreach (var e in entitySetPerEntityForEntityType.Where(kv => !kv.Value.IsAlive || ((IClientEntitySet)kv.Value.Target).Context == context).Select(kv => kv.Key))
                 {
                     WeakReference _;
                     entitySetPerEntityForEntityType.TryRemove(e, out _);
                 }
+    		}
         }
         
         public static bool Contains<ClientContext, EntityType>(ClientEntitySet<ClientContext, EntityType> entitySet, EntityType entity)
