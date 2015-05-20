@@ -15,7 +15,7 @@ using System.Windows.Data;
 
 namespace WAQS.Controls.Converters
 {
-    public class NumberRoundConverter : IValueConverter
+    public partial class NumberRoundConverter : IValueConverter
     {
     	public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     	{
@@ -34,7 +34,61 @@ namespace WAQS.Controls.Converters
     
     	public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     	{
-    		throw new NotImplementedException();
-    	}
+            object result = null;
+            bool proceed = false;
+            CustomConvertBack(value, targetType, parameter, culture, ref result, ref proceed);
+            if (proceed || result != null)
+            {
+                return result;
+            }
+    
+            var valueString = value.ToString();
+            double valueDouble;
+            if (double.TryParse(valueString, out valueDouble))
+            {
+                if (targetType == typeof(double))
+                {
+                    return valueDouble;
+                }
+                if (targetType == typeof(decimal))
+                {
+                    return (decimal)valueDouble;
+                }
+                if (targetType == typeof(float))
+                {
+                    return (float)valueDouble;
+                }
+                if (targetType == typeof(double?))
+                {
+                    return (double?)valueDouble;
+                }
+                if (targetType == typeof(decimal?))
+                {
+                    return (decimal?)valueDouble;
+                }
+                if (targetType == typeof(float?))
+                {
+                    return (float?)valueDouble;
+                }
+            }
+            if (string.IsNullOrWhiteSpace(valueString))
+            {
+                if (targetType == typeof(decimal?))
+                {
+                    return (decimal?)null;
+                }
+                if (targetType == typeof(float?))
+                {
+                    return (float?)null;
+                }
+                if (targetType == typeof(double?))
+                {
+                    return (double?)null;
+                }
+            }
+            throw new NotImplementedException();
+        }
+    
+        partial void CustomConvertBack(object value, Type targetType, object parameter, CultureInfo culture, ref object result, ref bool proceed);
     }
 }

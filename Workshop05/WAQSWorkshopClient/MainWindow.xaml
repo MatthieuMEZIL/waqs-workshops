@@ -1,0 +1,40 @@
+﻿<Window x:Class="WAQSWorkshopClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WAQSWorkshopClient"
+        xmlns:converters="clr-namespace:WAQS.Controls.Converters"
+        mc:Ignorable="d"
+        Title="MainWindow"
+        Height="350"
+        Width="525">
+    <Window.Resources>
+        <converters:NumberRoundConverter x:Key="NumberRoundConverter" />
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Button x:Name="Refresh" 
+                Content="Refresh"
+                Height="20"
+                Click="RefreshClick"/>
+        <ListBox Grid.Row="1"
+                 ItemsSource="{Binding Customers}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Name}" />
+                        <TextBlock Margin="5,0"
+                                   Text="{Binding TotalSpent, Converter={StaticResource NumberRoundConverter}}" />
+                        <Button Content="Edit"
+                                Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                CommandParameter="{Binding}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</Window>
