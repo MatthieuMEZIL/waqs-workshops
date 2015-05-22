@@ -25,7 +25,7 @@ namespace WAQSWorkshopClient
         {
             _context = context;
             _customerWindow = customerWindow;
-            LoadCustomer(customerId).ConfigureAwait(true);
+            LoadCustomerAsync(customerId).ConfigureAwait(true);
         }
 
         private Customer _customer;
@@ -39,7 +39,7 @@ namespace WAQSWorkshopClient
             }
         }
 
-        private async Task LoadCustomer(string customerId)
+        private async Task LoadCustomerAsync(string customerId)
         {
             Customer = await _context.Customers.AsAsyncQueryable().FirstOrDefault(c => c.Id == customerId).ExecuteAsync();
         }

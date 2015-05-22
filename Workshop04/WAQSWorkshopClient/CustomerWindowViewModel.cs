@@ -26,7 +26,7 @@ namespace WAQSWorkshopClient
         {
             _context = context;
             _customerWindow = customerWindow;
-            Load(customerId).ConfigureAwait(true);
+            LoadAsync(customerId).ConfigureAwait(true);
         }
 
         private Customer _customer;
@@ -40,7 +40,7 @@ namespace WAQSWorkshopClient
             }
         }
 
-        private async Task Load(string customerId)
+        private async Task LoadAsync(string customerId)
         {
             Customer = await _context.Customers.AsAsyncQueryable().FirstOrDefault(c => c.Id == customerId).IncludeOrdersWithExpression(orders => orders.IncludeOrderDetails()).ExecuteAsync();
             await _context.Products.AsAsyncQueryable().Select(p => new Product { Id = p.Id, FullName = p.FullName }).ExecuteAsync();
