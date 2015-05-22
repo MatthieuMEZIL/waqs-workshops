@@ -1,0 +1,1 @@
+<#@ include file="WAQS.VS14.NET46.Server.DAL.emdx.ttinclude"#><#WriteServerDALEdmx(@"..\Northwind.edmx", "WAQSWorkshopServer.DAL", null);#>
