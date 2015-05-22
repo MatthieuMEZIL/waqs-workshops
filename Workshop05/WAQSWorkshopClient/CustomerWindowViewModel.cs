@@ -1,22 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using WAQSWorkshopClient;
-using WAQSWorkshopClient.ClientContext;
-using WAQSWorkshopClient.ClientContext.Interfaces;
-using WAQSWorkshopClient.ClientContext.Interfaces.Errors;
+using System.Windows.Input;
 using WAQS.ClientContext;
 using WAQS.ClientContext.Interfaces;
 using WAQS.ClientContext.Interfaces.Errors;
 using WAQS.ClientContext.Interfaces.Querying;
 using WAQS.ComponentModel;
-using System.Windows.Input;
-using System.Collections.Specialized;
+using WAQSWorkshopClient;
+using WAQSWorkshopClient.ClientContext;
+using WAQSWorkshopClient.ClientContext.Interfaces;
+using WAQSWorkshopClient.ClientContext.Interfaces.Errors;
 
 namespace WAQSWorkshopClient
 {
