@@ -148,7 +148,7 @@ namespace WAQS.ClientContext.Interfaces.ExpressionSerialization
                     method = queryableMethod.MakeGenericMethod(method.GetGenericArguments());
             }
             
-            _serializableReference.Value = new SerializableMethodCallExpression(serializableSourceReference.Value, node.Arguments.Select((a, i) =>
+            var serializableMethodCallExpression = new SerializableMethodCallExpression(serializableSourceReference.Value, node.Arguments.Select((a, i) =>
             {
                 var parameterSourceReference = new Reference<SerializableExpression>();
                 var serializableExpressionBuilder = new SerializableExpressionBuilder(parameterSourceReference, _parameterMode, _lambdaParameters, _clientContext, _transformParameter);
@@ -157,6 +157,11 @@ namespace WAQS.ClientContext.Interfaces.ExpressionSerialization
                 serializableExpressionBuilder.Visit(a);
                 return parameterSourceReference.Value;
             }), method);
+            if (! method.IsStatic && method.DeclaringType.Namespace == _clientContext.ClientEntitiesNamespace && serializableMethodCallExpression.Signature != null)
+            {
+                serializableMethodCallExpression.Signature = serializableMethodCallExpression.Signature.Replace(_clientContext.ClientEntitiesNamespace, _clientContext.ServerEntitiesNamespace);
+            }
+            _serializableReference.Value = serializableMethodCallExpression;
             return null;
         }
                     

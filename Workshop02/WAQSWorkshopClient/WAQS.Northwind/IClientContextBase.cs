@@ -20,6 +20,8 @@ namespace WAQS.ClientContext.Interfaces
     public interface IClientContextBase : IDisposable
     {
         string Name { get; }
+        string ServerEntitiesNamespace { get; }
+        string ClientEntitiesNamespace { get; }
         Task<IEnumerable<T>> ExecuteQueryAsync<T>(IAsyncQueryable<T> query, MergeOption? mergeOption = null, Func<bool> cancel = null, GetEntityAsyncOption getEntityOption = GetEntityAsyncOption.NoTrackingOnly);
         Task<T> ExecuteQueryAsync<T>(IAsyncQueryableValue<T> query, MergeOption? mergeOption = null, Func<bool> cancel = null, GetEntityAsyncOption getEntityOption = GetEntityAsyncOption.NoTrackingOnly);
         Task<object[]> ExecuteQueriesAsync(params IAsyncQueryableBase[] queries);

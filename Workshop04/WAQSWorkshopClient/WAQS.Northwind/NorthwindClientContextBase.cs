@@ -48,6 +48,16 @@ namespace WAQSWorkshopClient.ClientContext
             get { return "WAQSWorkshopClient.ClientContext.NorthwindClientContext"; } 
         }
     
+        public string ServerEntitiesNamespace 
+    	{ 
+    		get { return "WAQSWorkshopServer"; } 
+    	}
+    
+        public string ClientEntitiesNamespace 
+    	{ 
+    		get { return "WAQSWorkshopClient"; }
+    	}
+    
         protected Func<WAQSWorkshopClient.ClientContext.ServiceReference.INorthwindService> ServiceFactory { get; private set; }
         
         private Dictionary<object, object> _entitiesGot;
