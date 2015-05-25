@@ -569,6 +569,37 @@ namespace WAQSWorkshopClient
         protected internal event Action<Product, Product> ProductPropertyChanging;
 #endregion
 #region Specifications
+        private double _previousAmount;
+        public double Amount
+        {
+            get
+            {
+                if (Specifications != null && Specifications.HasAmount)
+                    return Specifications.Amount;
+                return this.UnitPrice * this.Quantity * (1 - this.Discount);
+            }
+
+            set
+            {
+                throw new System.InvalidOperationException();
+                ;
+            }
+        }
+
+        protected virtual void OnAmountPropertyChanging()
+        {
+            if (AmountPropertyChanging != null)
+            {
+                var value = Amount;
+                if (value == _previousAmount)
+                    return;
+                var oldValue = _previousAmount;
+                _previousAmount = value;
+                AmountPropertyChanging(oldValue, value);
+            }
+        }
+
+        protected internal event Action<double, double> AmountPropertyChanging;
         public virtual IEnumerable<Error> ValidateOnClient(bool force = false)
         {
             if (force || ChangeTracker.State == ObjectState.Added || ChangeTracker.State == ObjectState.Modified && ChangeTracker.ModifiedProperties.Contains("Discount"))
@@ -602,37 +633,6 @@ namespace WAQSWorkshopClient
                     yield return er;
         }
 
-        private double _previousAmount;
-        public double Amount
-        {
-            get
-            {
-                if (Specifications != null && Specifications.HasAmount)
-                    return Specifications.Amount;
-                return this.UnitPrice * this.Quantity * (1 - this.Discount);
-            }
-
-            set
-            {
-                throw new System.InvalidOperationException();
-                ;
-            }
-        }
-
-        protected virtual void OnAmountPropertyChanging()
-        {
-            if (AmountPropertyChanging != null)
-            {
-                var value = Amount;
-                if (value == _previousAmount)
-                    return;
-                var oldValue = _previousAmount;
-                _previousAmount = value;
-                AmountPropertyChanging(oldValue, value);
-            }
-        }
-
-        protected internal event Action<double, double> AmountPropertyChanging;
         private string _previousProductFullName;
         public string ProductFullName
         {
@@ -942,6 +942,15 @@ namespace WAQSWorkshopClient
             get
             {
                 return ChangeTracker.State != ObjectState.Unchanged || ChangeTracker.ObjectsRemovedFromCollectionProperties.Any() || ChangeTracker.OriginalValues.Any() || ChangeTracker.ObjectsAddedToCollectionProperties.Any();
+            }
+        }
+
+        private Guid? _uniqueIdentifier;
+        Guid IObjectWithChangeTracker.UniqueIdentifier
+        {
+            get
+            {
+                return _uniqueIdentifier ?? (_uniqueIdentifier = Guid.NewGuid()).Value;
             }
         }
 

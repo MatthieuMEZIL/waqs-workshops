@@ -33,29 +33,28 @@ namespace WAQS.ClientContext
             return new AsyncQueryable<TSource>(entitySet.Context, entitySet.Expression, parameterMode);
         }
     
-        private static ConcurrentDictionary<Type, ConcurrentDictionary<int, WeakReference>> _entitySetPerEntity = new ConcurrentDictionary<Type, ConcurrentDictionary<int, WeakReference>>();
+        private static ConcurrentDictionary<Type, ConcurrentDictionary<Guid, WeakReference>> _entitySetPerEntity = new ConcurrentDictionary<Type, ConcurrentDictionary<Guid, WeakReference>>();
             
         public static bool AddEntityInDico(IClientEntitySet entitySet, IObjectWithChangeTracker entity)
         {
             if (entity == null)
                 return false;
-            int entityHashCode = entity.GetHashCode();
-            ConcurrentDictionary<int, WeakReference> entitySetPerEntityForEntityType;
+            ConcurrentDictionary<Guid, WeakReference> entitySetPerEntityForEntityType;
             var entityType = entity.GetType();
             if (!_entitySetPerEntity.TryGetValue(entityType, out entitySetPerEntityForEntityType))
             {
-                entitySetPerEntityForEntityType = new ConcurrentDictionary<int, WeakReference>();
-                entitySetPerEntityForEntityType.TryAdd(entityHashCode, new WeakReference(entitySet));
+                entitySetPerEntityForEntityType = new ConcurrentDictionary<Guid, WeakReference>();
+                entitySetPerEntityForEntityType.TryAdd(entity.UniqueIdentifier, new WeakReference(entitySet));
                 _entitySetPerEntity.TryAdd(entityType, entitySetPerEntityForEntityType);
                 return true;
             }
             WeakReference entitySetInDico = null;
-            if (entitySetPerEntityForEntityType.TryGetValue(entityHashCode, out entitySetInDico))
+            if (entitySetPerEntityForEntityType.TryGetValue(entity.UniqueIdentifier, out entitySetInDico))
             {
                 if (!entitySetInDico.IsAlive)
                 {
                     WeakReference _;
-                    entitySetPerEntityForEntityType.TryRemove(entityHashCode, out _);
+                    entitySetPerEntityForEntityType.TryRemove(entity.UniqueIdentifier, out _);
                 }
                 else
                 {
@@ -64,28 +63,28 @@ namespace WAQS.ClientContext
                     return false;
                 }
             }
-            entitySetPerEntityForEntityType.TryAdd(entityHashCode, new WeakReference(entitySet));
+            entitySetPerEntityForEntityType.TryAdd(entity.UniqueIdentifier, new WeakReference(entitySet));
             return true;
         }
             
         public static IClientEntitySet GetClientEntitySet(IObjectWithChangeTracker entity)
         {
-            ConcurrentDictionary<int, WeakReference> entitySetPerEntityForEntityType;
+            ConcurrentDictionary<Guid, WeakReference> entitySetPerEntityForEntityType;
             if (!_entitySetPerEntity.TryGetValue(entity.GetType(), out entitySetPerEntityForEntityType))
                 return null;
             WeakReference value = null;
-            if (entitySetPerEntityForEntityType.TryGetValue(entity.GetHashCode(), out value) && value.IsAlive)
+            if (entitySetPerEntityForEntityType.TryGetValue(entity.UniqueIdentifier, out value) && value.IsAlive)
                 return (IClientEntitySet)value.Target;
             return null;
         }
             
         public static void RemoveEntityInDico(IObjectWithChangeTracker entity)
         {
-            ConcurrentDictionary<int, WeakReference> entitySetPerEntityForEntityType;
+            ConcurrentDictionary<Guid, WeakReference> entitySetPerEntityForEntityType;
             if (!_entitySetPerEntity.TryGetValue(entity.GetType(), out entitySetPerEntityForEntityType))
                 return;
             WeakReference _;
-            entitySetPerEntityForEntityType.TryRemove(entity.GetHashCode(), out _);
+            entitySetPerEntityForEntityType.TryRemove(entity.UniqueIdentifier, out _);
         }
             
         public static void ClearDico(IClientContext context)

@@ -31,45 +31,45 @@ namespace WAQS.ClientContext
         {
             return query.Context.ExecuteQueryAsync(query, mergeOption);
         }
-            
+                
         public static IAsyncQueryableValue<bool> All<TSource>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, bool>> predicate)
         {
             var serializablePredicateReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializablePredicateReference, source.ParameterMode, source.Context).Visit(predicate);
             return new AsyncQueryableValue<bool>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializablePredicateReference.Value }, typeof(Queryable).GetMethod("All").MakeGenericMethod(typeof(TSource))), source.ParameterMode);
         }
-            
+                
         public static IAsyncQueryableValue<bool> All<TSource>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, IAsyncQueryableValue<bool>>> predicate)
         {
             var serializablePredicateReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializablePredicateReference, source.ParameterMode, source.Context).Visit(predicate);
             return new AsyncQueryableValue<bool>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializablePredicateReference.Value }, typeof(Queryable).GetMethod("All").MakeGenericMethod(typeof(TSource))), source.ParameterMode);
         }
-            
+                
         public static IAsyncQueryableValue<bool> Any<TSource>(this IAsyncQueryable<TSource> source)
         {
             return new AsyncQueryableValue<bool>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression }, typeof(Queryable).GetMethods().First(m => m.Name == "Any" && m.GetParameters().Length == 1).MakeGenericMethod(typeof(TSource))), source.ParameterMode);
         }
-            
+                
         public static IAsyncQueryableValue<bool> Any<TSource>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, bool>> predicate)
         {
             var serializablePredicateReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializablePredicateReference, source.ParameterMode, source.Context).Visit(predicate);
             return Any<TSource>(source, serializablePredicateReference.Value);
         }
-            
+                
         public static IAsyncQueryableValue<bool> Any<TSource>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, IAsyncQueryableValue<bool>>> predicate)
         {
             var serializablePredicateReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializablePredicateReference, source.ParameterMode, source.Context).Visit(predicate);
             return Any<TSource>(source, serializablePredicateReference.Value);
         }
-            
+                
         public static IAsyncQueryableValue<bool> Any<TSource>(IAsyncQueryable<TSource> source, SerializableExpression serializablePredicate)
         {
             return new AsyncQueryableValue<bool>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializablePredicate }, typeof(Queryable).GetMethods().First(m => m.Name == "Any" && m.GetParameters().Length == 2).MakeGenericMethod(typeof(TSource))), source.ParameterMode);
         }
-            
+                
         public static IAsyncQueryableValue<decimal?> Average(this IAsyncQueryable<decimal?> source)
         {
             return Average<decimal?>(source);
@@ -118,7 +118,7 @@ namespace WAQS.ClientContext
         {
             return new AsyncQueryableValue<TResult>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression }, typeof(Queryable).GetMethods().First(m => m.Name == "Average" && m.GetParameters()[0].ParameterType == typeof(IQueryable<TSource>))), source.ParameterMode);
         }
-            
+                
         public static IAsyncQueryableValue<decimal?> Average<TSource>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, decimal?>> selector)
         {
             return Average<TSource, decimal?>(source, selector);
@@ -169,7 +169,7 @@ namespace WAQS.ClientContext
             new SerializableExpressionBuilder(serializablePredicateReference, source.ParameterMode, source.Context).Visit(selector);
             return new AsyncQueryableValue<TResult>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializablePredicateReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "Average" && m.GetParameters().Length == 2 && m.GetParameters()[1].ParameterType.ToString() == string.Format("System.Linq.Expressions.Expression`1[System.Func`2[TSource,{0}]]", typeof(T).ToString())).MakeGenericMethod(typeof(TSource))), source.ParameterMode);
         }
-            
+                
         public static IAsyncQueryableValue<decimal?> Average<TSource>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, IAsyncQueryableValue<decimal?>>> selector)
         {
             return AverageAsyncQueryable<TSource, decimal?>(source, selector);
@@ -220,17 +220,17 @@ namespace WAQS.ClientContext
             new SerializableExpressionBuilder(serializablePredicateReference, source.ParameterMode, source.Context).Visit(selector);
             return new AsyncQueryableValue<TResult>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializablePredicateReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "Average" && m.GetParameters().Length == 2 && m.GetParameters()[1].ParameterType.ToString() == string.Format("System.Linq.Expressions.Expression`1[System.Func`2[TSource,{0}]]", typeof(T).ToString())).MakeGenericMethod(typeof(TSource))), source.ParameterMode);
         }
-            
+                
         public static IAsyncQueryable<TResult> Cast<TResult>(this IAsyncQueryable source)
         {
             return new AsyncQueryable<TResult>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression }, typeof(Queryable).GetMethod("Cast").MakeGenericMethod(typeof(TResult))), source.ParameterMode, source.Includes, source.WithSpecificationsProperties.Where(p => typeof(TResult).GetProperty(p) != null), source.SelectedProperties.Where(p => typeof(TResult).GetProperty(p) != null));
         }
-            
+                
         public static IAsyncQueryableValue<bool> Contains<T>(this IAsyncQueryable<T> source, T value)
         {
             return new AsyncQueryableValue<bool>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, new SerializableConstantExpression(value, typeof(T)) }, typeof(Queryable).GetMethods().First(m => m.Name == "Contains" && m.GetParameters().Length == 2).MakeGenericMethod(typeof(T))), source.ParameterMode);
         }
-            
+                
         public static IAsyncQueryableValue<bool> Contains<T>(this IAsyncQueryable<T> source, IAsyncQueryableValue<T> value)
         {
             return new AsyncQueryableValue<bool>(source.Context, Contains<T>(source.Expression, value.Expression), source.ParameterMode);
@@ -239,93 +239,93 @@ namespace WAQS.ClientContext
         {
             return new SerializableMethodCallExpression(null, new[] { source, value }, typeof(Queryable).GetMethods().First(m => m.Name == "Contains" && m.GetParameters().Length == 2).MakeGenericMethod(typeof(T)));
         }
-            
+                
         public static IAsyncQueryableValue<int> Count<TSource>(this IAsyncQueryable<TSource> source)
         {
             return new AsyncQueryableValue<int>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression }, typeof(Queryable).GetMethods().First(m => m.Name == "Count" && m.GetParameters().Length == 1).MakeGenericMethod(typeof(TSource))), source.ParameterMode);
         }
-            
+                
         public static IAsyncQueryableValue<int> Count<TSource>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, bool>> predicate)
         {
             var serializablePredicateReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializablePredicateReference, source.ParameterMode, source.Context).Visit(predicate);
             return new AsyncQueryableValue<int>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializablePredicateReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "Count" && m.GetParameters().Length == 2).MakeGenericMethod(typeof(TSource))), source.ParameterMode);
         }
-            
+                
         public static IAsyncQueryableValue<int> Count<TSource>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, IAsyncQueryableValue<bool>>> predicate)
         {
             var serializablePredicateReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializablePredicateReference, source.ParameterMode, source.Context).Visit(predicate);
             return new AsyncQueryableValue<int>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializablePredicateReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "Count" && m.GetParameters().Length == 2).MakeGenericMethod(typeof(TSource))), source.ParameterMode);
         }
-            
+                
         public static IAsyncQueryable<TSource> DefaultIfEmpty<TSource>(this IAsyncQueryable<TSource> source)
         {
             return new AsyncQueryable<TSource>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression }, typeof(Queryable).GetMethods().First(m => m.Name == "DefaultIfEmpty" && m.GetParameters().Length == 1).MakeGenericMethod(typeof(TSource))), source.ParameterMode);
         }
-            
+                
         public static IAsyncQueryable<TSource> Distinct<TSource>(this IAsyncQueryable<TSource> source)
         {
             return new AsyncQueryable<TSource>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression }, typeof(Queryable).GetMethods().First(m => m.Name == "Distinct" && m.GetParameters().Length == 1).MakeGenericMethod(typeof(TSource))), source.ParameterMode, source.Includes, source.WithSpecificationsProperties, source.SelectedProperties);
         }
-            
+                
         public static IAsyncQueryable<TSource> Except<TSource>(this IAsyncQueryable<TSource> source1, IAsyncQueryable<TSource> source2)
         {
             return new AsyncQueryable<TSource>(source1.Context, new SerializableMethodCallExpression(null, new[] { source1.Expression, source2.Expression }, typeof(Queryable).GetMethods().First(m => m.Name == "Except" && m.GetParameters().Length == 2).MakeGenericMethod(typeof(TSource))), source1.ParameterMode);
         }
-            
+                
         public static IAsyncQueryableValue<TSource> First<TSource>(this IAsyncQueryable<TSource> source)
         {
             return new AsyncQueryableValue<TSource>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression }, typeof(Queryable).GetMethods().First(m => m.Name == "First" && m.GetParameters().Length == 1).MakeGenericMethod(typeof(TSource))), source.ParameterMode, source.Includes, source.WithSpecificationsProperties, source.SelectedProperties);
         }
-            
+                
         public static IAsyncQueryableValue<TSource> First<TSource>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, bool>> predicate)
         {
             var serializablePredicateReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializablePredicateReference, source.ParameterMode, source.Context).Visit(predicate);
             return new AsyncQueryableValue<TSource>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializablePredicateReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "First" && m.GetParameters().Length == 2).MakeGenericMethod(typeof(TSource))), source.ParameterMode, source.Includes, source.WithSpecificationsProperties, source.SelectedProperties);
         }
-            
+                
         public static IAsyncQueryableValue<TSource> First<TSource>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, IAsyncQueryableValue<bool>>> predicate)
         {
             var serializablePredicateReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializablePredicateReference, source.ParameterMode, source.Context).Visit(predicate);
             return new AsyncQueryableValue<TSource>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializablePredicateReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "First" && m.GetParameters().Length == 2).MakeGenericMethod(typeof(TSource))), source.ParameterMode, source.Includes, source.WithSpecificationsProperties, source.SelectedProperties);
         }
-            
+                
         public static IAsyncQueryableValue<TSource> FirstOrDefault<TSource>(this IAsyncQueryable<TSource> source)
         {
             return new AsyncQueryableValue<TSource>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression }, typeof(Queryable).GetMethods().First(m => m.Name == "FirstOrDefault" && m.GetParameters().Length == 1).MakeGenericMethod(typeof(TSource))), source.ParameterMode, source.Includes, source.WithSpecificationsProperties, source.SelectedProperties);
         }
-            
+                
         public static IAsyncQueryableValue<TSource> FirstOrDefault<TSource>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, bool>> predicate)
         {
             var serializablePredicateReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializablePredicateReference, source.ParameterMode, source.Context).Visit(predicate);
             return new AsyncQueryableValue<TSource>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializablePredicateReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "FirstOrDefault" && m.GetParameters().Length == 2).MakeGenericMethod(typeof(TSource))), source.ParameterMode, source.Includes, source.WithSpecificationsProperties, source.SelectedProperties);
         }
-            
+                
         public static IAsyncQueryableValue<TSource> FirstOrDefault<TSource>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, IAsyncQueryableValue<bool>>> predicate)
         {
             var serializablePredicateReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializablePredicateReference, source.ParameterMode, source.Context).Visit(predicate);
             return new AsyncQueryableValue<TSource>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializablePredicateReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "FirstOrDefault" && m.GetParameters().Length == 2).MakeGenericMethod(typeof(TSource))), source.ParameterMode, source.Includes, source.WithSpecificationsProperties, source.SelectedProperties);
         }
-            
+                
         public static IAsyncQueryable<IGrouping<TKey, TSource>> GroupBy<TSource, TKey>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, TKey>> keySelector)
         {
             var serializableKeySelectorReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializableKeySelectorReference, source.ParameterMode, source.Context).Visit(keySelector);
             return new AsyncQueryable<IGrouping<TKey, TSource>>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializableKeySelectorReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "GroupBy" && m.GetParameters().Length == 2).MakeGenericMethod(typeof(TSource), typeof(TKey))), source.ParameterMode);
         }
-            
+                
         public static IAsyncQueryable<IGrouping<TKey, TSource>> GroupBy<TSource, TKey>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, IAsyncQueryableValue<TKey>>> keySelector)
         {
             var serializableKeySelectorReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializableKeySelectorReference, source.ParameterMode, source.Context).Visit(keySelector);
             return new AsyncQueryable<IGrouping<TKey, TSource>>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializableKeySelectorReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "GroupBy" && m.GetParameters().Length == 2).MakeGenericMethod(typeof(TSource), typeof(TKey))), source.ParameterMode);
         }
-            
+                
         public static IAsyncQueryable<TResult> GroupJoin<TOuter, TInner, TKey, TResult>(this IAsyncQueryable<TOuter> outer, IAsyncQueryable<TInner> inner, Expression<Func<TOuter, TKey>> outerKeySelector, Expression<Func<TInner, TKey>> innerKeySelector, Expression<Func<TOuter, IEnumerable<TInner>, TResult>> resultSelector)
         {
             var serializableOuterKeySelectorReference = new Reference<SerializableExpression>();
@@ -336,7 +336,7 @@ namespace WAQS.ClientContext
             new SerializableExpressionBuilder(serializableResultSelectorReference, outer.ParameterMode, outer.Context).Visit(resultSelector);
             return new AsyncQueryable<TResult>(outer.Context, new SerializableMethodCallExpression(null, new[] { outer.Expression, inner.Expression, serializableOuterKeySelectorReference.Value, serializableInnerKeySelectorReference.Value, serializableResultSelectorReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "GroupJoin" && m.GetParameters().Length == 5).MakeGenericMethod(typeof(TOuter), typeof(TInner), typeof(TKey), typeof(TResult))), outer.ParameterMode);
         }
-            
+                
         public static IAsyncQueryable<TResult> GroupJoin<TOuter, TKey, TResult>(this IAsyncQueryable<TOuter> outer, IEnumerable<int> inner, Expression<Func<TOuter, TKey>> outerKeySelector, Expression<Func<int, TKey>> innerKeySelector, Expression<Func<TOuter, IEnumerable<int>, TResult>> resultSelector)
         {
             return GroupJoin<TOuter, int, TKey, TResult>(outer, inner, outerKeySelector, innerKeySelector, resultSelector);
@@ -447,12 +447,12 @@ namespace WAQS.ClientContext
             new SerializableExpressionBuilder(serializableResultSelectorReference, outer.ParameterMode, outer.Context).Visit(resultSelector);
             return new AsyncQueryable<TResult>(outer.Context, new SerializableMethodCallExpression(null, new[] { outer.Expression, outer.ParameterMode == ParameterMode.OnDefinition ? new SerializableConstantExpression(inner, typeof(IEnumerable<TInner>)) : new SerializableConstantExpression((Delegate)(Func<IEnumerable<TInner>>)(() => inner), typeof(IEnumerable<TInner>)), serializableOuterKeySelectorReference.Value, serializableInnerKeySelectorReference.Value, serializableResultSelectorReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "GroupJoin" && m.GetParameters().Length == 5).MakeGenericMethod(typeof(TOuter), typeof(TInner), typeof(TKey), typeof(TResult))), outer.ParameterMode);
         }
-            
+                
         public static IAsyncQueryable<TSource> Intersect<TSource>(this IAsyncQueryable<TSource> source1, IAsyncQueryable<TSource> source2)
         {
             return new AsyncQueryable<TSource>(source1.Context, new SerializableMethodCallExpression(null, new[] { source1.Expression, source2.Expression }, typeof(Queryable).GetMethods().First(m => m.Name == "Intersect" && m.GetParameters().Length == 2).MakeGenericMethod(typeof(TSource))), source1.ParameterMode);
         }
-            
+                
         public static IAsyncQueryable<TResult> Join<TOuter, TInner, TKey, TResult>(this IAsyncQueryable<TOuter> outer, IAsyncQueryable<TInner> inner, Expression<Func<TOuter, TKey>> outerKeySelector, Expression<Func<TInner, TKey>> innerKeySelector, Expression<Func<TOuter, TInner, TResult>> resultSelector)
         {
             var serializableOuterKeySelectorReference = new Reference<SerializableExpression>();
@@ -463,7 +463,7 @@ namespace WAQS.ClientContext
             new SerializableExpressionBuilder(serializableResultSelectorReference, outer.ParameterMode, outer.Context).Visit(resultSelector);
             return new AsyncQueryable<TResult>(outer.Context, new SerializableMethodCallExpression(null, new[] { outer.Expression, inner.Expression, serializableOuterKeySelectorReference.Value, serializableInnerKeySelectorReference.Value, serializableResultSelectorReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "Join" && m.GetParameters().Length == 5).MakeGenericMethod(typeof(TOuter), typeof(TInner), typeof(TKey), typeof(TResult))), outer.ParameterMode);
         }
-            
+                
         public static IAsyncQueryable<TResult> Join<TOuter, TKey, TResult>(this IAsyncQueryable<TOuter> outer, IEnumerable<int> inner, Expression<Func<TOuter, TKey>> outerKeySelector, Expression<Func<int, TKey>> innerKeySelector, Expression<Func<TOuter, int, TResult>> resultSelector)
         {
             return Join<TOuter, int, TKey, TResult>(outer, inner, outerKeySelector, innerKeySelector, resultSelector);
@@ -574,114 +574,114 @@ namespace WAQS.ClientContext
             new SerializableExpressionBuilder(serializableResultSelectorReference, outer.ParameterMode, outer.Context).Visit(resultSelector);
             return new AsyncQueryable<TResult>(outer.Context, new SerializableMethodCallExpression(null, new[] { outer.Expression, outer.ParameterMode == ParameterMode.OnDefinition ? new SerializableConstantExpression(inner, typeof(IEnumerable<TInner>)) : new SerializableConstantExpression((Delegate)(Func<IEnumerable<TInner>>)(() => inner), typeof(IEnumerable<TInner>)), serializableOuterKeySelectorReference.Value, serializableInnerKeySelectorReference.Value, serializableResultSelectorReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "Join" && m.GetParameters().Length == 5).MakeGenericMethod(typeof(TOuter), typeof(TInner), typeof(TKey), typeof(TResult))), outer.ParameterMode);
         }
-            
+                
         public static IAsyncQueryableValue<TSource> Last<TSource>(this IAsyncQueryable<TSource> source)
         {
             return new AsyncQueryableValue<TSource>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression }, typeof(Queryable).GetMethods().First(m => m.Name == "Last" && m.GetParameters().Length == 1).MakeGenericMethod(typeof(TSource))), source.ParameterMode, source.Includes, source.WithSpecificationsProperties, source.SelectedProperties);
         }
-            
+                
         public static IAsyncQueryableValue<TSource> Last<TSource>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, bool>> predicate)
         {
             var serializablePredicateReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializablePredicateReference, source.ParameterMode, source.Context).Visit(predicate);
             return new AsyncQueryableValue<TSource>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializablePredicateReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "Last" && m.GetParameters().Length == 2).MakeGenericMethod(typeof(TSource))), source.ParameterMode, source.Includes, source.WithSpecificationsProperties, source.SelectedProperties);
         }
-            
+                
         public static IAsyncQueryableValue<TSource> Last<TSource>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, IAsyncQueryableValue<bool>>> predicate)
         {
             var serializablePredicateReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializablePredicateReference, source.ParameterMode, source.Context).Visit(predicate);
             return new AsyncQueryableValue<TSource>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializablePredicateReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "Last" && m.GetParameters().Length == 2).MakeGenericMethod(typeof(TSource))), source.ParameterMode, source.Includes, source.WithSpecificationsProperties, source.SelectedProperties);
         }
-            
+                
         public static IAsyncQueryableValue<TSource> LastOrDefault<TSource>(this IAsyncQueryable<TSource> source)
         {
             return new AsyncQueryableValue<TSource>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression }, typeof(Queryable).GetMethods().First(m => m.Name == "LastOrDefault" && m.GetParameters().Length == 1).MakeGenericMethod(typeof(TSource))), source.ParameterMode, source.Includes, source.WithSpecificationsProperties, source.SelectedProperties);
         }
-            
+                
         public static IAsyncQueryableValue<TSource> LastOrDefault<TSource>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, bool>> predicate)
         {
             var serializablePredicateReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializablePredicateReference, source.ParameterMode, source.Context).Visit(predicate);
             return new AsyncQueryableValue<TSource>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializablePredicateReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "LastOrDefault" && m.GetParameters().Length == 2).MakeGenericMethod(typeof(TSource))), source.ParameterMode, source.Includes, source.WithSpecificationsProperties, source.SelectedProperties);
         }
-            
+                
         public static IAsyncQueryableValue<TSource> LastOrDefault<TSource>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, IAsyncQueryableValue<bool>>> predicate)
         {
             var serializablePredicateReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializablePredicateReference, source.ParameterMode, source.Context).Visit(predicate);
             return new AsyncQueryableValue<TSource>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializablePredicateReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "LastOrDefault" && m.GetParameters().Length == 2).MakeGenericMethod(typeof(TSource))), source.ParameterMode, source.Includes, source.WithSpecificationsProperties, source.SelectedProperties);
         }
-            
+                
         public static IAsyncQueryableValue<long> LongCount<TSource>(this IAsyncQueryable<TSource> source)
         {
             return new AsyncQueryableValue<long>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression }, typeof(Queryable).GetMethods().First(m => m.Name == "LongCount" && m.GetParameters().Length == 1).MakeGenericMethod(typeof(TSource))), source.ParameterMode);
         }
-            
+                
         public static IAsyncQueryableValue<long> LongCount<TSource>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, bool>> predicate)
         {
             var serializablePredicateReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializablePredicateReference, source.ParameterMode, source.Context).Visit(predicate);
             return new AsyncQueryableValue<long>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializablePredicateReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "LongCount" && m.GetParameters().Length == 2).MakeGenericMethod(typeof(TSource))), source.ParameterMode);
         }
-            
+                
         public static IAsyncQueryableValue<long> LongCount<TSource>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, IAsyncQueryableValue<bool>>> predicate)
         {
             var serializablePredicateReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializablePredicateReference, source.ParameterMode, source.Context).Visit(predicate);
             return new AsyncQueryableValue<long>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializablePredicateReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "LongCount" && m.GetParameters().Length == 2).MakeGenericMethod(typeof(TSource))), source.ParameterMode);
         }
-            
+                
         public static IAsyncQueryableValue<TSource> Max<TSource>(this IAsyncQueryable<TSource> source)
         {
             return new AsyncQueryableValue<TSource>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression }, typeof(Queryable).GetMethods().First(m => m.Name == "Max" && m.GetParameters().Length == 1).MakeGenericMethod(typeof(TSource))), source.ParameterMode);
         }
-            
+                
         public static IAsyncQueryableValue<TResult> Max<TSource, TResult>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, TResult>> selector)
         {
             var serializableSelectorReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializableSelectorReference, source.ParameterMode, source.Context).Visit(selector);
             return new AsyncQueryableValue<TResult>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializableSelectorReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "Max" && m.GetParameters().Length == 2).MakeGenericMethod(typeof(TSource), typeof(TResult))), source.ParameterMode);
         }
-            
+                
         public static IAsyncQueryableValue<TSource> Min<TSource>(this IAsyncQueryable<TSource> source)
         {
             return new AsyncQueryableValue<TSource>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression }, typeof(Queryable).GetMethods().First(m => m.Name == "Min" && m.GetParameters().Length == 1).MakeGenericMethod(typeof(TSource))), source.ParameterMode);
         }
-            
+                
         public static IAsyncQueryableValue<TResult> Min<TSource, TResult>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, TResult>> selector)
         {
             var serializableSelectorReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializableSelectorReference, source.ParameterMode, source.Context).Visit(selector);
             return new AsyncQueryableValue<TResult>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializableSelectorReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "Min" && m.GetParameters().Length == 2).MakeGenericMethod(typeof(TSource), typeof(TResult))), source.ParameterMode);
         }
-            
+                
         public static IAsyncQueryable<TResult> OfType<TResult>(this IAsyncQueryable source)
         {
             if (source.Type == typeof(TResult))
                 return (IAsyncQueryable<TResult>)source;
             return new AsyncQueryable<TResult>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression }, typeof(Queryable).GetMethod("OfType").MakeGenericMethod(typeof(TResult))), source.ParameterMode, source.Includes, source.WithSpecificationsProperties.Where(p => typeof(TResult).GetProperty(p) != null), source.SelectedProperties.Where(p => typeof(TResult).GetProperty(p) != null));
         }
-            
+                
         public static IAsyncQueryable<TSource> OrderBy<TSource, TKey>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, TKey>> keySelector)
         {
             var serializableKeySelectorReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializableKeySelectorReference, source.ParameterMode, source.Context).Visit(keySelector);
             return new AsyncQueryable<TSource>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializableKeySelectorReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "OrderBy" && m.GetParameters().Length == 2).MakeGenericMethod(typeof(TSource), typeof(TKey))), source.ParameterMode, source.Includes, source.WithSpecificationsProperties, source.SelectedProperties);
         }
-            
+                
         public static IAsyncQueryable<TSource> OrderByDescending<TSource, TKey>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, TKey>> keySelector)
         {
             var serializableKeySelectorReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializableKeySelectorReference, source.ParameterMode, source.Context).Visit(keySelector);
             return new AsyncQueryable<TSource>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializableKeySelectorReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "OrderByDescending" && m.GetParameters().Length == 2).MakeGenericMethod(typeof(TSource), typeof(TKey))), source.ParameterMode, source.Includes, source.WithSpecificationsProperties, source.SelectedProperties);
         }
-            
+                
         public static IAsyncQueryable<TSource> Reverse<TSource>(this IAsyncQueryable<TSource> source)
         {
             return new AsyncQueryable<TSource>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression }, typeof(Queryable).GetMethod("Reverse").MakeGenericMethod(typeof(TSource))), source.ParameterMode, source.Includes, source.WithSpecificationsProperties, source.SelectedProperties);
         }
-            
+                
         public static IAsyncQueryable<TResult> Select<TSource, TResult>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, TResult>> selector)
         {
             if (selector.Body == selector.Parameters[0])
@@ -691,7 +691,7 @@ namespace WAQS.ClientContext
             new SerializableExpressionBuilder(serializableSelectorReference, source.ParameterMode, source.Context).Visit(selector);
             return new AsyncQueryable<TResult>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializableSelectorReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "Select" && m.GetParameters()[1].ParameterType.GetGenericArguments()[0].GetGenericArguments().Length == 2).MakeGenericMethod(typeof(TSource), typeof(TResult))), source.ParameterMode, selectedProperties: memberInit == null ? null : memberInit.Bindings.Select(mb => mb.Member.Name));
         }
-            
+                
         public static IAsyncQueryable<TResult> Select<TSource, TResult>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, IAsyncQueryableValue<TResult>>> selector)
         {
             if (selector.Body == selector.Parameters[0])
@@ -701,7 +701,7 @@ namespace WAQS.ClientContext
             new SerializableExpressionBuilder(serializableSelectorReference, source.ParameterMode, source.Context).Visit(selector);
             return new AsyncQueryable<TResult>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializableSelectorReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "Select" && m.GetParameters()[1].ParameterType.GetGenericArguments()[0].GetGenericArguments().Length == 2).MakeGenericMethod(typeof(TSource), typeof(TResult))), source.ParameterMode, selectedProperties: memberInit == null ? null : memberInit.Bindings.Select(mb => mb.Member.Name));
         }
-            
+                
         public static IAsyncQueryable<IEnumerable<TResult>> Select<TSource, TResult>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, IAsyncQueryable<TResult>>> selector)
         {
             if (selector.Body == selector.Parameters[0])
@@ -711,21 +711,21 @@ namespace WAQS.ClientContext
             new SerializableExpressionBuilder(serializableSelectorReference, source.ParameterMode, source.Context).Visit(selector);
             return new AsyncQueryable<IEnumerable<TResult>>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializableSelectorReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "Select" && m.GetParameters()[1].ParameterType.GetGenericArguments()[0].GetGenericArguments().Length == 2).MakeGenericMethod(typeof(TSource), typeof(IEnumerable<TResult>))), source.ParameterMode, selectedProperties: memberInit == null ? null : memberInit.Bindings.Select(mb => mb.Member.Name));
         }
-            
+                
         public static IAsyncQueryable<TResult> SelectMany<TSource, TResult>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, IEnumerable<TResult>>> selector)
         {
             var serializableSelectorReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializableSelectorReference, source.ParameterMode, source.Context).Visit(selector);
             return new AsyncQueryable<TResult>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializableSelectorReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "SelectMany" && m.GetParameters().Length == 2 && m.GetParameters()[1].ParameterType.GetGenericArguments()[0].GetGenericArguments().Length == 2).MakeGenericMethod(typeof(TSource), typeof(TResult))), source.ParameterMode);
         }
-            
+                
         public static IAsyncQueryable<TResult> SelectMany<TSource, TResult>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, IAsyncQueryable<TResult>>> selector)
         {
             var serializableSelectorReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializableSelectorReference, source.ParameterMode, source.Context).Visit(selector);
             return new AsyncQueryable<TResult>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializableSelectorReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "SelectMany" && m.GetParameters().Length == 2 && m.GetParameters()[1].ParameterType.GetGenericArguments()[0].GetGenericArguments().Length == 2).MakeGenericMethod(typeof(TSource), typeof(TResult))), source.ParameterMode);
         }
-            
+                
         public static IAsyncQueryable<TResult> SelectMany<TSource, TCollection, TResult>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, IEnumerable<TCollection>>> collectionSelector, Expression<Func<TSource, TCollection, TResult>> resultSelector)
         {
             var serializableCollectionSelectorReference = new Reference<SerializableExpression>();
@@ -734,7 +734,7 @@ namespace WAQS.ClientContext
             new SerializableExpressionBuilder(serializableResultSelectorReference, source.ParameterMode, source.Context).Visit(resultSelector);
             return new AsyncQueryable<TResult>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializableCollectionSelectorReference.Value, serializableResultSelectorReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "SelectMany" && m.GetParameters().Length == 3 && m.GetParameters()[1].ParameterType.GetGenericArguments()[0].GetGenericArguments().Length == 2).MakeGenericMethod(typeof(TSource), typeof(TCollection), typeof(TResult))), source.ParameterMode);
         }
-            
+                
         public static IAsyncQueryable<TResult> SelectMany<TSource, TCollection, TResult>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, IAsyncQueryable<TCollection>>> collectionSelector, Expression<Func<TSource, TCollection, TResult>> resultSelector)
         {
             var serializableCollectionSelectorReference = new Reference<SerializableExpression>();
@@ -744,50 +744,50 @@ namespace WAQS.ClientContext
             new SerializableExpressionBuilder(serializableResultSelectorReference, source.ParameterMode, source.Context).Visit(resultSelector);
             return new AsyncQueryable<TResult>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializableCollectionSelectorReference.Value, serializableResultSelectorReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "SelectMany" && m.GetParameters().Length == 3 && m.GetParameters()[1].ParameterType.GetGenericArguments()[0].GetGenericArguments().Length == 2).MakeGenericMethod(typeof(TSource), typeof(TCollection), typeof(TResult))), source.ParameterMode);
         }
-            
+                
         public static IAsyncQueryableValue<TSource> Single<TSource>(this IAsyncQueryable<TSource> source)
         {
             return new AsyncQueryableValue<TSource>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression }, typeof(Queryable).GetMethods().First(m => m.Name == "Single" && m.GetParameters().Length == 1).MakeGenericMethod(typeof(TSource))), source.ParameterMode, source.Includes, source.WithSpecificationsProperties, source.SelectedProperties);
         }
-            
+                
         public static IAsyncQueryableValue<TSource> Single<TSource>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, bool>> predicate)
         {
             var serializablePredicateReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializablePredicateReference, source.ParameterMode, source.Context).Visit(predicate);
             return new AsyncQueryableValue<TSource>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializablePredicateReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "Single" && m.GetParameters().Length == 2).MakeGenericMethod(typeof(TSource))), source.ParameterMode, source.Includes, source.WithSpecificationsProperties, source.SelectedProperties);
         }
-            
+                
         public static IAsyncQueryableValue<TSource> Single<TSource>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, IAsyncQueryableValue<bool>>> predicate)
         {
             var serializablePredicateReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializablePredicateReference, source.ParameterMode, source.Context).Visit(predicate);
             return new AsyncQueryableValue<TSource>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializablePredicateReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "Single" && m.GetParameters().Length == 2).MakeGenericMethod(typeof(TSource))), source.ParameterMode, source.Includes, source.WithSpecificationsProperties, source.SelectedProperties);
         }
-            
+                
         public static IAsyncQueryableValue<TSource> SingleOrDefault<TSource>(this IAsyncQueryable<TSource> source)
         {
             return new AsyncQueryableValue<TSource>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression }, typeof(Queryable).GetMethods().First(m => m.Name == "SingleOrDefault" && m.GetParameters().Length == 1).MakeGenericMethod(typeof(TSource))), source.ParameterMode, source.Includes, source.WithSpecificationsProperties, source.SelectedProperties);
         }
-            
+                
         public static IAsyncQueryableValue<TSource> SingleOrDefault<TSource>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, bool>> predicate)
         {
             var serializablePredicateReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializablePredicateReference, source.ParameterMode, source.Context).Visit(predicate);
             return new AsyncQueryableValue<TSource>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializablePredicateReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "SingleOrDefault" && m.GetParameters().Length == 2).MakeGenericMethod(typeof(TSource))), source.ParameterMode, source.Includes, source.WithSpecificationsProperties, source.SelectedProperties);
         }
-            
+                
         public static IAsyncQueryableValue<TSource> SingleOrDefault<TSource>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, IAsyncQueryableValue<bool>>> predicate)
         {
             var serializablePredicateReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializablePredicateReference, source.ParameterMode, source.Context).Visit(predicate);
             return new AsyncQueryableValue<TSource>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializablePredicateReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "SingleOrDefault" && m.GetParameters().Length == 2).MakeGenericMethod(typeof(TSource))), source.ParameterMode, source.Includes, source.WithSpecificationsProperties, source.SelectedProperties);
         }
-            
+                
         public static IAsyncQueryable<TSource> Skip<TSource>(this IAsyncQueryable<TSource> source, int count)
         {
             return new AsyncQueryable<TSource>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, new SerializableConstantExpression(count, typeof(int)) }, typeof(Queryable).GetMethod("Skip").MakeGenericMethod(typeof(TSource))), source.ParameterMode, source.Includes, source.WithSpecificationsProperties, source.SelectedProperties);
         }
-            
+                
         public static IAsyncQueryableValue<decimal?> Sum(this IAsyncQueryable<decimal?> source)
         {
             return Sum<decimal?>(source);
@@ -832,7 +832,7 @@ namespace WAQS.ClientContext
         {
             return new AsyncQueryableValue<T>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression }, typeof(Queryable).GetMethods().First(m => m.Name == "Sum" && m.GetParameters()[0].ParameterType == typeof(IQueryable<T>))), source.ParameterMode);
         }
-            
+                
         public static IAsyncQueryableValue<decimal?> Sum<TSource>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, decimal?>> selector)
         {
             return Sum<TSource, decimal?>(source, selector);
@@ -879,7 +879,7 @@ namespace WAQS.ClientContext
             new SerializableExpressionBuilder(serializablePredicateReference, source.ParameterMode, source.Context).Visit(selector);
             return new AsyncQueryableValue<T>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializablePredicateReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "Sum" && m.GetParameters().Length == 2 && m.GetParameters()[1].ParameterType.ToString() == string.Format("System.Linq.Expressions.Expression`1[System.Func`2[TSource,{0}]]", typeof(T).ToString())).MakeGenericMethod(typeof(TSource))), source.ParameterMode);
         }
-            
+                
         public static IAsyncQueryableValue<decimal?> Sum<TSource>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, IAsyncQueryableValue<decimal?>>> selector)
         {
             return SumAsyncQueryable<TSource, decimal?>(source, selector);
@@ -926,52 +926,52 @@ namespace WAQS.ClientContext
             new SerializableExpressionBuilder(serializablePredicateReference, source.ParameterMode, source.Context).Visit(selector);
             return new AsyncQueryableValue<T>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializablePredicateReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "Sum" && m.GetParameters().Length == 2 && m.GetParameters()[1].ParameterType.ToString() == string.Format("System.Linq.Expressions.Expression`1[System.Func`2[TSource,{0}]]", typeof(T).ToString())).MakeGenericMethod(typeof(TSource))), source.ParameterMode);
         }
-            
+                
         public static IAsyncQueryable<TSource> Take<TSource>(this IAsyncQueryable<TSource> source, int count)
         {
             return new AsyncQueryable<TSource>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, new SerializableConstantExpression(count, typeof(int)) }, typeof(Queryable).GetMethod("Take").MakeGenericMethod(typeof(TSource))), source.ParameterMode, source.Includes, source.WithSpecificationsProperties, source.SelectedProperties);
         }
-            
+                
         public static IAsyncQueryable<TSource> ThenBy<TSource, TKey>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, TKey>> keySelector)
         {
             var serializableKeySelectorReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializableKeySelectorReference, source.ParameterMode, source.Context).Visit(keySelector);
             return new AsyncQueryable<TSource>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializableKeySelectorReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "ThenBy" && m.GetParameters().Length == 2).MakeGenericMethod(typeof(TSource), typeof(TKey))), source.ParameterMode, source.Includes, source.WithSpecificationsProperties, source.SelectedProperties);
         }
-            
+                
         public static IAsyncQueryable<TSource> ThenByDescending<TSource, TKey>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, TKey>> keySelector)
         {
             var serializableKeySelectorReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializableKeySelectorReference, source.ParameterMode, source.Context).Visit(keySelector);
             return new AsyncQueryable<TSource>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, serializableKeySelectorReference.Value }, typeof(Queryable).GetMethods().First(m => m.Name == "ThenByDescending" && m.GetParameters().Length == 2).MakeGenericMethod(typeof(TSource), typeof(TKey))), source.ParameterMode, source.Includes, source.WithSpecificationsProperties, source.SelectedProperties);
         }
-            
+                
         public static IAsyncQueryable<TSource> Union<TSource>(this IAsyncQueryable<TSource> source1, IAsyncQueryable<TSource> source2)
         {
             return new AsyncQueryable<TSource>(source1.Context, new SerializableMethodCallExpression(null, new[] { source1.Expression, source2.Expression }, typeof(Queryable).GetMethods().First(m => m.Name == "Union" && m.GetParameters().Length == 2).MakeGenericMethod(typeof(TSource))), source1.ParameterMode);
         }
-            
+                
         public static IAsyncQueryable<TSource> Where<TSource>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, bool>> predicate)
         {
             var serializablePredicateReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializablePredicateReference, source.ParameterMode, source.Context).Visit(predicate);
             return Where(source, serializablePredicateReference.Value);
         }
-            
+                
         public static IAsyncQueryable<TSource> Where<TSource>(this IAsyncQueryable<TSource> source, Expression<Func<TSource, IAsyncQueryableValue<bool>>> predicate)
         {
             var serializablePredicateReference = new Reference<SerializableExpression>();
             new SerializableExpressionBuilder(serializablePredicateReference, source.ParameterMode, source.Context).Visit(predicate);
             return Where(source, serializablePredicateReference.Value);
         }
-            
+                
         public static IAsyncQueryable<TSource> Where<TSource>(IAsyncQueryable<TSource> source, SerializableExpression predicate)
         {
             return CreateAsyncQueryable<TSource>(source.Context, new SerializableMethodCallExpression(null, new[] { source.Expression, predicate }, typeof(Queryable).GetMethods().First(m => m.Name == "Where" && m.GetParameters()[1].ParameterType.GetGenericArguments()[0].GetGenericArguments().Length == 2).MakeGenericMethod(typeof(TSource))), source.ParameterMode, source.Includes, source.WithSpecificationsProperties, source.SelectedProperties);
         }
-            
-            
-            
+                
+                
+                
         public static Expression<Func<T, bool>> BuildOr<T>(IEnumerable<Expression<Func<T, bool>>> exps)
         {
             if (exps == null || !exps.Any())
@@ -979,27 +979,27 @@ namespace WAQS.ClientContext
             var parameterExpression = Expression.Parameter(typeof(T), "p" + Guid.NewGuid().ToString("N"));
             return Expression.Lambda<Func<T, bool>>(exps.Select(e => e.ReplaceBodyParameter(parameterExpression)).Aggregate((e1, e2) => Expression.OrElse(e1, e2)), parameterExpression);
         }
-            
-            
-            
-            
+                
+                
+                
+                
         public static IAsyncQueryable<TSource> Include<TSource, TInclude>(IAsyncQueryable<TSource> source, params Func<IAsyncQueryableBase, AsyncQueryableInclude>[] includes)
         {
             return CreateAsyncQueryable<TSource>(source.Context, source.Expression, source.ParameterMode, source.Includes.Union(includes), source.WithSpecificationsProperties, source.SelectedProperties);
         }
-            
+                
         public static IAsyncQueryableValue<TSource> Include<TSource, TInclude>(IAsyncQueryableValue<TSource> source, params Func<IAsyncQueryableBase, AsyncQueryableInclude>[] includes)
         {
             return CreateAsyncQueryableValue<TSource>(source.Context, source.Expression, source.ParameterMode, source.Includes.Union(includes), source.WithSpecificationsProperties, source.SelectedProperties);
         }
-        
+            
         public static IAsyncQueryable<OneT> IncludeOneToMany<OneT, ManyT>(IAsyncQueryable<OneT> source, IAsyncQueryable<ManyT> manyEntitySet, Expression<Func<OneT, IEnumerable<ManyT>>> exp, Expression<Func<OneT, ManyT, bool>> anyExp, Expression<Func<IEnumerable<ManyT>, IEnumerable<ManyT>>> queryTransform, Func<OneT, ManyT, bool> fkTest, Func<OneT, IEntityCollection<ManyT>> getTrackableCollection)
             where OneT : IEntity
             where ManyT : IEntity
         {
             return IncludeOneToMany<OneT, OneT, ManyT>(source, manyEntitySet, exp, anyExp, queryTransform, fkTest, getTrackableCollection);
         }
-        
+            
         public static IAsyncQueryable<OneBaseT> IncludeOneToMany<OneBaseT, OneT, ManyT>(IAsyncQueryable<OneBaseT> source, IAsyncQueryable<ManyT> manyEntitySet, Expression<Func<OneT, IEnumerable<ManyT>>> exp, Expression<Func<OneT, ManyT, bool>> anyExp, Expression<Func<IEnumerable<ManyT>, IEnumerable<ManyT>>> queryTransform, Func<OneT, ManyT, bool> fkTest, Func<OneT, IEntityCollection<ManyT>> getTrackableCollection)
             where OneT : OneBaseT
             where OneBaseT : IEntity
@@ -1031,14 +1031,14 @@ namespace WAQS.ClientContext
                     return include;
                 });
         }
-            
+                
         public static IAsyncQueryable<OneT> IncludeOneToMany<OneT, ManyT>(IAsyncQueryable<OneT> source, Expression<Func<OneT, IEnumerable<ManyT>>> exp, Expression<Func<IEnumerable<ManyT>, ManyT>> queryTransform, Func<OneT, ManyT, bool> fkTest, Func<OneT, IEntityCollection<ManyT>> getTrackableCollection)
             where OneT : IEntity
             where ManyT : IEntity
         {
             return IncludeOneToMany<OneT, OneT, ManyT>(source, exp, queryTransform, fkTest, getTrackableCollection);
         }
-            
+                
         public static IAsyncQueryable<OneBaseT> IncludeOneToMany<OneBaseT, OneT, ManyT>(IAsyncQueryable<OneBaseT> source, Expression<Func<OneT, IEnumerable<ManyT>>> exp, Expression<Func<IEnumerable<ManyT>, ManyT>> queryTransform, Func<OneT, ManyT, bool> fkTest, Func<OneT, IEntityCollection<ManyT>> getTrackableCollection)
             where OneT : OneBaseT
             where OneBaseT : IEntity
@@ -1070,13 +1070,13 @@ namespace WAQS.ClientContext
                 return include;
             });
         }
-            
+                
         private static QueryT CreateQuery<QueryT, ExpressionT>(Func<Expression<ExpressionT>, QueryT> getQuery, Expression<ExpressionT> queryTransform)
             where QueryT : IAsyncQueryableBase
         {
             return CreateQuery<QueryT, ExpressionT>(getQuery, ref queryTransform);
         }
-            
+                
         private static QueryT CreateQuery<QueryT, ExpressionT>(Func<Expression<ExpressionT>, QueryT> getQuery, ref Expression<ExpressionT> queryTransform)
             where QueryT : IAsyncQueryableBase
         {
@@ -1087,7 +1087,7 @@ namespace WAQS.ClientContext
                 value = includeAction(value);
             return value;
         }
-    
+        
         private static IAsyncQueryable<ManyT> CreateOneToManyQuery<OneT, ManyT>(IAsyncQueryable<OneT> source, IAsyncQueryable<ManyT> manyEntitySet, Expression<Func<OneT, ManyT, bool>> exp, ref Expression<Func<IEnumerable<ManyT>, IEnumerable<ManyT>>> queryTransform)
         {
             var oParameter = new SerializableParameterExpression { Name = "o" + Guid.NewGuid().ToString("N"), Type = new SerializableType(typeof(OneT)) };
@@ -1107,9 +1107,9 @@ namespace WAQS.ClientContext
                         throw new InvalidOperationException();
                 }
             })), ExpressionType.Quote, typeof(Expression<Func<OneT, bool>>))).Expression));
-            return CreateQuery(qt => AddTransformExp<ManyT>(source, (LambdaExpression)qt, serializableExp.Expression), queryTransform);
+            return CreateQuery(qt => AddTransformExp<ManyT>(source, qt, serializableExp.Expression), queryTransform);
         }
-    
+        
         private static IAsyncQueryable<T> AddTransformExp<T>(IAsyncQueryable source, LambdaExpression qt, SerializableExpression serializableExp)
         {
             MethodCallExpression qtMethodCall;
@@ -1122,12 +1122,12 @@ namespace WAQS.ClientContext
             }
             return CreateAsyncQueryable<T>(source.Context, serializableExp, source.ParameterMode);
         }
-    
+        
         private static IAsyncQueryable<ManyT> CreateOneToManyQuery<OneT, ManyT>(IAsyncQueryable<OneT> source, Expression<Func<OneT, IEnumerable<ManyT>>> exp, ref Expression<Func<IEnumerable<ManyT>, ManyT>> queryTransform)
         {
             return CreateQuery(qt => CreateAsyncQueryable<ManyT>(source.Context, source.RemoveSelectFromSource().Select(exp).Select(qt).Expression, source.ParameterMode), ref queryTransform);
         }
-            
+    
         private static IAsyncQueryableValue<ToTResult> CreateOneToOne<FromBaseT, FromT, ToT, ToTResult>(IAsyncQueryableValue<FromBaseT> source, Expression<Func<FromT, ToT>> exp, Func<IAsyncQueryable<ToT>, IAsyncQueryable<ToTResult>> queryTransform)
             where FromT : FromBaseT
         {
@@ -1137,7 +1137,23 @@ namespace WAQS.ClientContext
             var baseQuery = CreateToOne<FromBaseT>(sourceValue, serializableMethodCallExpression, out method).OfType<FromT>();
             return CreateAsyncQueryableValue<ToTResult>(source.Context, new SerializableMethodCallExpression(serializableMethodCallExpression.Source, new[] { queryTransform(baseQuery.Select(exp)).Expression }, method.GetGenericMethodDefinition().MakeGenericMethod(typeof(ToTResult))), source.ParameterMode);
         }
-            
+    
+        private static IAsyncQueryable<IEnumerable<ToTResult>> CreateOneToMany<FromBaseT, FromT, ToT, ToTResult>(IAsyncQueryableValue<FromBaseT> source, Expression<Func<FromT, IEnumerable<ToT>>> exp, Func<IAsyncQueryable<IEnumerable<ToT>>, IAsyncQueryable<IEnumerable<ToTResult>>> queryTransform)
+            where FromT : FromBaseT
+        {
+            var sourceValue = source.RemoveSelectFromSource();
+            var serializableMethodCallExpression = (SerializableMethodCallExpression)sourceValue.Expression;
+            MethodInfo method;
+            var baseQuery = CreateToOne<FromBaseT>(sourceValue, serializableMethodCallExpression, out method).OfType<FromT>();
+            switch (method.Name)
+            {
+                case "Last":
+                case "LastOrDefault":
+                    throw new NotImplementedException("Last and LastOrDefault are not supported here. Use OrderByDescending().First() instead");
+            }
+            return CreateAsyncQueryable<IEnumerable<ToTResult>>(source.Context, new SerializableMethodCallExpression(serializableMethodCallExpression.Source, new[] { queryTransform(baseQuery.Select(exp)).Expression, new SerializableConstantExpression(1, typeof(int)) }, typeof(Queryable).GetMethod("Take").GetGenericMethodDefinition().MakeGenericMethod(typeof(IEnumerable<ToTResult>))), source.ParameterMode);
+        }
+    
         private static SerializableExpression AddOfType<BaseT, T>(IAsyncQueryableValue<BaseT> source)
             where T : BaseT
         {
@@ -1149,7 +1165,7 @@ namespace WAQS.ClientContext
             var baseQuery = CreateToOne<BaseT>(sourceValue, serializableMethodCallExpression, out method).OfType<T>();
             return new SerializableMethodCallExpression(serializableMethodCallExpression.Source, new[] { baseQuery.Expression }, method.GetGenericMethodDefinition().MakeGenericMethod(typeof(T)));
         }
-            
+                
         private static IAsyncQueryable<FromT> CreateToOne<FromT>(IAsyncQueryableBase source, SerializableMethodCallExpression serializableMethodCallExpression, out MethodInfo method)
         {
             switch (serializableMethodCallExpression.MemberName)
@@ -1168,7 +1184,7 @@ namespace WAQS.ClientContext
                             break;
                         case 2:
                             method = serializableMethodCallExpression.Method.DeclaringType.GetMethods().First(m => m.Name == serializableMethodCallExpression.Method.Name && m.GetParameters().Length == 1);
-                            baseQuery = AsyncQueryableExtensions.Where(baseQuery, serializableMethodCallExpression.Parameters[1]);
+                            baseQuery = Where(baseQuery, serializableMethodCallExpression.Parameters[1]);
                             break;
                         default:
                             throw new NotImplementedException();
@@ -1178,39 +1194,39 @@ namespace WAQS.ClientContext
                     throw new NotImplementedException();
             }
         }
-            
+                
         private static IEnumerable<ManyT> IncludeOneToMany<OneT, ManyT>(object oneValues, object[] manyValues, MergeOption mergeOption, Func<OneT, ManyT, bool> fkTest, Func<OneT, IEntityCollection<ManyT>> getTrackableCollection)
             where OneT : IEntity
             where ManyT : IEntity
         {
             var many = ((IEnumerable<object>)manyValues[0]).Cast<ManyT>();
-    		if (mergeOption == MergeOption.NoTracking)
-    		{
-    			var manyArray = many.ToArray();
-    			var ones = ((IEnumerable<object>)oneValues).Cast<OneT>();
-     			foreach (var one in ones)
-    			{
-    				for (int mi = 0; mi < manyArray.Length; mi++)
-    				{
-    					var m = manyArray[mi];
-    					if (fkTest(one, m))
-    					{
-    						getTrackableCollection(one).Attach(m);
-    					}
-    				}
-    			}
-    		}
-    
-    		return many;
+        	if (mergeOption == MergeOption.NoTracking)
+        	{
+        		var manyArray = many.ToArray();
+        		var ones = ((IEnumerable<object>)oneValues).Cast<OneT>();
+         		foreach (var one in ones)
+        		{
+        			for (int mi = 0; mi < manyArray.Length; mi++)
+        			{
+        				var m = manyArray[mi];
+        				if (fkTest(one, m))
+        				{
+        					getTrackableCollection(one).Attach(m);
+        				}
+        			}
+        		}
+        	}
+        
+        	return many;
         }
-            
+                
         public static IAsyncQueryableValue<OneT> IncludeOneOneToMany<OneT, ManyT>(IAsyncQueryableValue<OneT> source, Expression<Func<OneT, IEnumerable<ManyT>>> exp, Expression<Func<IEnumerable<ManyT>, IEnumerable<ManyT>>> queryTransform, Func<OneT, IEntityCollection<ManyT>> getTrackableCollection, bool manyToMany = false)
             where OneT : IEntity
             where ManyT : IEntity
         {
             return IncludeOneOneToMany<OneT, OneT, ManyT>(source, exp, queryTransform, getTrackableCollection, manyToMany);
         }
-            
+                
         public static IAsyncQueryableValue<OneBaseT> IncludeOneOneToMany<OneBaseT, OneT, ManyT>(IAsyncQueryableValue<OneBaseT> source, Expression<Func<OneT, IEnumerable<ManyT>>> exp, Expression<Func<IEnumerable<ManyT>, IEnumerable<ManyT>>> queryTransform, Func<OneT, IEntityCollection<ManyT>> getTrackableCollection, bool manyToMany = false)
             where OneT : OneBaseT
             where OneBaseT : IEntity
@@ -1221,7 +1237,7 @@ namespace WAQS.ClientContext
                 var include = new AsyncQueryableInclude();
                 IAsyncQueryableBase subQuery;
                 Func<object, object[], MergeOption, object> load;
-                subQuery = CreateQuery(qt => CreateOneToOne((IAsyncQueryableValue<OneBaseT>)onesQuery, exp, q => qt == null ? q.Select(e => e.Select(e2 => e2)) : q.Select(qt).Select(e => e.Select(e2 => e2))), ref queryTransform);
+                subQuery = CreateQuery(qt => CreateOneToMany((IAsyncQueryableValue<OneBaseT>)onesQuery, exp, q => qt == null ? q.Select(e => e.Select(e2 => e2)) : q.Select(qt).Select(e => e.Select(e2 => e2))).SelectMany(e => e), ref queryTransform);
                 if (queryTransform == null || queryTransform.Body is ParameterExpression)
                 {
                     string path = ((MemberExpression)exp.Body).Member.Name;
@@ -1233,14 +1249,14 @@ namespace WAQS.ClientContext
                 return include;
             });
         }
-            
+                
         public static IAsyncQueryableValue<OneT> IncludeOneOneToMany<OneT, ManyT>(IAsyncQueryableValue<OneT> source, Expression<Func<OneT, IEnumerable<ManyT>>> exp, Expression<Func<IEnumerable<ManyT>, ManyT>> queryTransform, Func<OneT, IEntityCollection<ManyT>> getTrackableCollection, bool manyToMany = false)
             where OneT : IEntity
             where ManyT : IEntity
         {
             return IncludeOneOneToMany<OneT, OneT, ManyT>(source, exp, queryTransform, getTrackableCollection, manyToMany);
         }
-            
+                
         public static IAsyncQueryableValue<OneBaseT> IncludeOneOneToMany<OneBaseT, OneT, ManyT>(IAsyncQueryableValue<OneBaseT> source, Expression<Func<OneT, IEnumerable<ManyT>>> exp, Expression<Func<IEnumerable<ManyT>, ManyT>> queryTransform, Func<OneT, IEntityCollection<ManyT>> getTrackableCollection, bool manyToMany = false)
             where OneT : OneBaseT
             where OneBaseT : IEntity
@@ -1263,7 +1279,7 @@ namespace WAQS.ClientContext
                 return include;
             });
         }
-            
+                
         private static object IncludeOneOneToMany<OneT, ManyT>(object oneValues, object[] manyValues, MergeOption mergeOption, Func<OneT, IEntityCollection<ManyT>> getTrackableCollection, bool manyToMany = false)
             where OneT : IEntity
             where ManyT : IEntity
@@ -1274,22 +1290,22 @@ namespace WAQS.ClientContext
             var many = ((IEnumerable<object>)manyValues[0]).Cast<ManyT>();
             if (mergeOption == MergeOption.NoTracking || manyToMany)
             {
-    			foreach (var manyElt in many)
-    			{
-    				getTrackableCollection(one).Attach(manyElt);
-    			}
-    		}
-    
+        		foreach (var manyElt in many)
+        		{
+        			getTrackableCollection(one).Attach(manyElt);
+        		}
+        	}
+        
             return many;
         }
-            
+                
         public static IAsyncQueryableValue<IEnumerable<OneT>> IncludeManyOneToMany<OneT, ManyT>(IAsyncQueryableValue<IEnumerable<OneT>> source, Expression<Func<OneT, IEnumerable<ManyT>>> exp, Expression<Func<IEnumerable<ManyT>, IEnumerable<ManyT>>> queryTransform, Func<OneT, ManyT, bool> fkTest, Func<OneT, IEntityCollection<ManyT>> getTrackableCollection, bool manyToMany = false)
             where OneT : IEntity
             where ManyT : IEntity
         {
             return IncludeManyOneToMany<OneT, OneT, ManyT>(source, exp, queryTransform, fkTest, getTrackableCollection, manyToMany);
         }
-            
+                
         public static IAsyncQueryableValue<IEnumerable<OneBaseT>> IncludeManyOneToMany<OneBaseT, OneT, ManyT>(IAsyncQueryableValue<IEnumerable<OneBaseT>> source, Expression<Func<OneT, IEnumerable<ManyT>>> exp, Expression<Func<IEnumerable<ManyT>, IEnumerable<ManyT>>> queryTransform, Func<OneT, ManyT, bool> fkTest, Func<OneT, IEntityCollection<ManyT>> getTrackableCollection, bool manyToMany = false)
             where OneT : OneBaseT
             where OneBaseT : IEntity
@@ -1312,7 +1328,7 @@ namespace WAQS.ClientContext
                 return include;
             });
         }
-            
+                
         private static IAsyncQueryableValue<IEnumerable<ManyT>> CreateManyOneToMany<OneBaseT, OneT, ManyT>(IAsyncQueryableValue<IEnumerable<OneBaseT>> source, Expression<Func<OneT, IEnumerable<ManyT>>> exp, ref Expression<Func<IEnumerable<ManyT>, IEnumerable<ManyT>>> queryTransform)
             where OneT : OneBaseT
         {
@@ -1328,40 +1344,40 @@ namespace WAQS.ClientContext
                 return CreateAsyncQueryableValue<IEnumerable<ManyT>>(source.Context, new SerializableMethodCallExpression(serializableMethodCallExpression.Source, new[] { manyQuery.Expression }, method.GetGenericMethodDefinition().MakeGenericMethod(typeof(IEnumerable<ManyT>))), source.ParameterMode);
             }, ref queryTransform);
         }
-            
+                
         private static object IncludeManyOneToMany<OneT, ManyT>(object oneValues, object[] manyValues, MergeOption mergeOption, Func<OneT, ManyT, bool> fkTest, Func<OneT, IEntityCollection<ManyT>> getTrackableCollection)
             where OneT : IEntity
             where ManyT : IEntity
         {
-    		var value = ((IEnumerable<object>)manyValues[0]).Cast<ManyT>();
-    		if (mergeOption == MergeOption.NoTracking)
-    		{
-    			object oneValue = ((IEnumerable<object>)oneValues).Cast<OneT>();
-    			var ones = ((IEnumerable<object>)oneValue).Cast<OneT>();
-    			var manyArray = value.ToArray();
-    			foreach (var one in ones)
-    			{
-    				for (int mi = 0; mi < manyArray.Length; mi++)
-    				{
-    					var m = manyArray[mi];
-    					if (fkTest(one, m))
-    					{
-    						getTrackableCollection(one).Attach(m);
-    					}
-    				}
-    			}
-    		}
-    
-    		return value;
+        	var value = ((IEnumerable<object>)manyValues[0]).Cast<ManyT>();
+        	if (mergeOption == MergeOption.NoTracking)
+        	{
+        		object oneValue = ((IEnumerable<object>)oneValues).Cast<OneT>();
+        		var ones = ((IEnumerable<object>)oneValue).Cast<OneT>();
+        		var manyArray = value.ToArray();
+        		foreach (var one in ones)
+        		{
+        			for (int mi = 0; mi < manyArray.Length; mi++)
+        			{
+        				var m = manyArray[mi];
+        				if (fkTest(one, m))
+        				{
+        					getTrackableCollection(one).Attach(m);
+        				}
+        			}
+        		}
+        	}
+        
+        	return value;
         }
-            
+                
         public static IAsyncQueryableValue<IEnumerable<OneT>> IncludeManyOneToOneMany<OneT, ManyT>(IAsyncQueryableValue<IEnumerable<OneT>> source, Expression<Func<OneT, IEnumerable<ManyT>>> exp, Expression<Func<IEnumerable<ManyT>, ManyT>> queryTransform, Func<OneT, ManyT, bool> fkTest, Func<OneT, IEntityCollection<ManyT>> getTrackableCollection, bool manyToMany = false)
             where OneT : IEntity
             where ManyT : IEntity
         {
             return IncludeManyOneToOneMany<OneT, OneT, ManyT>(source, exp, queryTransform, fkTest, getTrackableCollection, manyToMany);
         }
-            
+                
         public static IAsyncQueryableValue<IEnumerable<OneBaseT>> IncludeManyOneToOneMany<OneBaseT, OneT, ManyT>(IAsyncQueryableValue<IEnumerable<OneBaseT>> source, Expression<Func<OneT, IEnumerable<ManyT>>> exp, Expression<Func<IEnumerable<ManyT>, ManyT>> queryTransform, Func<OneT, ManyT, bool> fkTest, Func<OneT, IEntityCollection<ManyT>> getTrackableCollection, bool manyToMany = false)
             where OneT : OneBaseT
             where OneBaseT : IEntity
@@ -1384,7 +1400,7 @@ namespace WAQS.ClientContext
                 return include;
             });
         }
-            
+                
         private static IAsyncQueryableValue<IEnumerable<ManyT>> CreateManyOneToOneMany<OneBaseT, OneT, ManyT>(IAsyncQueryableValue<IEnumerable<OneBaseT>> source, Expression<Func<OneT, IEnumerable<ManyT>>> exp, ref Expression<Func<IEnumerable<ManyT>, ManyT>> queryTransform)
             where OneT : OneBaseT
         {
@@ -1399,39 +1415,39 @@ namespace WAQS.ClientContext
                 return CreateAsyncQueryableValue<IEnumerable<ManyT>>(source.Context, new SerializableMethodCallExpression(serializableMethodCallExpression.Source, new[] { manyQuery.Expression }, method.GetGenericMethodDefinition().MakeGenericMethod(typeof(IEnumerable<ManyT>))), source.ParameterMode);
             }, ref queryTransform);
         }
-            
+                
         private static object IncludeManyOneToOneMany<OneT, ManyT>(object oneValues, object[] manyValues, MergeOption mergeOption, Func<OneT, ManyT, bool> fkTest, Func<OneT, IEntityCollection<ManyT>> getTrackableCollection)
             where OneT : IEntity
             where ManyT : IEntity
         {
-    		var many = ((IEnumerable<object>)manyValues).Cast<ManyT>();
-    		if (mergeOption == MergeOption.NoTracking)
-    		{
-    			var ones = ((IEnumerable<object>)oneValues).Cast<OneT>();
-    			var manyArray = many.ToArray();
-    			foreach (var one in ones)
-    			{
-    				for (int mi = 0; mi < manyArray.Length; mi++)
-    				{
-    					var m = manyArray[mi];
-    					if (fkTest(one, m))
-    					{
-    						getTrackableCollection(one).Attach(m);
-    					}
-    				}
-    			}
-    		}
-    
-    		return many;
+        	var many = ((IEnumerable<object>)manyValues).Cast<ManyT>();
+        	if (mergeOption == MergeOption.NoTracking)
+        	{
+        		var ones = ((IEnumerable<object>)oneValues).Cast<OneT>();
+        		var manyArray = many.ToArray();
+        		foreach (var one in ones)
+        		{
+        			for (int mi = 0; mi < manyArray.Length; mi++)
+        			{
+        				var m = manyArray[mi];
+        				if (fkTest(one, m))
+        				{
+        					getTrackableCollection(one).Attach(m);
+        				}
+        			}
+        		}
+        	}
+        
+        	return many;
         }
-            
+                
         public static IAsyncQueryable<ManyT> IncludeManyToOne<ManyT, OneT>(IAsyncQueryable<ManyT> source, IAsyncQueryable<OneT> onesEntitySet, Expression<Func<ManyT, OneT>> exp, Expression<Func<ManyT, OneT, bool>> anyExp, Expression<Func<OneT, OneT>> queryTransform, Func<ManyT, OneT, bool> fkTest, Action<ManyT, OneT> setOne)
             where OneT : IEntity
             where ManyT : IEntity
         {
             return IncludeManyToOne<ManyT, ManyT, OneT>(source, onesEntitySet, exp, anyExp, queryTransform, fkTest, setOne);
         }
-            
+                
         public static IAsyncQueryable<ManyBaseT> IncludeManyToOne<ManyBaseT, ManyT, OneT>(IAsyncQueryable<ManyBaseT> source, IAsyncQueryable<OneT> onesEntitySet, Expression<Func<ManyT, OneT>> exp, Expression<Func<ManyT, OneT, bool>> anyExp, Expression<Func<OneT, OneT>> queryTransform, Func<ManyT, OneT, bool> fkTest, Action<ManyT, OneT> setOne)
             where ManyBaseT : IEntity
             where ManyT : ManyBaseT
@@ -1463,7 +1479,7 @@ namespace WAQS.ClientContext
                 return include;
             });
         }
-            
+                
         private static IAsyncQueryable<OneT> CreateManyToOneQuery<ManyT, OneT>(IAsyncQueryable<ManyT> source, IAsyncQueryable<OneT> onesEntitySet, Expression<Func<ManyT, OneT, bool>> exp, ref Expression<Func<OneT, OneT>> queryTransform)
         {
             var oParameter = new SerializableParameterExpression { Name = "o" + Guid.NewGuid().ToString("N"), Type = new SerializableType(typeof(OneT)) };
@@ -1483,34 +1499,34 @@ namespace WAQS.ClientContext
                             throw new InvalidOperationException();
                     }
                 })), ExpressionType.Quote, typeof(Expression<Func<ManyT, bool>>))).Expression));
-            return CreateQuery(qt => AddTransformExp<OneT>(source, (LambdaExpression)qt, serializableExp.Expression), queryTransform);
+            return CreateQuery(qt => AddTransformExp<OneT>(source, qt, serializableExp.Expression), queryTransform);
         }
-            
+                
         private static object IncludeManyToOne<ManyT, OneT>(object manyValues, object[] oneValues, MergeOption mergeOption, Func<ManyT, OneT, bool> fkTest, Action<ManyT, OneT> setOne)
             where OneT : IEntity
             where ManyT : IEntity
         {
-    		var ones = ((IEnumerable<object>)oneValues[0]).Cast<OneT>();
-    		if (mergeOption == MergeOption.NoTracking)
-    		{
-    			var onesArray = ones.Where(e => e != null).ToArray();
-    			var manyArray = ((IEnumerable<object>)manyValues).Cast<ManyT>().ToArray();
-    			for (int i = 0; i < manyArray.Length; i++)
-    			{
-    				var one = onesArray.FirstOrDefault(e => fkTest(manyArray[i], e));
-    				if (one != null)
-    				{
-    					manyArray[i].IsInitializingRelationships = true;
-    					setOne(manyArray[i], one);
-    					manyArray[i].IsInitializingRelationships = false;
-    				}
-    			}
-    
-    		}
-    
-    		return ones;
+        	var ones = ((IEnumerable<object>)oneValues[0]).Cast<OneT>();
+        	if (mergeOption == MergeOption.NoTracking)
+        	{
+        		var onesArray = ones.Where(e => e != null).ToArray();
+        		var manyArray = ((IEnumerable<object>)manyValues).Cast<ManyT>().ToArray();
+        		for (int i = 0; i < manyArray.Length; i++)
+        		{
+        			var one = onesArray.FirstOrDefault(e => fkTest(manyArray[i], e));
+        			if (one != null)
+        			{
+        				manyArray[i].IsInitializingRelationships = true;
+        				setOne(manyArray[i], one);
+        				manyArray[i].IsInitializingRelationships = false;
+        			}
+        		}
+        
+        	}
+        
+        	return ones;
         }
-            
+                
         private static object IncludeOneManyToOne<ManyT, OneT>(object manyValues, object[] oneValues, MergeOption mergeOption, Action<ManyT, OneT> setOne)
             where OneT : IEntity
             where ManyT : IEntity
@@ -1530,14 +1546,14 @@ namespace WAQS.ClientContext
             }
             return one;
         }
-            
+                
         public static IAsyncQueryableValue<ManyT> IncludeOneManyToOne<ManyT, OneT>(IAsyncQueryableValue<ManyT> source, Expression<Func<ManyT, OneT>> exp, Expression<Func<OneT, OneT>> queryTransform, Action<ManyT, OneT> setOne)
             where OneT : IEntity
             where ManyT : IEntity
         {
             return IncludeOneManyToOne<ManyT, ManyT, OneT>(source, exp, queryTransform, setOne);
         }
-            
+                
         public static IAsyncQueryableValue<ManyBaseT> IncludeOneManyToOne<ManyBaseT, ManyT, OneT>(IAsyncQueryableValue<ManyBaseT> source, Expression<Func<ManyT, OneT>> exp, Expression<Func<OneT, OneT>> queryTransform, Action<ManyT, OneT> setOne)
             where OneT : IEntity
             where ManyT : ManyBaseT
@@ -1560,14 +1576,14 @@ namespace WAQS.ClientContext
                 return include;
             });
         }
-            
+                
         public static IAsyncQueryable<FromT> IncludeManyToMany<FromT, ToT, KeysT>(IAsyncQueryable<FromT> source, IAsyncQueryable<ToT> toEntitySet, Expression<Func<FromT, IEnumerable<ToT>>> exp, Expression<Func<FromT, TrackableCollectionBase<ToT>>> getCollectionExp, Expression<Func<TrackableCollectionBase<ToT>, ToT, bool>> anyExp, Expression<Func<IEnumerable<ToT>, IEnumerable<ToT>>> queryTransform, Func<IAsyncQueryable<FromT>, IAsyncQueryable<KeysT>> getKeysQuery, Func<KeysT, FromT, bool> fromFkTest, Func<KeysT, ToT, bool> toFkTest, Func<FromT, IEntityCollection<ToT>> getTrackableCollection)
             where FromT : IEntity
             where ToT : IEntity
         {
             return IncludeManyToMany<FromT, FromT, ToT, KeysT>(source, toEntitySet, exp, getCollectionExp, anyExp, queryTransform, getKeysQuery, fromFkTest, toFkTest, getTrackableCollection);
         }
-            
+                
         public static IAsyncQueryable<FromBaseT> IncludeManyToMany<FromBaseT, FromT, ToT, KeysT>(IAsyncQueryable<FromBaseT> source, IAsyncQueryable<ToT> toEntitySet, Expression<Func<FromT, IEnumerable<ToT>>> exp, Expression<Func<FromT, TrackableCollectionBase<ToT>>> getCollectionExp, Expression<Func<TrackableCollectionBase<ToT>, ToT, bool>> anyExp, Expression<Func<IEnumerable<ToT>, IEnumerable<ToT>>> queryTransform, Func<IAsyncQueryable<FromT>, IAsyncQueryable<KeysT>> getKeysQuery, Func<KeysT, FromT, bool> fromFkTest, Func<KeysT, ToT, bool> toFkTest, Func<FromT, IEntityCollection<ToT>> getTrackableCollection)
             where FromT : FromBaseT
             where FromBaseT : IEntity
@@ -1607,7 +1623,7 @@ namespace WAQS.ClientContext
                     return include;
                 });
         }
-            
+                
         private static IAsyncQueryable<ToT> CreateManyToManyQuery<FromT, ToT>(IAsyncQueryable<FromT> source, IAsyncQueryable<ToT> toEntitySet, Expression<Func<FromT, IEnumerable<ToT>>> exp, Expression<Func<FromT, TrackableCollectionBase<ToT>>> getCollectionExp, Expression<Func<TrackableCollectionBase<ToT>, ToT, bool>> anyExp, ref Expression<Func<IEnumerable<ToT>, IEnumerable<ToT>>> queryTransform)
             where FromT : IEntity
             where ToT : IEntity
@@ -1643,14 +1659,14 @@ namespace WAQS.ClientContext
                     return CreateAsyncQueryable<ToT>(source.Context, toQuery.Expression, source.ParameterMode);
                 }, ref queryTransform);
         }
-            
+                
         public static IAsyncQueryable<FromT> IncludeManyToOneMany<FromT, ToT, KeysT>(IAsyncQueryable<FromT> source, Expression<Func<FromT, IEnumerable<ToT>>> exp, Expression<Func<IEnumerable<ToT>, ToT>> queryTransform, Func<IAsyncQueryable<FromT>, ToT, IAsyncQueryable<KeysT>> getKeysQuery, Func<KeysT, ToT> getTo, Func<KeysT, FromT, bool> getFromKey, Func<FromT, IEntityCollection<ToT>> getTrackableCollection)
             where FromT : IEntity
             where ToT : class, IEntity
         {
             return IncludeManyToOneMany<FromT, FromT, ToT, KeysT>(source, exp, queryTransform, getKeysQuery, getTo, getFromKey, getTrackableCollection);
         }
-            
+                
         public static IAsyncQueryable<FromBaseT> IncludeManyToOneMany<FromBaseT, FromT, ToT, KeysT>(IAsyncQueryable<FromBaseT> source, Expression<Func<FromT, IEnumerable<ToT>>> exp, Expression<Func<IEnumerable<ToT>, ToT>> queryTransform, Func<IAsyncQueryable<FromT>, ToT, IAsyncQueryable<KeysT>> getKeysQuery, Func<KeysT, ToT> getTo, Func<KeysT, FromT, bool> getFromKey, Func<FromT, IEntityCollection<ToT>> getTrackableCollection)
             where FromT : FromBaseT
             where FromBaseT : IEntity
@@ -1689,16 +1705,16 @@ namespace WAQS.ClientContext
                 var queryTransformLambdaSerializableExpression = (SerializableLambdaExpression)queryTransformSerializableExpressionReference.Value;
                 keysCtorToArg = queryTransformLambdaSerializableExpression.ReplaceBodyParameter(expLambda.ReplaceBodyParameter(selectLambda.Parameters[0]));
                 keysCtor.Arguments[keysCtor.Arguments.Count - 1] = keysCtorToArg;
-            
+                
                 keysQuery = CreateAsyncQueryable<KeysT>(keysQuery.Context, keysQuery.Expression, keysQuery.ParameterMode, toQuery.Includes);
-            
+                
                 load = (fromValues, toValues, mergeOption) => IncludeManyToOneMany<FromT, ToT, KeysT>(fromValues, toValues, getTo, getFromKey, getTrackableCollection);
                 include.Queries = new IAsyncQueryableBase[] { keysQuery };
                 include.Load = load;
                 return include;
             });
         }
-            
+                
         private static object IncludeManyToOneMany<FromT, ToT, KeysT>(object fromValues, object[] toValues, Func<KeysT, ToT> getTo, Func<KeysT, FromT, bool> getFromKey, Func<FromT, IEntityCollection<ToT>> getTrackableCollection)
         {
             var keys = ((IEnumerable<object>)toValues[0]).Cast<KeysT>();
@@ -1715,14 +1731,14 @@ namespace WAQS.ClientContext
             }
             return tos;
         }
-            
+                
         public static IAsyncQueryable<FromT> IncludeManyToMany<FromT, ToT, KeysT>(IAsyncQueryable<FromT> source, IAsyncQueryable<ToT> toQuery, Func<IAsyncQueryable<FromT>, IAsyncQueryable<ToT>, IAsyncQueryable<KeysT>> getKeysQuery, Func<FromT, IAsyncQueryable<ToT>, IAsyncQueryable<KeysT>> getKeysQueryForOne, Func<KeysT, FromT, bool> fromFkTest, Func<KeysT, ToT, bool> toFkTest, Func<FromT, IEntityCollection<ToT>> getTrackableCollection)
             where FromT : class, IEntity
             where ToT : IEntity
         {
             return IncludeManyToMany<FromT, FromT, ToT, KeysT>(source, toQuery, getKeysQuery, getKeysQueryForOne, fromFkTest, toFkTest, getTrackableCollection);
         }
-            
+                
         public static IAsyncQueryable<FromBaseT> IncludeManyToMany<FromBaseT, FromT, ToT, KeysT>(IAsyncQueryable<FromBaseT> source, IAsyncQueryable<ToT> toQuery, Func<IAsyncQueryable<FromT>, IAsyncQueryable<ToT>, IAsyncQueryable<KeysT>> getKeysQuery, Func<FromT, IAsyncQueryable<ToT>, IAsyncQueryable<KeysT>> getKeysQueryForOne, Func<KeysT, FromT, bool> fromFkTest, Func<KeysT, ToT, bool> toFkTest, Func<FromT, IEntityCollection<ToT>> getTrackableCollection)
             where FromT : class, FromBaseT
             where FromBaseT : class, IEntity
@@ -1746,7 +1762,7 @@ namespace WAQS.ClientContext
                 return new AsyncQueryableInclude { Queries = new IAsyncQueryableBase[] { toQuery, keysQuery }, Load = load };
             });
         }
-            
+                
         public static IAsyncQueryable<FromT> IncludeManyToOneMany<FromT, ToT, KeysT>(IAsyncQueryable<FromT> source, IAsyncQueryableValue<ToT> toQuery, Func<IAsyncQueryable<FromT>, ToT, IAsyncQueryable<KeysT>> getKeysQuery, Func<KeysT, FromT, bool> fromFkTest, Func<KeysT, ToT, bool> toFkTest, Func<FromT, IEntityCollection<ToT>> getTrackableCollection)
             where FromT : class, IEntity
             where ToT : class, IEntity
@@ -1769,7 +1785,7 @@ namespace WAQS.ClientContext
                 return new AsyncQueryableInclude { Queries = new IAsyncQueryableBase[] { toQuery, keysQuery }, Load = load };
             });
         }
-            
+                
         public static IAsyncQueryableValue<FromT> IncludeOneManyToMany<FromT, ToT, KeysT>(IAsyncQueryableValue<FromT> source, IAsyncQueryable<ToT> toQuery, Func<FromT, IAsyncQueryable<ToT>, IAsyncQueryable<KeysT>> getKeysQuery, Func<KeysT, FromT, bool> fromFkTest, Func<KeysT, ToT, bool> toFkTest, Func<FromT, IEntityCollection<ToT>> getTrackableCollection)
             where FromT : class, IEntity
             where ToT : IEntity
@@ -1783,7 +1799,7 @@ namespace WAQS.ClientContext
                     return new AsyncQueryableInclude { Queries = new IAsyncQueryableBase[] { toQuery, keysQuery }, Load = load };
                 });
         }
-            
+                
         public static IAsyncQueryableValue<FromT> IncludeOneManyToOneMany<FromT, ToT, KeysT>(IAsyncQueryableValue<FromT> source, IAsyncQueryableValue<ToT> toQuery, Func<IAsyncQueryable<FromT>, ToT, IAsyncQueryable<KeysT>> getKeysQuery, Func<KeysT, FromT, bool> fromFkTest, Func<KeysT, ToT, bool> toFkTest, Func<FromT, IEntityCollection<ToT>> getTrackableCollection)
             where FromT : class, IEntity
             where ToT : class, IEntity
@@ -1797,7 +1813,7 @@ namespace WAQS.ClientContext
                     return new AsyncQueryableInclude { Queries = new IAsyncQueryableBase[] { toQuery, keysQuery }, Load = load };
                 });
         }
-            
+                
         private static IAsyncQueryable<KeysT> CreateOneManyToManyKeysQuery<FromBaseT, FromT, ToT, KeysT>(IAsyncQueryableValue<FromBaseT> fromQuery, IAsyncQueryable<ToT> toQuery, Func<FromT, IAsyncQueryable<ToT>, IAsyncQueryable<KeysT>> getKeysQuery)
             where FromT : class, FromBaseT
             where FromBaseT : class, IEntity
@@ -1813,7 +1829,7 @@ namespace WAQS.ClientContext
             });
             return CreateAsyncQueryable<KeysT>(keysQuery.Context, keysQueryExpression, keysQuery.ParameterMode);
         }
-            
+                
         private static IAsyncQueryable<KeysT> CreateManyToOneManyKeysQuery<FromT, ToT, KeysT>(IAsyncQueryable<FromT> fromQuery, IAsyncQueryableValue<ToT> toQuery, Func<IAsyncQueryable<FromT>, ToT, IAsyncQueryable<KeysT>> getKeysQuery)
             where FromT : IEntity
             where ToT : class, IEntity
@@ -1829,7 +1845,7 @@ namespace WAQS.ClientContext
             keysQuery = CreateAsyncQueryable<KeysT>(keysQuery.Context, keysQueryExpression, keysQuery.ParameterMode);
             return keysQuery;
         }
-            
+                
         private static IAsyncQueryableValue<KeysT> CreateOneManyToOneManyKeysQuery<FromT, ToT, KeysT>(IAsyncQueryableValue<FromT> fromQuery, IAsyncQueryableValue<ToT> toQuery, Func<IAsyncQueryable<FromT>, ToT, IAsyncQueryable<KeysT>> getKeysQuery)
             where FromT : class, IEntity
             where ToT : class, IEntity
@@ -1847,7 +1863,7 @@ namespace WAQS.ClientContext
             });
             return CreateAsyncQueryableValue<KeysT>(keysQuery.Context, new SerializableMethodCallExpression(null, new[] { keysQueryExpression }, method.MakeGenericMethod(typeof(KeysT))), keysQuery.ParameterMode);
         }
-            
+                
         private static object IncludeManyToMany<FromT, ToT, KeysT>(object fromValues, object[] toValues, Func<KeysT, FromT, bool> fromFkTest, Func<KeysT, ToT, bool> toFkTest, Func<FromT, IEntityCollection<ToT>> getTrackableCollection)
         {
             var froms = ((IEnumerable<object>)fromValues).Cast<FromT>().ToArray();
@@ -1862,7 +1878,7 @@ namespace WAQS.ClientContext
             }
             return tos;
         }
-            
+                
         private static object IncludeManyToOneManyTask<FromT, ToT, KeysT>(object fromValues, object[] toValues, Func<KeysT, FromT, bool> fromFkTest, Func<KeysT, ToT, bool> toFkTest, Func<FromT, IEntityCollection<ToT>> getTrackableCollection)
         {
             var froms = ((IEnumerable<object>)fromValues).Cast<FromT>().ToArray();
@@ -1876,7 +1892,7 @@ namespace WAQS.ClientContext
             }
             return to;
         }
-            
+                
         private static object IncludeOneManyToMany<FromT, ToT, KeysT>(object fromValues, object[] toValues, Func<KeysT, FromT, bool> fromFkTest, Func<KeysT, ToT, bool> toFkTest, Func<FromT, IEntityCollection<ToT>> getTrackableCollection)
         {
             var @from = (FromT)fromValues;
@@ -1890,7 +1906,7 @@ namespace WAQS.ClientContext
             }
             return tos;
         }
-            
+                
         private static object IncludeOneManyToOneMany<FromT, ToT>(object fromValues, object[] toValues, Func<FromT, IEntityCollection<ToT>> getTrackableCollection)
         {
             var fromValue = (FromT)fromValues;
@@ -1898,14 +1914,14 @@ namespace WAQS.ClientContext
             getTrackableCollection(fromValue).Attach(toValue);
             return toValue;
         }
-            
+                
         public static IAsyncQueryableValue<IEnumerable<FromT>> IncludeManyOneToOne<FromT, ToT>(IAsyncQueryableValue<IEnumerable<FromT>> source, Expression<Func<FromT, ToT>> exp, Expression<Func<ToT, ToT>> queryTransform, Func<FromT, ToT, bool> fkTest, Action<FromT, ToT> setTo)
             where FromT : IEntity
             where ToT : IEntity
         {
             return IncludeManyOneToOne<FromT, FromT, ToT>(source, exp, queryTransform, fkTest, setTo);
         }
-            
+                
         public static IAsyncQueryableValue<IEnumerable<FromBaseT>> IncludeManyOneToOne<FromBaseT, FromT, ToT>(IAsyncQueryableValue<IEnumerable<FromBaseT>> source, Expression<Func<FromT, ToT>> exp, Expression<Func<ToT, ToT>> queryTransform, Func<FromT, ToT, bool> fkTest, Action<FromT, ToT> setTo)
             where FromT : FromBaseT
             where FromBaseT : IEntity
@@ -1926,7 +1942,7 @@ namespace WAQS.ClientContext
                 return include;
             });
         }
-            
+                
         private static IAsyncQueryableValue<IEnumerable<ToT>> CreateManyOneToOne<FromBaseT, FromT, ToT>(IAsyncQueryableValue<IEnumerable<FromBaseT>> source, Expression<Func<FromT, ToT>> exp, ref Expression<Func<ToT, ToT>> queryTransform)
             where FromT : FromBaseT
         {
@@ -1944,102 +1960,102 @@ namespace WAQS.ClientContext
                 return CreateAsyncQueryableValue<IEnumerable<ToT>>(source.Context, new SerializableMethodCallExpression(serializableMethodCallExpression.Source, new[] { manyQuery.Expression }, method.GetGenericMethodDefinition().MakeGenericMethod(typeof(IEnumerable<ToT>))), source.ParameterMode);
             }, ref queryTransform);
         }
-            
+                
         private static object IncludeManyOneToOne<FromT, ToT>(object fromValues, object[] toValues, MergeOption mergeOption, Func<FromT, ToT, bool> fkTest, Action<FromT, ToT> setTo)
             where FromT : IEntity
             where ToT : IEntity
         {
-    		var tos = ((IEnumerable<object>)toValues).Cast<ToT>();
-    		var froms = ((IEnumerable<object>)fromValues).Cast<FromT>();
-    		if (mergeOption == MergeOption.NoTracking)
-    		{
-    			var tosArray = ((IEnumerable<object>)toValues[0]).Cast<ToT>().ToArray();
-    			foreach (var from in froms)
-    			{
-    				for (int i = 0; i < tosArray.Length; i++)
-    				{
-    					if (tosArray[i] != null && fkTest(from, tosArray[i]))
-    					{
-    						tosArray[i].IsInitializingRelationships = true;
-    						setTo(from, tosArray[i]);
-    						tosArray[i].IsInitializingRelationships = false;
-    					}
-    				}
-    			}
-    		}
-    
-    		return tos;
+        	var tos = ((IEnumerable<object>)toValues).Cast<ToT>();
+        	var froms = ((IEnumerable<object>)fromValues).Cast<FromT>();
+        	if (mergeOption == MergeOption.NoTracking)
+        	{
+        		var tosArray = ((IEnumerable<object>)toValues[0]).Cast<ToT>().ToArray();
+        		foreach (var from in froms)
+        		{
+        			for (int i = 0; i < tosArray.Length; i++)
+        			{
+        				if (tosArray[i] != null && fkTest(from, tosArray[i]))
+        				{
+        					tosArray[i].IsInitializingRelationships = true;
+        					setTo(from, tosArray[i]);
+        					tosArray[i].IsInitializingRelationships = false;
+        				}
+        			}
+        		}
+        	}
+        
+        	return tos;
         }
-            
+                
         private static IAsyncQueryable<T> RemoveSelectFromSource<T>(this IAsyncQueryable<T> source)
         {
             if (source == null)
                 return null;
             return CreateAsyncQueryable<T>(source.Context, new RemoveSelect().Visit(source.Expression), source.ParameterMode, source.Includes, source.WithSpecificationsProperties, source.SelectedProperties);
         }
-            
+                
         private static IAsyncQueryableValue<T> RemoveSelectFromSource<T>(this IAsyncQueryableValue<T> source)
         {
             if (source == null)
                 return null;
             return CreateAsyncQueryableValue<T>(source.Context, new RemoveSelect().Visit(source.Expression), source.ParameterMode, source.Includes, source.WithSpecificationsProperties, source.SelectedProperties);
         }
-            
+                
         public static IAsyncQueryable<TSource> CreateAsyncQueryable<TSource>(IClientContextBase context, SerializableExpression expression, ParameterMode parameterMode, IEnumerable<Func<IAsyncQueryableBase, AsyncQueryableInclude>> includes = null, IEnumerable<string> withSpecificationsProperties = null, IEnumerable<string> selectedProperties = null)
         {
             return new AsyncQueryable<TSource>(context, expression, parameterMode, includes, withSpecificationsProperties, selectedProperties);
         }
-            
+                
         public static IAsyncQueryableValue<TSource> CreateAsyncQueryableValue<TSource>(IClientContextBase context, SerializableExpression expression, ParameterMode parameterMode, IEnumerable<Func<IAsyncQueryableBase, AsyncQueryableInclude>> includes = null, IEnumerable<string> withSpecificationsProperties = null, IEnumerable<string> selectedProperties = null)
         {
             return new AsyncQueryableValue<TSource>(context, expression, parameterMode, includes, withSpecificationsProperties, selectedProperties);
         }
-            
+                
         public static IAsyncQueryable<QueryT> ReplaceType<QueryT, OldT, NewT>(this IAsyncQueryable<QueryT> query)
         {
             return ReplaceType<QueryT, QueryT, OldT, NewT>(query);
         }
-            
+                
         public static IAsyncQueryable<NewT> ReplaceType<OldT, NewT>(this IAsyncQueryable<OldT> query)
         {
             return ReplaceType<OldT, NewT, OldT, NewT>(query);
         }
-            
+                
         public static IAsyncQueryable<NewT> ReplaceType<OldT, NewT>(this IAsyncQueryable<NewT> query)
         {
             return ReplaceType<NewT, NewT, OldT, NewT>(query);
         }
-            
+                
         private static IAsyncQueryable<NewQueryT> ReplaceType<OldQueryT, NewQueryT, OldT, NewT>(IAsyncQueryable<OldQueryT> query)
         {
             return CreateAsyncQueryable<NewQueryT>(query.Context, new ReplaceTypeRewriter<OldT, NewT>().Visit(query.Expression), query.ParameterMode, query.Includes, query.WithSpecificationsProperties, query.SelectedProperties);
         }
-            
+                
         public static IAsyncQueryableValue<QueryT> ReplaceType<QueryT, OldT, NewT>(this IAsyncQueryableValue<QueryT> query)
         {
             return ReplaceType<QueryT, QueryT, OldT, NewT>(query);
         }
-            
+                
         public static IAsyncQueryableValue<NewT> ReplaceType<OldT, NewT>(this IAsyncQueryableValue<OldT> query)
         {
             return ReplaceType<OldT, NewT, OldT, NewT>(query);
         }
-            
+                
         public static IAsyncQueryableValue<NewT> ReplaceType<OldT, NewT>(this IAsyncQueryableValue<NewT> query)
         {
             return ReplaceType<NewT, NewT, OldT, NewT>(query);
         }
-            
+                
         private static IAsyncQueryableValue<NewQueryT> ReplaceType<OldQueryT, NewQueryT, OldT, NewT>(IAsyncQueryableValue<OldQueryT> query)
         {
             return CreateAsyncQueryableValue<NewQueryT>(query.Context, new ReplaceTypeRewriter<OldT, NewT>().Visit(query.Expression), query.ParameterMode, query.Includes, query.WithSpecificationsProperties, query.SelectedProperties);
         }
-            
+                
         public static T AsObject<T>(this IAsyncQueryableValue<T> asyncQueryableValue)
         {
             throw new InvalidOperationException("This method could only be used inside a LINQ To WAQS expression");
         }
-            
+                
         private class RemoveSelect : SerializableExpressionRewriter
         {
             protected internal override SerializableExpression VisitMethodCall(SerializableMethodCallExpression expression)
