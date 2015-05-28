@@ -37,9 +37,7 @@ namespace WAQSWorkshopServer.DAL
             if (_getCreateInvoiceDetailExpression == null)
             {
                 Func<WAQSWorkshopServer.OrderDetail, double> getAmount_OrderDetail = (_) => default(double);
-                Expression<Func<WAQSWorkshopServer.OrderDetail, InvoiceDetail>> exp = (od) => new InvoiceDetail
-        {
-        OrderDetailId = od.Id, Quantity = od.Quantity, UnitPrice = od.UnitPrice, Discount = od.Discount, Amount = getAmount_OrderDetail(od)};
+                Expression<Func<WAQSWorkshopServer.OrderDetail, InvoiceDetail>> exp = (od) => new InvoiceDetail{OrderDetailId = od.Id, Quantity = od.Quantity, UnitPrice = od.UnitPrice, Discount = od.Discount, Amount = getAmount_OrderDetail(od)};
                 Func<InvocationExpression, Expression> replaceExpFunc = null;
                 replaceExpFunc = invocationExpression =>
                     {

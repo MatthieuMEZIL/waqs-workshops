@@ -94,26 +94,10 @@ namespace WAQSWorkshopServer
 
         protected virtual Error ValidateDiscountDefineMinValue()
         {
-            if (ChangeTracker.State == ObjectState.Added || ChangeTracker.State == ObjectState.Modified && ChangeTracker.ModifiedProperties.Intersect(new[]
-            {
-            "Discount"
-            }
-
-            ).Any())
+            if (ChangeTracker.State == ObjectState.Added || ChangeTracker.State == ObjectState.Modified && ChangeTracker.ModifiedProperties.Intersect(new[]{"Discount"}).Any())
             {
                 if (Discount < 0)
-                    return new Error
-                    {
-                    Criticity = Criticity.Error, Key = "DiscountDefineMinValue", Message = Error.GetDefineMinValueErrorMessage("Discount", 0), ErrorDetails = new ErrorDetail[]
-                    {
-                    new ErrorDetail
-                    {
-                    EntityKey = DataTransferEntityKey, PropertyName = "Discount"
-                    }
-                    }
-                    }
-
-                    ;
+                    return new Error{Criticity = Criticity.Error, Key = "DiscountDefineMinValue", Message = Error.GetDefineMinValueErrorMessage("Discount", 0), ErrorDetails = new ErrorDetail[]{new ErrorDetail{EntityKey = DataTransferEntityKey, PropertyName = "Discount"}}};
             }
 
             return null;
@@ -150,26 +134,10 @@ namespace WAQSWorkshopServer
 
         protected virtual Error ValidateDiscountDefineMaxValue()
         {
-            if (ChangeTracker.State == ObjectState.Added || ChangeTracker.State == ObjectState.Modified && ChangeTracker.ModifiedProperties.Intersect(new[]
-            {
-            "Discount"
-            }
-
-            ).Any())
+            if (ChangeTracker.State == ObjectState.Added || ChangeTracker.State == ObjectState.Modified && ChangeTracker.ModifiedProperties.Intersect(new[]{"Discount"}).Any())
             {
                 if (Discount > 1)
-                    return new Error
-                    {
-                    Criticity = Criticity.Error, Key = "DiscountDefineMaxValue", Message = Error.GetDefineMaxValueErrorMessage("Discount", 1), ErrorDetails = new ErrorDetail[]
-                    {
-                    new ErrorDetail
-                    {
-                    EntityKey = DataTransferEntityKey, PropertyName = "Discount"
-                    }
-                    }
-                    }
-
-                    ;
+                    return new Error{Criticity = Criticity.Error, Key = "DiscountDefineMaxValue", Message = Error.GetDefineMaxValueErrorMessage("Discount", 1), ErrorDetails = new ErrorDetail[]{new ErrorDetail{EntityKey = DataTransferEntityKey, PropertyName = "Discount"}}};
             }
 
             return null;

@@ -23,7 +23,5 @@ namespace WAQS.EntitiesTracking
     	bool IsDeserializing { get; }
     
     	bool IsInitializingRelationships { get; set; }
-    
-        Guid UniqueIdentifier { get; }
     }
 }

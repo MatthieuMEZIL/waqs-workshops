@@ -158,12 +158,7 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.CustomerId.Add(error = new Error
-                {
-                Criticity = Criticity.Error, Key = "CustomerIdMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
-                }
-
-                );
+                Errors.CustomerId.Add(error = new Error{Criticity = Criticity.Error, Key = "CustomerIdMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo});
             return error;
         }
 
@@ -214,12 +209,7 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.CustomerCompanyName.Add(error = new Error
-                {
-                Criticity = Criticity.Error, Key = "CustomerCompanyNameMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
-                }
-
-                );
+                Errors.CustomerCompanyName.Add(error = new Error{Criticity = Criticity.Error, Key = "CustomerCompanyNameMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo});
             return error;
         }
 
@@ -270,12 +260,7 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.CustomerContactName.Add(error = new Error
-                {
-                Criticity = Criticity.Error, Key = "CustomerContactNameMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
-                }
-
-                );
+                Errors.CustomerContactName.Add(error = new Error{Criticity = Criticity.Error, Key = "CustomerContactNameMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo});
             return error;
         }
 
@@ -557,12 +542,7 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.Order.Add(error = new Error
-                {
-                Criticity = Criticity.Mandatory, Key = "OrderRequired", Message = errorInfo.Message, ErrorInfo = errorInfo
-                }
-
-                );
+                Errors.Order.Add(error = new Error{Criticity = Criticity.Mandatory, Key = "OrderRequired", Message = errorInfo.Message, ErrorInfo = errorInfo});
             return error;
         }
 
@@ -791,15 +771,6 @@ namespace WAQSWorkshopClient
             get
             {
                 return ChangeTracker.State != ObjectState.Unchanged || ChangeTracker.ObjectsRemovedFromCollectionProperties.Any() || ChangeTracker.OriginalValues.Any() || ChangeTracker.ObjectsAddedToCollectionProperties.Any();
-            }
-        }
-
-        private Guid? _uniqueIdentifier;
-        Guid IObjectWithChangeTracker.UniqueIdentifier
-        {
-            get
-            {
-                return _uniqueIdentifier ?? (_uniqueIdentifier = Guid.NewGuid()).Value;
             }
         }
 

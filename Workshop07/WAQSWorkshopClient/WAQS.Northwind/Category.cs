@@ -129,12 +129,7 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.Name.Add(error = new Error
-                {
-                Criticity = Criticity.Mandatory, Key = "NameRequired", Message = errorInfo.Message, ErrorInfo = errorInfo
-                }
-
-                );
+                Errors.Name.Add(error = new Error{Criticity = Criticity.Mandatory, Key = "NameRequired", Message = errorInfo.Message, ErrorInfo = errorInfo});
             return error;
         }
 
@@ -152,12 +147,7 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.Name.Add(error = new Error
-                {
-                Criticity = Criticity.Error, Key = "NameMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
-                }
-
-                );
+                Errors.Name.Add(error = new Error{Criticity = Criticity.Error, Key = "NameMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo});
             return error;
         }
 
@@ -477,15 +467,6 @@ namespace WAQSWorkshopClient
             get
             {
                 return ChangeTracker.State != ObjectState.Unchanged || ChangeTracker.ObjectsRemovedFromCollectionProperties.Any() || ChangeTracker.OriginalValues.Any() || ChangeTracker.ObjectsAddedToCollectionProperties.Any();
-            }
-        }
-
-        private Guid? _uniqueIdentifier;
-        Guid IObjectWithChangeTracker.UniqueIdentifier
-        {
-            get
-            {
-                return _uniqueIdentifier ?? (_uniqueIdentifier = Guid.NewGuid()).Value;
             }
         }
 
