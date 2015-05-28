@@ -90,6 +90,11 @@ namespace WAQSWorkshopClient
             }
         }
 
+        public async Task RefreshAsync()
+        {
+            await LoadCustomersAsync();
+        }
+
         private RelayCommand _editCommand;
         public ICommand EditCommand
         {

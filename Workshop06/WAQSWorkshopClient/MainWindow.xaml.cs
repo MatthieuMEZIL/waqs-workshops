@@ -29,7 +29,7 @@ namespace WAQSWorkshopClient
         private async void RefreshClick(object sender, RoutedEventArgs e)
         {
             Cursor = Cursors.Wait;
-            await ((MainWindowViewModel)DataContext).LoadCustomersAsync();
+            await ((MainWindowViewModel)DataContext).RefreshAsync();
             Cursor = Cursors.Arrow;
         }
     }
