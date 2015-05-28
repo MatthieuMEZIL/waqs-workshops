@@ -1,0 +1,235 @@
+﻿<Window x:Class="WAQSWorkshopClient.CustomerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WAQSWorkshopClient"
+        xmlns:converters="clr-namespace:WAQS.Controls.Converters"
+        xmlns:controls="clr-namespace:WAQS.Controls"
+        mc:Ignorable="d"
+        Title="CustomerWindow"
+        Height="298"
+        Width="1000">
+    <Window.Resources>
+        <Style x:Key="RightAlignedColumn"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="TextAlignment"
+                    Value="Right" />
+            <Setter Property="Margin"
+                    Value="2,0" />
+        </Style>
+        <converters:NumberRoundConverter x:Key="NumberRoundConverter" />
+        <converters:DateConverter x:Key="DateConverter" />
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="18*" />
+            <ColumnDefinition Width="9*" />
+            <ColumnDefinition Width="30*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <TextBlock VerticalAlignment="Center"
+                       Margin="5"
+                       Text="Company name" />
+            <TextBox Grid.Column="1"
+                     VerticalAlignment="Center"
+                     Text="{Binding Customer.CompanyName}"
+                     MaxLength="{Binding Customer.CompanyNameMaxLength}" />
+            <TextBlock Grid.Row="1"
+                       Margin="5"
+                       VerticalAlignment="Center"
+                       Text="Contact title" />
+            <TextBox Grid.Row="1"
+                     Grid.Column="1"
+                     VerticalAlignment="Center"
+                     Text="{Binding Customer.ContactTitle}"
+                     MaxLength="{Binding Customer.ContactTitleMaxLength}"/>
+            <TextBlock Grid.Row="2"
+                       Margin="5"
+                       VerticalAlignment="Center"
+                       Text="Contact name" />
+            <TextBox Grid.Row="2"
+                     Grid.Column="1"
+                     VerticalAlignment="Center"
+                     Text="{Binding Customer.ContactName}"
+                     MaxLength="{Binding Customer.ContactNameMaxLength}" />
+            <TextBlock Grid.Row="3"
+                       Margin="5"
+                       VerticalAlignment="Center"
+                       Text="Address" />
+            <TextBox Grid.Row="3"
+                     Grid.Column="1"
+                     VerticalAlignment="Center"
+                     Text="{Binding Customer.Address}" 
+                     MaxLength="{Binding Customer.AddressMaxLength}" />
+            <TextBlock Grid.Row="4"
+                       Margin="5"
+                       VerticalAlignment="Center"
+                       Text="City" />
+            <TextBox Grid.Row="4"
+                     Grid.Column="1"
+                     VerticalAlignment="Center"
+                     Text="{Binding Customer.City}" 
+                     MaxLength="{Binding Customer.CityMaxLength}" />
+            <TextBlock Grid.Row="5"
+                       Margin="5"
+                       VerticalAlignment="Center"
+                       Text="Region" />
+            <TextBox Grid.Row="5"
+                     Grid.Column="1"
+                     VerticalAlignment="Center"
+                     Text="{Binding Customer.Region}" 
+                     MaxLength="{Binding Customer.RegionMaxLength}"
+                     controls:ErrorsBehaviors.Errors="{Binding Customer.RegionErrors}" />
+            <TextBlock Grid.Row="6"
+                       Margin="5"
+                       VerticalAlignment="Center"
+                       Text="Postal code" />
+            <TextBox Grid.Row="6"
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        Text="{Binding Customer.PostalCode}" 
+                        MaxLength="{Binding Customer.PostalCodeMaxLength}" 
+                        controls:ErrorsBehaviors.Errors="{Binding Customer.PostalCodeErrors}" />
+            <TextBlock Grid.Row="7"
+                       Margin="5"
+                       VerticalAlignment="Center"
+                       Text="Country" />
+            <TextBox Grid.Row="7"
+                     Grid.Column="1"
+                     VerticalAlignment="Center"
+                     Text="{Binding Customer.Country}" 
+                     MaxLength="{Binding Customer.CountryMaxLength}" />
+        </Grid>
+        <Grid Grid.Column="1"
+              Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <DataGrid AutoGenerateColumns="False"
+                      ItemsSource="{Binding Customer.Orders}"
+                      SelectedItem="{Binding SelectedOrder}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Date"
+                                        Binding="{Binding OrderDate, Converter={StaticResource DateConverter}}" />
+                    <DataGridTextColumn Header="Total"
+                                        Binding="{Binding Total, Converter={StaticResource NumberRoundConverter}}"
+                                        ElementStyle="{StaticResource RightAlignedColumn}" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <Grid Grid.Row="1"
+                  HorizontalAlignment="Right"
+                  Margin="0,5,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Total spent" />
+                <TextBlock Grid.Column="1"
+                           Margin="5,0"
+                           Text="{Binding Customer.TotalSpent, Converter={StaticResource NumberRoundConverter}}"
+                           TextAlignment="Right" />
+            </Grid>
+        </Grid>
+        <Grid Grid.Column="2"
+              Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <DataGrid AutoGenerateColumns="False"
+                      ItemsSource="{Binding SelectedOrder.OrderDetails}">
+                <DataGrid.Columns>
+                    <DataGridComboBoxColumn Header="Product name"
+                                            SelectedValueBinding="{Binding Product}"
+                                            DisplayMemberPath="FullName">
+                        <DataGridComboBoxColumn.ElementStyle>
+                            <Style TargetType="ComboBox">
+                                <Setter Property="ItemsSource"
+                                        Value="{Binding DataContext.Products, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
+                            </Style>
+                        </DataGridComboBoxColumn.ElementStyle>
+                        <DataGridComboBoxColumn.EditingElementStyle>
+                            <Style TargetType="ComboBox">
+                                <Setter Property="ItemsSource"
+                                        Value="{Binding DataContext.Products, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
+                            </Style>
+                        </DataGridComboBoxColumn.EditingElementStyle>
+                    </DataGridComboBoxColumn>
+                    <DataGridTextColumn Header="Unit price"
+                                        Binding="{Binding UnitPrice}" />
+                    <DataGridTextColumn Header="Quantity"
+                                        Binding="{Binding Quantity}"
+                                        ElementStyle="{StaticResource RightAlignedColumn}" />
+                    <DataGridTemplateColumn Header="Discount">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border controls:ErrorsBehaviors.Errors="{Binding DiscountErrors}">
+                                    <TextBlock Text="{Binding Discount, Converter={StaticResource NumberRoundConverter}}"
+                                               Style="{StaticResource RightAlignedColumn}" />
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Discount, Converter={StaticResource NumberRoundConverter}}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Amount"
+                                        Binding="{Binding Amount, Converter={StaticResource NumberRoundConverter}}"
+                                        IsReadOnly="True"
+                                        ElementStyle="{StaticResource RightAlignedColumn}" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <Grid Grid.Row="1"
+                  Margin="0,5,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Button Content="Create invoice"
+                        HorizontalAlignment="Left"
+                        Command="{Binding CreateInvoice}" />
+                <TextBlock  Grid.Column="1"
+                            Text="Order total" />
+                <TextBlock Grid.Column="2"
+                           Margin="5,0"
+                           Text="{Binding SelectedOrder.Total, Converter={StaticResource NumberRoundConverter}}" />
+            </Grid>
+        </Grid>
+        <StackPanel Grid.Row="1"
+                    Grid.ColumnSpan="3"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right">
+            <Button Content="Save"
+                    Width="50"
+                    Margin="5"
+                    Command="{Binding SaveCommand}" />
+            <Button Content="Cancel"
+                    Width="50"
+                    Margin="5"
+                    Command="{Binding CancelCommand}" />
+        </StackPanel>
+    </Grid>
+</Window>
