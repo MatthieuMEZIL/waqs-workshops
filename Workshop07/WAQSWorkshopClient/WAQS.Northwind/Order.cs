@@ -1061,37 +1061,6 @@ namespace WAQSWorkshopClient
                     yield return er;
         }
 
-        private bool _previousHasInvoice;
-        public bool HasInvoice
-        {
-            get
-            {
-                if (Specifications != null && Specifications.HasHasInvoice)
-                    return Specifications.HasInvoice;
-                return this.Invoice != null;
-            }
-
-            set
-            {
-                throw new System.InvalidOperationException();
-                ;
-            }
-        }
-
-        protected virtual void OnHasInvoicePropertyChanging()
-        {
-            if (HasInvoicePropertyChanging != null)
-            {
-                var value = HasInvoice;
-                if (value == _previousHasInvoice)
-                    return;
-                var oldValue = _previousHasInvoice;
-                _previousHasInvoice = value;
-                HasInvoicePropertyChanging(oldValue, value);
-            }
-        }
-
-        protected internal event Action<bool, bool> HasInvoicePropertyChanging;
         private string _previousCustomerCompanyName;
         public string CustomerCompanyName
         {
@@ -1125,6 +1094,37 @@ namespace WAQSWorkshopClient
         }
 
         protected internal event Action<string, string> CustomerCompanyNamePropertyChanging;
+        private bool _previousHasInvoice;
+        public bool HasInvoice
+        {
+            get
+            {
+                if (Specifications != null && Specifications.HasHasInvoice)
+                    return Specifications.HasInvoice;
+                return this.Invoice != null;
+            }
+
+            set
+            {
+                throw new System.InvalidOperationException();
+                ;
+            }
+        }
+
+        protected virtual void OnHasInvoicePropertyChanging()
+        {
+            if (HasInvoicePropertyChanging != null)
+            {
+                var value = HasInvoice;
+                if (value == _previousHasInvoice)
+                    return;
+                var oldValue = _previousHasInvoice;
+                _previousHasInvoice = value;
+                HasInvoicePropertyChanging(oldValue, value);
+            }
+        }
+
+        protected internal event Action<bool, bool> HasInvoicePropertyChanging;
         private string _previousCustomerContactName;
         public string CustomerContactName
         {
@@ -1202,40 +1202,6 @@ namespace WAQSWorkshopClient
         [DataContract(Namespace = "http://Northwind/Entities")]
         public partial class OrderSpecifications
         {
-            bool _hasInvoice;
-            [DataMember]
-            public bool HasInvoice
-            {
-                get
-                {
-                    return _hasInvoice;
-                }
-
-                set
-                {
-                    _hasInvoice = value;
-                    if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((Order e) => e.HasInvoice);
-                }
-            }
-
-            bool _hasHasInvoice;
-            [DataMember]
-            public bool HasHasInvoice
-            {
-                get
-                {
-                    return _hasHasInvoice;
-                }
-
-                set
-                {
-                    _hasHasInvoice = value;
-                    if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((Order e) => e.HasInvoice);
-                }
-            }
-
             string _customerCompanyName;
             [DataMember]
             public string CustomerCompanyName
@@ -1267,6 +1233,40 @@ namespace WAQSWorkshopClient
                     _hasCustomerCompanyName = value;
                     if (NotifyPropertyChanged != null)
                         NotifyPropertyChanged.RaisePropertyChanged((Order e) => e.CustomerCompanyName);
+                }
+            }
+
+            bool _hasInvoice;
+            [DataMember]
+            public bool HasInvoice
+            {
+                get
+                {
+                    return _hasInvoice;
+                }
+
+                set
+                {
+                    _hasInvoice = value;
+                    if (NotifyPropertyChanged != null)
+                        NotifyPropertyChanged.RaisePropertyChanged((Order e) => e.HasInvoice);
+                }
+            }
+
+            bool _hasHasInvoice;
+            [DataMember]
+            public bool HasHasInvoice
+            {
+                get
+                {
+                    return _hasHasInvoice;
+                }
+
+                set
+                {
+                    _hasHasInvoice = value;
+                    if (NotifyPropertyChanged != null)
+                        NotifyPropertyChanged.RaisePropertyChanged((Order e) => e.HasInvoice);
                 }
             }
 
@@ -1567,6 +1567,15 @@ namespace WAQSWorkshopClient
             get
             {
                 return ChangeTracker.State != ObjectState.Unchanged || ChangeTracker.ObjectsRemovedFromCollectionProperties.Any() || ChangeTracker.OriginalValues.Any() || ChangeTracker.ObjectsAddedToCollectionProperties.Any();
+            }
+        }
+
+        private Guid? _uniqueIdentifier;
+        Guid IObjectWithChangeTracker.UniqueIdentifier
+        {
+            get
+            {
+                return _uniqueIdentifier ?? (_uniqueIdentifier = Guid.NewGuid()).Value;
             }
         }
 

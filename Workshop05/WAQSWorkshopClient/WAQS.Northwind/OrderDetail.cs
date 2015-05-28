@@ -925,6 +925,15 @@ namespace WAQSWorkshopClient
             }
         }
 
+        private Guid? _uniqueIdentifier;
+        Guid IObjectWithChangeTracker.UniqueIdentifier
+        {
+            get
+            {
+                return _uniqueIdentifier ?? (_uniqueIdentifier = Guid.NewGuid()).Value;
+            }
+        }
+
 #endregion
 #region Association Fixup
         private bool IsDeleting
