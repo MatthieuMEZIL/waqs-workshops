@@ -1,0 +1,987 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BA239102-E1EC-490F-A872-03073090F246}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WAQSWorkshopServer</RootNamespace>
+    <AssemblyName>WAQSWorkshopServer</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.3.0.1304.1\lib\Net45\Microsoft.Practices.Unity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.3.0.1304.1\lib\Net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Activation" />
+    <Reference Include="System.ServiceModel.Channels" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Data\Northwind.mdf" />
+    <Content Include="App_Data\Northwind_log.ldf">
+      <DependentUpon>Northwind.mdf</DependentUpon>
+    </Content>
+    <None Include="Northwind.edmx" />
+    <Content Include="Global.asax" />
+    <Content Include="Northwind.edmx.diagram">
+      <DependentUpon>Northwind.edmx</DependentUpon>
+    </Content>
+    <Content Include="Northwind.svc" />
+    <Content Include="packages.config" />
+    <Content Include="WAQS.Northwind\Includes.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Server.Service.Interfaces.tt</DependentUpon>
+      <LastGenOutput>Includes.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\Includes.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Includes.tt</DependentUpon>
+    </Content>
+    <Content Include="WAQS.Northwind\InheritedTypes.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Server.Service.tt</DependentUpon>
+      <LastGenOutput>InheritedTypes.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\InheritedTypes.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InheritedTypes.tt</DependentUpon>
+    </Content>
+    <Content Include="WAQS.Northwind\Northwind.DAL.edmx.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Server.tt</DependentUpon>
+      <LastGenOutput>Northwind.DAL.edmx.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\Northwind.DAL.edmx.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Northwind.DAL.edmx.tt</DependentUpon>
+    </Content>
+    <Content Include="WAQS.Northwind\Northwind.DAL.Views.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.DAL.edmx.tt</DependentUpon>
+      <LastGenOutput>Northwind.DAL.Views.cs</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\Northwind.Server.DAL.Interfaces.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Server.tt</DependentUpon>
+      <LastGenOutput>Northwind.Server.DAL.Interfaces.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\Northwind.Server.DAL.Interfaces.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Northwind.Server.DAL.Interfaces.tt</DependentUpon>
+    </Content>
+    <Content Include="WAQS.Northwind\Northwind.Server.DAL.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Server.tt</DependentUpon>
+      <LastGenOutput>Northwind.Server.DAL.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\Northwind.Server.DAL.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Northwind.Server.DAL.tt</DependentUpon>
+    </Content>
+    <Content Include="WAQS.Northwind\Northwind.Server.DTO.Specifications.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Server.tt</DependentUpon>
+      <LastGenOutput>Northwind.Server.DTO.Specifications.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\Northwind.Server.DTO.Specifications.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Northwind.Server.DTO.Specifications.tt</DependentUpon>
+    </Content>
+    <Content Include="WAQS.Northwind\Northwind.Server.DTO.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Server.tt</DependentUpon>
+      <LastGenOutput>Northwind.Server.DTO.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\Northwind.Server.DTO.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Northwind.Server.DTO.tt</DependentUpon>
+    </Content>
+    <Content Include="WAQS.Northwind\Northwind.Server.Entities.Specifications.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Server.tt</DependentUpon>
+      <LastGenOutput>Northwind.Server.Entities.Specifications.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\Northwind.Server.Entities.Specifications.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Northwind.Server.Entities.Specifications.tt</DependentUpon>
+    </Content>
+    <Content Include="WAQS.Northwind\Northwind.Server.Entities.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Server.tt</DependentUpon>
+      <LastGenOutput>Northwind.Server.Entities.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\Northwind.Server.Entities.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Northwind.Server.Entities.tt</DependentUpon>
+    </Content>
+    <Content Include="WAQS.Northwind\Northwind.Server.Service.Interfaces.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Server.tt</DependentUpon>
+      <LastGenOutput>Northwind.Server.Service.Interfaces.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\Northwind.Server.Service.Interfaces.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Northwind.Server.Service.Interfaces.tt</DependentUpon>
+    </Content>
+    <Content Include="WAQS.Northwind\Northwind.Server.Service.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Server.tt</DependentUpon>
+      <LastGenOutput>Northwind.Server.Service.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\Northwind.Server.Service.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Northwind.Server.Service.tt</DependentUpon>
+    </Content>
+    <Content Include="WAQS.Northwind\Northwind.Server.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Northwind.Server.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\Northwind.Server.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Northwind.Server.tt</DependentUpon>
+    </Content>
+    <Content Include="WAQS.Northwind\Northwind.Server.waqs" />
+    <EntityDeploy Include="WAQS.Northwind\Northwind.edmx">
+      <DependentUpon>Northwind.DAL.edmx.tt</DependentUpon>
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Northwind.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="WAQS.Northwind\Northwind.Server.WCFService.Contract.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Server.tt</DependentUpon>
+      <LastGenOutput>Northwind.Server.WCFService.Contract.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\Northwind.Server.WCFService.Contract.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Northwind.Server.WCFService.Contract.tt</DependentUpon>
+    </Content>
+    <Content Include="WAQS.Northwind\Northwind.Server.WCFService.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Server.tt</DependentUpon>
+      <LastGenOutput>Northwind.Server.WCFService.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\Northwind.Server.WCFService.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Northwind.Server.WCFService.tt</DependentUpon>
+    </Content>
+    <Content Include="WAQS.Northwind\WAQS.Server.Fx.Common.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Server.tt</DependentUpon>
+      <LastGenOutput>WAQS.Server.Fx.Common.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\WAQS.Server.Fx.Common.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WAQS.Server.Fx.Common.tt</DependentUpon>
+    </Content>
+    <Content Include="WAQS.Northwind\WAQS.Server.Fx.DAL.Interfaces.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Server.tt</DependentUpon>
+      <LastGenOutput>WAQS.Server.Fx.DAL.Interfaces.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\WAQS.Server.Fx.DAL.Interfaces.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WAQS.Server.Fx.DAL.Interfaces.tt</DependentUpon>
+    </Content>
+    <Content Include="WAQS.Northwind\WAQS.Server.Fx.DAL.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Server.tt</DependentUpon>
+      <LastGenOutput>WAQS.Server.Fx.DAL.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\WAQS.Server.Fx.DAL.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WAQS.Server.Fx.DAL.tt</DependentUpon>
+    </Content>
+    <Content Include="WAQS.Northwind\WAQS.Server.Fx.Entities.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Server.tt</DependentUpon>
+      <LastGenOutput>WAQS.Server.Fx.Entities.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\WAQS.Server.Fx.Entities.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WAQS.Server.Fx.Entities.tt</DependentUpon>
+    </Content>
+    <Content Include="WAQS.Northwind\WAQS.Server.Fx.SerializableExpressions.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Server.tt</DependentUpon>
+      <LastGenOutput>WAQS.Server.Fx.SerializableExpressions.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\WAQS.Server.Fx.SerializableExpressions.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WAQS.Server.Fx.SerializableExpressions.tt</DependentUpon>
+    </Content>
+    <Content Include="WAQS.Northwind\WAQS.Server.Fx.Service.Interfaces.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Server.tt</DependentUpon>
+      <LastGenOutput>WAQS.Server.Fx.Service.Interfaces.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\WAQS.Server.Fx.Service.Interfaces.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WAQS.Server.Fx.Service.Interfaces.tt</DependentUpon>
+    </Content>
+    <Content Include="WAQS.Northwind\WAQS.Server.Fx.Service.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Server.tt</DependentUpon>
+      <LastGenOutput>WAQS.Server.Fx.Service.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\WAQS.Server.Fx.Service.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WAQS.Server.Fx.Service.tt</DependentUpon>
+    </Content>
+    <Content Include="WAQS.Northwind\WAQS.Server.Fx.Specifications.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Server.tt</DependentUpon>
+      <LastGenOutput>WAQS.Server.Fx.Specifications.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\WAQS.Server.Fx.Specifications.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WAQS.Server.Fx.Specifications.tt</DependentUpon>
+    </Content>
+    <Content Include="WAQS.Northwind\WAQS.Server.Fx.WCFService.Contract.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Server.tt</DependentUpon>
+      <LastGenOutput>WAQS.Server.Fx.WCFService.Contract.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\WAQS.Server.Fx.WCFService.Contract.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WAQS.Server.Fx.WCFService.Contract.tt</DependentUpon>
+    </Content>
+    <Content Include="WAQS.Northwind\WAQS.Server.Fx.WCFService.ExceptionHandler.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Server.tt</DependentUpon>
+      <LastGenOutput>WAQS.Server.Fx.WCFService.ExceptionHandler.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\WAQS.Server.Fx.WCFService.ExceptionHandler.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WAQS.Server.Fx.WCFService.ExceptionHandler.tt</DependentUpon>
+    </Content>
+    <Content Include="WAQS.Northwind\WAQS.Server.Fx.WCFService.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Server.tt</DependentUpon>
+      <LastGenOutput>WAQS.Server.Fx.WCFService.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\WAQS.Server.Fx.WCFService.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WAQS.Server.Fx.WCFService.tt</DependentUpon>
+    </Content>
+    <Content Include="WAQS.Northwind\WAQS.Server.Fx.WCFService.UnityService.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Northwind.Server.tt</DependentUpon>
+      <LastGenOutput>WAQS.Server.Fx.WCFService.UnityService.txt</LastGenOutput>
+    </Content>
+    <Content Include="WAQS.Northwind\WAQS.Server.Fx.WCFService.UnityService.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WAQS.Server.Fx.WCFService.UnityService.tt</DependentUpon>
+    </Content>
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DTO\CustomerInfo.cs" />
+    <Compile Include="DTO\LastOrderDTO.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Specifications\CustomerSpecifications.cs" />
+    <Compile Include="Specifications\EmployeeSpecifications.cs" />
+    <Compile Include="Specifications\InvoiceSpecifications.cs" />
+    <Compile Include="Specifications\OrderDetailSpecifications.cs" />
+    <Compile Include="Specifications\OrderSpecifications.cs" />
+    <Compile Include="Specifications\ProductSpecifications.cs" />
+    <Compile Include="WAQS.Northwind\AbstractAttribute.cs">
+      <DependentUpon>WAQS.Server.Fx.Specifications.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\AsyncEnumerable.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\Category.cs">
+      <DependentUpon>Northwind.Server.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\Criticity.cs">
+      <DependentUpon>WAQS.Server.Fx.Service.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\CustomAttribute.cs">
+      <DependentUpon>WAQS.Server.Fx.Specifications.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\Customer.cs">
+      <DependentUpon>Northwind.Server.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\Customer.specifications.cs">
+      <DependentUpon>Northwind.Server.Entities.Specifications.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\CustomerDALSpecifications.cs">
+      <DependentUpon>Northwind.Server.DAL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\CustomerInfo.cs">
+      <DependentUpon>Northwind.Server.DTO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\CustomizableObjectContext.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\DbValuesDictionary.cs">
+      <DependentUpon>WAQS.Server.Fx.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\EFAsyncEnumerableFactory.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\EFAsyncEnumerator.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\EFAsyncQueryProviderFactory.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\Employee.cs">
+      <DependentUpon>Northwind.Server.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\Employee.specifications.cs">
+      <DependentUpon>Northwind.Server.Entities.Specifications.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\EmployeeDALSpecifications.cs">
+      <DependentUpon>Northwind.Server.DAL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\EntitiesInitializer.cs">
+      <DependentUpon>WAQS.Server.Fx.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\EntitiesOtherSpecifications.cs">
+      <DependentUpon>Northwind.Server.Entities.Specifications.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\EntitySet.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\EnumUtils.cs">
+      <DependentUpon>WAQS.Server.Fx.Common.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\EqualityComparer.cs">
+      <DependentUpon>WAQS.Server.Fx.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\Error.cs">
+      <DependentUpon>WAQS.Server.Fx.Service.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ErrorCollection.cs">
+      <DependentUpon>WAQS.Server.Fx.WCFService.Contract.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ErrorDetail.cs">
+      <DependentUpon>WAQS.Server.Fx.Service.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ExceptionDetail.cs">
+      <DependentUpon>WAQS.Server.Fx.Common.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ExceptionDetailFactory.cs">
+      <DependentUpon>WAQS.Server.Fx.Common.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ExceptionHandlerMessageInspector.cs">
+      <DependentUpon>WAQS.Server.Fx.WCFService.ExceptionHandler.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ExceptionHandlerObjectContext.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ExposeAsServiceAttribute.cs">
+      <DependentUpon>WAQS.Server.Fx.Specifications.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ExpressionExtension.cs">
+      <DependentUpon>WAQS.Server.Fx.Common.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ExtendedPropertiesDictionary.cs">
+      <DependentUpon>WAQS.Server.Fx.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\FaultDetail.cs">
+      <DependentUpon>WAQS.Server.Fx.WCFService.Contract.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IAsyncEnumerable.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IAsyncEnumerableFactory.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IAsyncEnumerator.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IAsyncQueryProviderFactory.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ICustomerDALSpecifications.cs">
+      <DependentUpon>Northwind.Server.DAL.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IDataContext.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IEmployeeDALSpecifications.cs">
+      <DependentUpon>Northwind.Server.DAL.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IEntity.cs">
+      <DependentUpon>WAQS.Server.Fx.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IEntityAttribute.cs">
+      <DependentUpon>WAQS.Server.Fx.Specifications.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IEntitySet.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IExceptionDetail.cs">
+      <DependentUpon>WAQS.Server.Fx.Common.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IExceptionDetailFactory.cs">
+      <DependentUpon>WAQS.Server.Fx.Common.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IncludeExpressionVisitor.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IncludeMethodAttribute.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\InheritedCategory.cs">
+      <DependentUpon>InheritedTypes.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\InheritedCustomer.cs">
+      <DependentUpon>InheritedTypes.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\InheritedEmployee.cs">
+      <DependentUpon>InheritedTypes.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\InheritedInvoice.cs">
+      <DependentUpon>InheritedTypes.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\InheritedInvoiceDetail.cs">
+      <DependentUpon>InheritedTypes.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\InheritedOrder.cs">
+      <DependentUpon>InheritedTypes.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\InheritedOrderDetail.cs">
+      <DependentUpon>InheritedTypes.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\InheritedProduct.cs">
+      <DependentUpon>InheritedTypes.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\INorthwindEntities.cs">
+      <DependentUpon>Northwind.Server.DAL.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\INorthwindService.cs">
+      <DependentUpon>Northwind.Server.Service.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\INorthwindWCFService.cs">
+      <DependentUpon>Northwind.Server.WCFService.Contract.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\INotifyComplexPropertyChanging.cs">
+      <DependentUpon>WAQS.Server.Fx.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\Invoice.cs">
+      <DependentUpon>Northwind.Server.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\InvoiceDetail.cs">
+      <DependentUpon>Northwind.Server.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IObjectContext.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IObjectWithChangeTracker.cs">
+      <DependentUpon>WAQS.Server.Fx.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IOrderDALSpecifications.cs">
+      <DependentUpon>Northwind.Server.DAL.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IOrderDetailDALSpecifications.cs">
+      <DependentUpon>Northwind.Server.DAL.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IProductDALSpecifications.cs">
+      <DependentUpon>Northwind.Server.DAL.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ISerializableExpressionConverter.cs">
+      <DependentUpon>WAQS.Server.Fx.SerializableExpressions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ISerializableExpressionProvider.cs">
+      <DependentUpon>WAQS.Server.Fx.Service.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IService.cs">
+      <DependentUpon>WAQS.Server.Fx.Service.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IWAQSQuery.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IWAQSQueryBase.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\IWAQSQueryValue.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\LastOrderDTO.cs">
+      <DependentUpon>Northwind.Server.DTO.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\LoadPageParameter.cs">
+      <DependentUpon>WAQS.Server.Fx.Service.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\MergeOption.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\MergeOptionExtensions.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\Metadata.cs">
+      <DependentUpon>WAQS.Server.Fx.Specifications.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\Multiplicity.cs">
+      <DependentUpon>WAQS.Server.Fx.SerializableExpressions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\NavigationProperty.cs">
+      <DependentUpon>WAQS.Server.Fx.SerializableExpressions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\Northwind.DAL.Views.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Northwind.DAL.Views.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\Northwind.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Northwind.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\Northwind.Global.asax.cs">
+      <DependentUpon>Northwind.Server.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\NorthwindEntities.cs">
+      <DependentUpon>Northwind.Server.DAL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\NorthwindEntitiesFilters.cs">
+      <DependentUpon>Northwind.Server.Service.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\NorthwindFaultDetailEntities.cs">
+      <DependentUpon>Northwind.Server.WCFService.Contract.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\NorthwindFaultsAttribute.cs">
+      <DependentUpon>Northwind.Server.WCFService.Contract.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\NorthwindQueriesResult.cs">
+      <DependentUpon>Northwind.Server.Service.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\NorthwindQueryableExtension.cs">
+      <DependentUpon>Northwind.Server.Service.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\NorthwindQueryResult.cs">
+      <DependentUpon>Northwind.Server.Service.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\NorthwindQueryResultPage.cs">
+      <DependentUpon>Northwind.Server.Service.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\NorthwindSerializableContext.cs">
+      <DependentUpon>Northwind.Server.WCFService.Contract.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\NorthwindSerializableExpressionConverter.cs">
+      <DependentUpon>Northwind.Server.Service.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\NorthwindSerializableExpressionConverterL2E.cs">
+      <DependentUpon>Northwind.Server.Service.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\NorthwindService.cs">
+      <DependentUpon>Northwind.Server.Service.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\NorthwindServiceL2E.cs">
+      <DependentUpon>Northwind.Server.Service.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\NorthwindWCFService.cs">
+      <DependentUpon>Northwind.Server.WCFService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\NotApplicableOnClientAttribute.cs">
+      <DependentUpon>WAQS.Server.Fx.Specifications.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ObjectChangeTracker.cs">
+      <DependentUpon>WAQS.Server.Fx.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ObjectContextCustomizer.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ObjectContextCustomizerBase.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ObjectList.cs">
+      <DependentUpon>WAQS.Server.Fx.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ObjectsAddedToCollectionProperties.cs">
+      <DependentUpon>WAQS.Server.Fx.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ObjectsRemovedFromCollectionProperties.cs">
+      <DependentUpon>WAQS.Server.Fx.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ObjectState.cs">
+      <DependentUpon>WAQS.Server.Fx.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ObjectStateChangingEventArgs.cs">
+      <DependentUpon>WAQS.Server.Fx.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ObjectWithChangeTrackerExtensions.cs">
+      <DependentUpon>WAQS.Server.Fx.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\Order.cs">
+      <DependentUpon>Northwind.Server.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\Order.specifications.cs">
+      <DependentUpon>Northwind.Server.Entities.Specifications.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\OrderDALSpecifications.cs">
+      <DependentUpon>Northwind.Server.DAL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\OrderDetail.cs">
+      <DependentUpon>Northwind.Server.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\OrderDetail.specifications.cs">
+      <DependentUpon>Northwind.Server.Entities.Specifications.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\OrderDetailDALSpecifications.cs">
+      <DependentUpon>Northwind.Server.DAL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\OriginalValuesDictionary.cs">
+      <DependentUpon>WAQS.Server.Fx.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\OtherDALSpecifications.cs">
+      <DependentUpon>Northwind.Server.DAL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\OverrideAttribute.cs">
+      <DependentUpon>WAQS.Server.Fx.Specifications.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\Product.cs">
+      <DependentUpon>Northwind.Server.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\Product.specifications.cs">
+      <DependentUpon>Northwind.Server.Entities.Specifications.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ProductDALSpecifications.cs">
+      <DependentUpon>Northwind.Server.DAL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\PropertyDependence.cs">
+      <DependentUpon>WAQS.Server.Fx.Specifications.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\PropertyName.cs">
+      <DependentUpon>WAQS.Server.Fx.Common.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\QueriesSerialization.cs">
+      <DependentUpon>WAQS.Server.Fx.Service.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\QueryableExtensions.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\QueryableInclude.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\QueryResult.cs">
+      <DependentUpon>WAQS.Server.Fx.Service.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\QueryResultProperty.cs">
+      <DependentUpon>WAQS.Server.Fx.Service.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\QueryResultRecord.cs">
+      <DependentUpon>WAQS.Server.Fx.Service.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\QuerySerialization.cs">
+      <DependentUpon>WAQS.Server.Fx.Service.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\Reference.cs">
+      <DependentUpon>WAQS.Server.Fx.Service.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ReplaceTypeRewriter.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SelfTrackingEntitiesContextExtensions.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableBinaryExpression.cs">
+      <DependentUpon>WAQS.Server.Fx.SerializableExpressions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableConditionalExpression.cs">
+      <DependentUpon>WAQS.Server.Fx.SerializableExpressions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableConstantExpression.cs">
+      <DependentUpon>WAQS.Server.Fx.SerializableExpressions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableConstructorExpression.cs">
+      <DependentUpon>WAQS.Server.Fx.SerializableExpressions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableEntitySetExpression.cs">
+      <DependentUpon>WAQS.Server.Fx.SerializableExpressions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableExpression.cs">
+      <DependentUpon>WAQS.Server.Fx.SerializableExpressions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableExpressionProvider.cs">
+      <DependentUpon>WAQS.Server.Fx.Service.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableExpressionReference.cs">
+      <DependentUpon>WAQS.Server.Fx.SerializableExpressions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableExpressionToL2EExpressionConverter.cs">
+      <DependentUpon>WAQS.Server.Fx.Service.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableExpressionToLINQExpressionConverter.cs">
+      <DependentUpon>WAQS.Server.Fx.Service.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableExpressionVisitor.cs">
+      <DependentUpon>WAQS.Server.Fx.SerializableExpressions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableLambdaExpression.cs">
+      <DependentUpon>WAQS.Server.Fx.SerializableExpressions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableMemberExpression.cs">
+      <DependentUpon>WAQS.Server.Fx.SerializableExpressions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableMemberInitExpression.cs">
+      <DependentUpon>WAQS.Server.Fx.SerializableExpressions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableMethodCallExpression.cs">
+      <DependentUpon>WAQS.Server.Fx.SerializableExpressions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableParameterExpression.cs">
+      <DependentUpon>WAQS.Server.Fx.SerializableExpressions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializablePropertyExpression.cs">
+      <DependentUpon>WAQS.Server.Fx.SerializableExpressions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializablePropertyGetterExpression.cs">
+      <DependentUpon>WAQS.Server.Fx.SerializableExpressions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializablePropertySetterExpression.cs">
+      <DependentUpon>WAQS.Server.Fx.SerializableExpressions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableType.cs">
+      <DependentUpon>WAQS.Server.Fx.SerializableExpressions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableTypeBinaryExpression.cs">
+      <DependentUpon>WAQS.Server.Fx.SerializableExpressions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableTypeConverter.cs">
+      <DependentUpon>WAQS.Server.Fx.SerializableExpressions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SerializableUnaryExpression.cs">
+      <DependentUpon>WAQS.Server.Fx.SerializableExpressions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ServiceBase.cs">
+      <DependentUpon>WAQS.Server.Fx.Service.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\SpecificationsAttribute.cs">
+      <DependentUpon>WAQS.Server.Fx.Specifications.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\StandardFaultsAttribute.cs">
+      <DependentUpon>WAQS.Server.Fx.WCFService.Contract.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\TrackableCollection.cs">
+      <DependentUpon>WAQS.Server.Fx.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\TrackableCollectionDALExtensions.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\TrackableCollectionExtension.cs">
+      <DependentUpon>WAQS.Server.Fx.Entities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\UpdateExceptionDetail.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ValidateMode.cs">
+      <DependentUpon>WAQS.Server.Fx.Specifications.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ValidateOnClientAttribute.cs">
+      <DependentUpon>WAQS.Server.Fx.Specifications.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ValidateOnServerAttribute.cs">
+      <DependentUpon>WAQS.Server.Fx.Specifications.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\ValidationException.cs">
+      <DependentUpon>WAQS.Server.Fx.Service.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\VirtualAttribute.cs">
+      <DependentUpon>WAQS.Server.Fx.Specifications.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\WAQSL2EExpressionTransformation.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\WAQSQuery.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\WAQSQueryProvider.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\WAQSQueryValue.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.Interfaces.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\WCFExceptionHandler.cs">
+      <DependentUpon>WAQS.Server.Fx.WCFService.ExceptionHandler.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\WCFExceptionHandlerEndpointBehavior.cs">
+      <DependentUpon>WAQS.Server.Fx.WCFService.ExceptionHandler.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\WCFService.cs">
+      <DependentUpon>WAQS.Server.Fx.WCFService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\WCFUnityInstanceProvider.cs">
+      <DependentUpon>WAQS.Server.Fx.WCFService.UnityService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\WCFUnityServiceBehavior.cs">
+      <DependentUpon>WAQS.Server.Fx.WCFService.UnityService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\WCFUnityServiceHost.cs">
+      <DependentUpon>WAQS.Server.Fx.WCFService.UnityService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\WCFUnityServiceHostFactory.cs">
+      <DependentUpon>WAQS.Server.Fx.WCFService.UnityService.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\WithCategory.cs">
+      <DependentUpon>InheritedTypes.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\WithCustomer.cs">
+      <DependentUpon>InheritedTypes.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\WithEmployee.cs">
+      <DependentUpon>InheritedTypes.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\WithInvoice.cs">
+      <DependentUpon>InheritedTypes.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\WithInvoiceDetail.cs">
+      <DependentUpon>InheritedTypes.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\WithOrder.cs">
+      <DependentUpon>InheritedTypes.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\WithOrderDetail.cs">
+      <DependentUpon>InheritedTypes.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\WithProduct.cs">
+      <DependentUpon>InheritedTypes.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WAQS.Northwind\WithType.cs">
+      <DependentUpon>WAQS.Server.Fx.DAL.Interfaces.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>49848</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:18110/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
