@@ -3,7 +3,7 @@
 ################################################################################
 
 /Workshop*/.vs
-/Workshop*/**/.csproj.user
+/Workshop*/**/*.csproj.user
 /Workshop*/packages
 /Workshop*/WAQSWorkshopServer/bin
 /Workshop*/WAQSWorkshopServer/obj
