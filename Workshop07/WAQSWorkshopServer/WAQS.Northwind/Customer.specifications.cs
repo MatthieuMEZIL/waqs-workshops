@@ -21,11 +21,27 @@ namespace WAQSWorkshopServer
     {
         protected virtual Error ValidateRegionIsNullable()
         {
-            if (ChangeTracker.State == ObjectState.Added || ChangeTracker.State == ObjectState.Modified && ChangeTracker.ModifiedProperties.Intersect(new[]{"Region", "Country"}).Any())
+            if (ChangeTracker.State == ObjectState.Added || ChangeTracker.State == ObjectState.Modified && ChangeTracker.ModifiedProperties.Intersect(new[]
+            {
+            "Region", "Country"
+            }
+
+            ).Any())
             {
                 bool metadata = this.Country != "USA";
                 if (Region == null && !metadata)
-                    return new Error{Criticity = Criticity.Mandatory, Key = "RegionIsNullable", Message = Error.GetIsNullableErrorMessage("Region"), ErrorDetails = new ErrorDetail[]{new ErrorDetail{EntityKey = DataTransferEntityKey, PropertyName = "Region"}}};
+                    return new Error
+                    {
+                    Criticity = Criticity.Mandatory, Key = "RegionIsNullable", Message = Error.GetIsNullableErrorMessage("Region"), ErrorDetails = new ErrorDetail[]
+                    {
+                    new ErrorDetail
+                    {
+                    EntityKey = DataTransferEntityKey, PropertyName = "Region"
+                    }
+                    }
+                    }
+
+                    ;
             }
 
             return null;
@@ -142,11 +158,27 @@ namespace WAQSWorkshopServer
 
         protected virtual Error ValidatePostalCodeDefinePattern()
         {
-            if (ChangeTracker.State == ObjectState.Added || ChangeTracker.State == ObjectState.Modified && ChangeTracker.ModifiedProperties.Intersect(new[]{"PostalCode", "Country"}).Any())
+            if (ChangeTracker.State == ObjectState.Added || ChangeTracker.State == ObjectState.Modified && ChangeTracker.ModifiedProperties.Intersect(new[]
+            {
+            "PostalCode", "Country"
+            }
+
+            ).Any())
             {
                 string metadata = this.Country == "USA" ? "^[0-9]{5}(?:-[0-9]{4})?$" : this.Country == "France" ? @"^(?:\d{2}|(?:2(?:A|B)))\d{3}$" : null;
                 if (metadata != null && !System.Text.RegularExpressions.Regex.IsMatch(PostalCode, metadata))
-                    return new Error{Criticity = Criticity.Error, Key = "PostalCodeDefinePattern", Message = Error.GetDefinePatternErrorMessage("PostalCode", metadata), ErrorDetails = new ErrorDetail[]{new ErrorDetail{EntityKey = DataTransferEntityKey, PropertyName = "PostalCode"}}};
+                    return new Error
+                    {
+                    Criticity = Criticity.Error, Key = "PostalCodeDefinePattern", Message = Error.GetDefinePatternErrorMessage("PostalCode", metadata), ErrorDetails = new ErrorDetail[]
+                    {
+                    new ErrorDetail
+                    {
+                    EntityKey = DataTransferEntityKey, PropertyName = "PostalCode"
+                    }
+                    }
+                    }
+
+                    ;
             }
 
             return null;

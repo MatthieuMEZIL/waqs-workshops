@@ -146,7 +146,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.CustomerId.Add(error = new Error{Criticity = Criticity.Error, Key = "CustomerIdMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.CustomerId.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Error, Key = "CustomerIdMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 
@@ -378,7 +383,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.ShipName.Add(error = new Error{Criticity = Criticity.Error, Key = "ShipNameMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.ShipName.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Error, Key = "ShipNameMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 
@@ -429,7 +439,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.ShipAddress.Add(error = new Error{Criticity = Criticity.Error, Key = "ShipAddressMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.ShipAddress.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Error, Key = "ShipAddressMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 
@@ -480,7 +495,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.ShipCity.Add(error = new Error{Criticity = Criticity.Error, Key = "ShipCityMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.ShipCity.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Error, Key = "ShipCityMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 
@@ -531,7 +551,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.ShipRegion.Add(error = new Error{Criticity = Criticity.Error, Key = "ShipRegionMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.ShipRegion.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Error, Key = "ShipRegionMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 
@@ -582,7 +607,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.ShipPostalCode.Add(error = new Error{Criticity = Criticity.Error, Key = "ShipPostalCodeMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.ShipPostalCode.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Error, Key = "ShipPostalCodeMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 
@@ -633,7 +663,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.ShipCountry.Add(error = new Error{Criticity = Criticity.Error, Key = "ShipCountryMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.ShipCountry.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Error, Key = "ShipCountryMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 
@@ -1061,6 +1096,37 @@ namespace WAQSWorkshopClient
                     yield return er;
         }
 
+        private bool _previousHasInvoice;
+        public bool HasInvoice
+        {
+            get
+            {
+                if (Specifications != null && Specifications.HasHasInvoice)
+                    return Specifications.HasInvoice;
+                return this.Invoice != null;
+            }
+
+            set
+            {
+                throw new System.InvalidOperationException();
+                ;
+            }
+        }
+
+        protected virtual void OnHasInvoicePropertyChanging()
+        {
+            if (HasInvoicePropertyChanging != null)
+            {
+                var value = HasInvoice;
+                if (value == _previousHasInvoice)
+                    return;
+                var oldValue = _previousHasInvoice;
+                _previousHasInvoice = value;
+                HasInvoicePropertyChanging(oldValue, value);
+            }
+        }
+
+        protected internal event Action<bool, bool> HasInvoicePropertyChanging;
         private string _previousCustomerCompanyName;
         public string CustomerCompanyName
         {
@@ -1094,37 +1160,6 @@ namespace WAQSWorkshopClient
         }
 
         protected internal event Action<string, string> CustomerCompanyNamePropertyChanging;
-        private bool _previousHasInvoice;
-        public bool HasInvoice
-        {
-            get
-            {
-                if (Specifications != null && Specifications.HasHasInvoice)
-                    return Specifications.HasInvoice;
-                return this.Invoice != null;
-            }
-
-            set
-            {
-                throw new System.InvalidOperationException();
-                ;
-            }
-        }
-
-        protected virtual void OnHasInvoicePropertyChanging()
-        {
-            if (HasInvoicePropertyChanging != null)
-            {
-                var value = HasInvoice;
-                if (value == _previousHasInvoice)
-                    return;
-                var oldValue = _previousHasInvoice;
-                _previousHasInvoice = value;
-                HasInvoicePropertyChanging(oldValue, value);
-            }
-        }
-
-        protected internal event Action<bool, bool> HasInvoicePropertyChanging;
         private string _previousCustomerContactName;
         public string CustomerContactName
         {

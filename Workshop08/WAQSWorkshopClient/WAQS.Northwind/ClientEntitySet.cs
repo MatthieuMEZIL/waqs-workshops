@@ -213,11 +213,17 @@ namespace WAQS.ClientContext
         {
             if (disposing)
             {
+                if (_isDisposed)
+                {
+                    return;
+                }
+    
                 for (int esci = 0 ; esci < _entitiesStateChanged.Count ; esci++)
     			{
     				var esc = _entitiesStateChanged[esci];
                     esc.Key.ChangeTracker.ObjectStateChanged -= esc.Value;
     			}
+    
                 _entitiesStateChanged.Clear();
             }
             base.Dispose(disposing);

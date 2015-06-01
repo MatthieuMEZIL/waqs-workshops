@@ -538,7 +538,12 @@ namespace WAQSWorkshopServer.Service
                 throw new ArgumentException("The is no order for this id", "orderId");
             }
         
-            Invoice invoice = new Invoice{OrderId = order.Id, CustomerId = order.CustomerId, CustomerCompanyName = order.CustomerCompanyName, CustomerContactName = order.CustomerContactName, Total = order.Total};
+            Invoice invoice = new Invoice
+            {
+            OrderId = order.Id, CustomerId = order.CustomerId, CustomerCompanyName = order.CustomerCompanyName, CustomerContactName = order.CustomerContactName, Total = order.Total
+            }
+        
+            ;
             foreach (var od in order.OrderDetails)
             {
                 invoice.InvoiceDetails.Add(od.CreateInvoiceDetail());

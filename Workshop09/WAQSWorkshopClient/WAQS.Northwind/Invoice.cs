@@ -158,7 +158,7 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.CustomerId.Add(error = new Error
+                Errors.CustomerId.Add(error = new MetadataError
                 {
                 Criticity = Criticity.Error, Key = "CustomerIdMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
                 }
@@ -214,7 +214,7 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.CustomerCompanyName.Add(error = new Error
+                Errors.CustomerCompanyName.Add(error = new MetadataError
                 {
                 Criticity = Criticity.Error, Key = "CustomerCompanyNameMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
                 }
@@ -270,7 +270,7 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.CustomerContactName.Add(error = new Error
+                Errors.CustomerContactName.Add(error = new MetadataError
                 {
                 Criticity = Criticity.Error, Key = "CustomerContactNameMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
                 }
@@ -557,7 +557,7 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.Order.Add(error = new Error
+                Errors.Order.Add(error = new MetadataError
                 {
                 Criticity = Criticity.Mandatory, Key = "OrderRequired", Message = errorInfo.Message, ErrorInfo = errorInfo
                 }

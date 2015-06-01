@@ -103,7 +103,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.Id.Add(error = new Error{Criticity = Criticity.Mandatory, Key = "IdRequired", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.Id.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Mandatory, Key = "IdRequired", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 
@@ -121,7 +126,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.Id.Add(error = new Error{Criticity = Criticity.Error, Key = "IdMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.Id.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Error, Key = "IdMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 
@@ -173,7 +183,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.CompanyName.Add(error = new Error{Criticity = Criticity.Mandatory, Key = "CompanyNameRequired", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.CompanyName.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Mandatory, Key = "CompanyNameRequired", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 
@@ -191,7 +206,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.CompanyName.Add(error = new Error{Criticity = Criticity.Error, Key = "CompanyNameMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.CompanyName.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Error, Key = "CompanyNameMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 
@@ -242,7 +262,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.ContactName.Add(error = new Error{Criticity = Criticity.Error, Key = "ContactNameMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.ContactName.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Error, Key = "ContactNameMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 
@@ -293,7 +318,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.ContactTitle.Add(error = new Error{Criticity = Criticity.Error, Key = "ContactTitleMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.ContactTitle.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Error, Key = "ContactTitleMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 
@@ -344,7 +374,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.Address.Add(error = new Error{Criticity = Criticity.Error, Key = "AddressMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.Address.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Error, Key = "AddressMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 
@@ -395,7 +430,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.City.Add(error = new Error{Criticity = Criticity.Error, Key = "CityMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.City.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Error, Key = "CityMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 
@@ -446,7 +486,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.Region.Add(error = new Error{Criticity = Criticity.Error, Key = "RegionMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.Region.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Error, Key = "RegionMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 
@@ -497,7 +542,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.PostalCode.Add(error = new Error{Criticity = Criticity.Error, Key = "PostalCodeMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.PostalCode.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Error, Key = "PostalCodeMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 
@@ -548,7 +598,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.Country.Add(error = new Error{Criticity = Criticity.Error, Key = "CountryMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.Country.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Error, Key = "CountryMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 
@@ -599,7 +654,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.Phone.Add(error = new Error{Criticity = Criticity.Error, Key = "PhoneMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.Phone.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Error, Key = "PhoneMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 
@@ -650,7 +710,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.Fax.Add(error = new Error{Criticity = Criticity.Error, Key = "FaxMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.Fax.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Error, Key = "FaxMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 

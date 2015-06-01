@@ -146,7 +146,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.CustomerId.Add(error = new Error{Criticity = Criticity.Error, Key = "CustomerIdMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.CustomerId.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Error, Key = "CustomerIdMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 
@@ -378,7 +383,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.ShipName.Add(error = new Error{Criticity = Criticity.Error, Key = "ShipNameMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.ShipName.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Error, Key = "ShipNameMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 
@@ -429,7 +439,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.ShipAddress.Add(error = new Error{Criticity = Criticity.Error, Key = "ShipAddressMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.ShipAddress.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Error, Key = "ShipAddressMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 
@@ -480,7 +495,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.ShipCity.Add(error = new Error{Criticity = Criticity.Error, Key = "ShipCityMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.ShipCity.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Error, Key = "ShipCityMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 
@@ -531,7 +551,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.ShipRegion.Add(error = new Error{Criticity = Criticity.Error, Key = "ShipRegionMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.ShipRegion.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Error, Key = "ShipRegionMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 
@@ -582,7 +607,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.ShipPostalCode.Add(error = new Error{Criticity = Criticity.Error, Key = "ShipPostalCodeMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.ShipPostalCode.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Error, Key = "ShipPostalCodeMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 
@@ -633,7 +663,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.ShipCountry.Add(error = new Error{Criticity = Criticity.Error, Key = "ShipCountryMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.ShipCountry.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Error, Key = "ShipCountryMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 
@@ -1202,40 +1237,6 @@ namespace WAQSWorkshopClient
         [DataContract(Namespace = "http://Northwind/Entities")]
         public partial class OrderSpecifications
         {
-            bool _hasInvoice;
-            [DataMember]
-            public bool HasInvoice
-            {
-                get
-                {
-                    return _hasInvoice;
-                }
-
-                set
-                {
-                    _hasInvoice = value;
-                    if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((Order e) => e.HasInvoice);
-                }
-            }
-
-            bool _hasHasInvoice;
-            [DataMember]
-            public bool HasHasInvoice
-            {
-                get
-                {
-                    return _hasHasInvoice;
-                }
-
-                set
-                {
-                    _hasHasInvoice = value;
-                    if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((Order e) => e.HasInvoice);
-                }
-            }
-
             string _customerCompanyName;
             [DataMember]
             public string CustomerCompanyName
@@ -1267,6 +1268,40 @@ namespace WAQSWorkshopClient
                     _hasCustomerCompanyName = value;
                     if (NotifyPropertyChanged != null)
                         NotifyPropertyChanged.RaisePropertyChanged((Order e) => e.CustomerCompanyName);
+                }
+            }
+
+            bool _hasInvoice;
+            [DataMember]
+            public bool HasInvoice
+            {
+                get
+                {
+                    return _hasInvoice;
+                }
+
+                set
+                {
+                    _hasInvoice = value;
+                    if (NotifyPropertyChanged != null)
+                        NotifyPropertyChanged.RaisePropertyChanged((Order e) => e.HasInvoice);
+                }
+            }
+
+            bool _hasHasInvoice;
+            [DataMember]
+            public bool HasHasInvoice
+            {
+                get
+                {
+                    return _hasHasInvoice;
+                }
+
+                set
+                {
+                    _hasHasInvoice = value;
+                    if (NotifyPropertyChanged != null)
+                        NotifyPropertyChanged.RaisePropertyChanged((Order e) => e.HasInvoice);
                 }
             }
 

@@ -293,7 +293,7 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.Discount.Add(error = new Error
+                Errors.Discount.Add(error = new MetadataError
                 {
                 Criticity = Criticity.Error, Key = "DiscountMinValue", Message = errorInfo.Message, ErrorInfo = errorInfo
                 }
@@ -314,7 +314,7 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.Discount.Add(error = new Error
+                Errors.Discount.Add(error = new MetadataError
                 {
                 Criticity = Criticity.Error, Key = "DiscountMaxValue", Message = errorInfo.Message, ErrorInfo = errorInfo
                 }
@@ -430,7 +430,7 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.Order.Add(error = new Error
+                Errors.Order.Add(error = new MetadataError
                 {
                 Criticity = Criticity.Mandatory, Key = "OrderRequired", Message = errorInfo.Message, ErrorInfo = errorInfo
                 }
@@ -544,7 +544,7 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.Product.Add(error = new Error
+                Errors.Product.Add(error = new MetadataError
                 {
                 Criticity = Criticity.Mandatory, Key = "ProductRequired", Message = errorInfo.Message, ErrorInfo = errorInfo
                 }

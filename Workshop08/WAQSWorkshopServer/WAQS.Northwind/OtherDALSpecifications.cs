@@ -51,7 +51,11 @@ namespace WAQSWorkshopServer.DAL
             from o in context.Orders
             where o.EmployeeId.HasValue
             orderby o.OrderDate descending
-            select new LastOrderDTO{OrderId = o.Id, EmployeeId = o.EmployeeId.Value, EmployeeFullName = getFullName_Employee(o.Employee), Date = o.OrderDate, Total = getTotal_Order(o)}).FirstOrDefault();
+            select new LastOrderDTO
+            {
+            OrderId = o.Id, EmployeeId = o.EmployeeId.Value, EmployeeFullName = getFullName_Employee(o.Employee), Date = o.OrderDate, Total = getTotal_Order(o)}
+        
+        ).FirstOrDefault();
                 Func<InvocationExpression, Expression> replaceExpFunc = null;
                 replaceExpFunc = invocationExpression =>
                     {

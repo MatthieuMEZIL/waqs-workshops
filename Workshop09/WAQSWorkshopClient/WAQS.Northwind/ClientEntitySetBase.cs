@@ -303,11 +303,18 @@ namespace WAQS.ClientContext
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-                                            
+                                   
+    	protected bool _isDisposed;         
         protected internal virtual void Dispose(bool disposing)
         {
             if (disposing)
             {
+    			if (_isDisposed)
+                {
+                    return;
+                }
+    
+                _isDisposed = true;
     			var allEntities = AllEntities.ToArray();
     			for (var ei = 0 ; ei < allEntities.Length ; ei++)
                 {
@@ -316,9 +323,23 @@ namespace WAQS.ClientContext
                     entity.ChangeTracker.ChangeTrackingEnabled = false;
                     entity.StateChanged -= EntityStateChanged;
                     entity.ChangeTracker.ClientContextDispose();
+    				entity.ChangeTracker = null;
                 }
-                _entitiesDico = null;
-                GetEntityKey = null;
+    
+    			_expression = null;
+    			_entitiesDico = null;
+    			GetEntityKey = null;
+    			if (HashSet != null)
+                {
+                    HashSet.Clear();
+                    HashSet = null;
+                }
+    
+    			if (Entities != null)
+                {
+                    Entities.Clear();
+                    Entities = null;
+                }
             }
         }
     }

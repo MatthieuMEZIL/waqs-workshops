@@ -540,7 +540,12 @@ namespace WAQSWorkshopServer.Service
                 throw new ArgumentException("The is no order for this id", "orderId");
             }
         
-            Invoice invoice = new Invoice{OrderId = order.Id, CustomerId = order.CustomerId, CustomerCompanyName = order.CustomerCompanyName, CustomerContactName = order.CustomerContactName, Total = order.Total};
+            Invoice invoice = new Invoice
+            {
+            OrderId = order.Id, CustomerId = order.CustomerId, CustomerCompanyName = order.CustomerCompanyName, CustomerContactName = order.CustomerContactName, Total = order.Total
+            }
+        
+            ;
             foreach (var od in order.OrderDetails)
             {
                 invoice.InvoiceDetails.Add(od.CreateInvoiceDetail());
@@ -561,7 +566,12 @@ namespace WAQSWorkshopServer.Service
                 from o in this.Orders
                 where o.EmployeeId.HasValue
                 orderby o.OrderDate descending
-                select new LastOrderDTO{OrderId = o.Id, EmployeeId = o.EmployeeId.Value, EmployeeFullName = o.Employee.FullName, Date = o.OrderDate, Total = o.Total}).FirstOrDefault();
+                select new LastOrderDTO
+                {
+                OrderId = o.Id, EmployeeId = o.EmployeeId.Value, EmployeeFullName = o.Employee.FullName, Date = o.OrderDate, Total = o.Total
+                }
+        
+            ).FirstOrDefault();
         }
     
         void IDisposable.Dispose()

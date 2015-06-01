@@ -116,9 +116,17 @@ namespace WAQS.ClientContext
         {
             if (disposing)
             {
-                _entitySet.CollectionChanged -= EntitySetCollectionChanged;
-                _entitySet.EntityRemoving -= EntitySetEntityRemoving;
-                _entitySet = null;
+                if (_isDisposed)
+                {
+                    return;
+                }
+    
+    			if (_entitySet != null) 
+    			{
+    				_entitySet.CollectionChanged -= EntitySetCollectionChanged;
+    				_entitySet.EntityRemoving -= EntitySetEntityRemoving;
+    				_entitySet = null;
+    			}
             }
             base.Dispose(disposing);
         }

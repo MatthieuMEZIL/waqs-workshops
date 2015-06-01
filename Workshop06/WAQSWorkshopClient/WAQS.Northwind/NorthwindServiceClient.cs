@@ -116,7 +116,12 @@ namespace WAQSWorkshopClient.ClientContext.ServiceReference
         private object[] OnEndExecute(System.IAsyncResult result)
         {
             WAQSWorkshopClient.ClientContext.QueryResult.NorthwindQueryResult retVal = ((WAQSWorkshopClient.ClientContext.ServiceReference.INorthwindService)(this)).EndExecute(result);
-            return new object[]{retVal};
+            return new object[]
+            {
+            retVal
+            }
+
+            ;
         }
 
         private void OnExecuteCompleted(object state)
@@ -150,7 +155,12 @@ namespace WAQSWorkshopClient.ClientContext.ServiceReference
                 this.onExecuteCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnExecuteCompleted);
             }
 
-            base.InvokeAsync(this.onBeginExecuteDelegate, new object[]{query}, this.onEndExecuteDelegate, this.onExecuteCompletedDelegate, userState);
+            base.InvokeAsync(this.onBeginExecuteDelegate, new object[]
+            {
+            query
+            }
+
+            , this.onEndExecuteDelegate, this.onExecuteCompletedDelegate, userState);
         }
 
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -174,7 +184,12 @@ namespace WAQSWorkshopClient.ClientContext.ServiceReference
         private object[] OnEndExecuteMany(System.IAsyncResult result)
         {
             WAQSWorkshopClient.ClientContext.QueryResult.NorthwindQueriesResult retVal = ((WAQSWorkshopClient.ClientContext.ServiceReference.INorthwindService)(this)).EndExecuteMany(result);
-            return new object[]{retVal};
+            return new object[]
+            {
+            retVal
+            }
+
+            ;
         }
 
         private void OnExecuteManyCompleted(object state)
@@ -208,7 +223,12 @@ namespace WAQSWorkshopClient.ClientContext.ServiceReference
                 this.onExecuteManyCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnExecuteManyCompleted);
             }
 
-            base.InvokeAsync(this.onBeginExecuteManyDelegate, new object[]{queries}, this.onEndExecuteManyDelegate, this.onExecuteManyCompletedDelegate, userState);
+            base.InvokeAsync(this.onBeginExecuteManyDelegate, new object[]
+            {
+            queries
+            }
+
+            , this.onEndExecuteManyDelegate, this.onExecuteManyCompletedDelegate, userState);
         }
 
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -235,7 +255,12 @@ namespace WAQSWorkshopClient.ClientContext.ServiceReference
         private object[] OnEndLoadPage(System.IAsyncResult result)
         {
             WAQSWorkshopClient.ClientContext.QueryResult.NorthwindQueryResultPage retVal = ((WAQSWorkshopClient.ClientContext.ServiceReference.INorthwindService)(this)).EndLoadPage(result);
-            return new object[]{retVal};
+            return new object[]
+            {
+            retVal
+            }
+
+            ;
         }
 
         private void OnLoadPageCompleted(object state)
@@ -269,7 +294,12 @@ namespace WAQSWorkshopClient.ClientContext.ServiceReference
                 this.onLoadPageCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnLoadPageCompleted);
             }
 
-            base.InvokeAsync(this.onBeginLoadPageDelegate, new object[]{pageSize, queryExpression, withSpecificationsProperties, identifiers}, this.onEndLoadPageDelegate, this.onLoadPageCompletedDelegate, userState);
+            base.InvokeAsync(this.onBeginLoadPageDelegate, new object[]
+            {
+            pageSize, queryExpression, withSpecificationsProperties, identifiers
+            }
+
+            , this.onEndLoadPageDelegate, this.onLoadPageCompletedDelegate, userState);
         }
 
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -292,7 +322,12 @@ namespace WAQSWorkshopClient.ClientContext.ServiceReference
         private object[] OnEndGetDbDateTime(System.IAsyncResult result)
         {
             System.DateTime retVal = ((WAQSWorkshopClient.ClientContext.ServiceReference.INorthwindService)(this)).EndGetDbDateTime(result);
-            return new object[]{retVal};
+            return new object[]
+            {
+            retVal
+            }
+
+            ;
         }
 
         private void OnGetDbDateTimeCompleted(object state)
@@ -350,7 +385,12 @@ namespace WAQSWorkshopClient.ClientContext.ServiceReference
         private object[] OnEndSaveChanges(System.IAsyncResult result)
         {
             WAQSWorkshopClient.ClientContext.Interfaces.Serialization.NorthwindSerializableContext retVal = ((WAQSWorkshopClient.ClientContext.ServiceReference.INorthwindService)(this)).EndSaveChanges(result);
-            return new object[]{retVal};
+            return new object[]
+            {
+            retVal
+            }
+
+            ;
         }
 
         private void OnSaveChangesCompleted(object state)
@@ -384,7 +424,12 @@ namespace WAQSWorkshopClient.ClientContext.ServiceReference
                 this.onSaveChangesCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnSaveChangesCompleted);
             }
 
-            base.InvokeAsync(this.onBeginSaveChangesDelegate, new object[]{context}, this.onEndSaveChangesDelegate, this.onSaveChangesCompletedDelegate, userState);
+            base.InvokeAsync(this.onBeginSaveChangesDelegate, new object[]
+            {
+            context
+            }
+
+            , this.onEndSaveChangesDelegate, this.onSaveChangesCompletedDelegate, userState);
         }
 
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -408,7 +453,12 @@ namespace WAQSWorkshopClient.ClientContext.ServiceReference
         private object[] OnEndValidateCustomer(System.IAsyncResult result)
         {
             WAQS.ClientContext.Interfaces.Errors.Error[] retVal = ((WAQSWorkshopClient.ClientContext.ServiceReference.INorthwindService)(this)).EndValidateCustomer(result);
-            return new object[]{retVal};
+            return new object[]
+            {
+            retVal
+            }
+
+            ;
         }
 
         private void OnValidateCustomerCompleted(object state)
@@ -442,7 +492,12 @@ namespace WAQSWorkshopClient.ClientContext.ServiceReference
                 this.onValidateCustomerCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnValidateCustomerCompleted);
             }
 
-            base.InvokeAsync(this.onBeginValidateCustomerDelegate, new object[]{entity}, this.onEndValidateCustomerDelegate, this.onValidateCustomerCompletedDelegate, userState);
+            base.InvokeAsync(this.onBeginValidateCustomerDelegate, new object[]
+            {
+            entity
+            }
+
+            , this.onEndValidateCustomerDelegate, this.onValidateCustomerCompletedDelegate, userState);
         }
 
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -466,7 +521,12 @@ namespace WAQSWorkshopClient.ClientContext.ServiceReference
         private object[] OnEndValidateEmployee(System.IAsyncResult result)
         {
             WAQS.ClientContext.Interfaces.Errors.Error[] retVal = ((WAQSWorkshopClient.ClientContext.ServiceReference.INorthwindService)(this)).EndValidateEmployee(result);
-            return new object[]{retVal};
+            return new object[]
+            {
+            retVal
+            }
+
+            ;
         }
 
         private void OnValidateEmployeeCompleted(object state)
@@ -500,7 +560,12 @@ namespace WAQSWorkshopClient.ClientContext.ServiceReference
                 this.onValidateEmployeeCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnValidateEmployeeCompleted);
             }
 
-            base.InvokeAsync(this.onBeginValidateEmployeeDelegate, new object[]{entity}, this.onEndValidateEmployeeDelegate, this.onValidateEmployeeCompletedDelegate, userState);
+            base.InvokeAsync(this.onBeginValidateEmployeeDelegate, new object[]
+            {
+            entity
+            }
+
+            , this.onEndValidateEmployeeDelegate, this.onValidateEmployeeCompletedDelegate, userState);
         }
 
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -524,7 +589,12 @@ namespace WAQSWorkshopClient.ClientContext.ServiceReference
         private object[] OnEndValidateInvoiceDetail(System.IAsyncResult result)
         {
             WAQS.ClientContext.Interfaces.Errors.Error[] retVal = ((WAQSWorkshopClient.ClientContext.ServiceReference.INorthwindService)(this)).EndValidateInvoiceDetail(result);
-            return new object[]{retVal};
+            return new object[]
+            {
+            retVal
+            }
+
+            ;
         }
 
         private void OnValidateInvoiceDetailCompleted(object state)
@@ -558,7 +628,12 @@ namespace WAQSWorkshopClient.ClientContext.ServiceReference
                 this.onValidateInvoiceDetailCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnValidateInvoiceDetailCompleted);
             }
 
-            base.InvokeAsync(this.onBeginValidateInvoiceDetailDelegate, new object[]{entity}, this.onEndValidateInvoiceDetailDelegate, this.onValidateInvoiceDetailCompletedDelegate, userState);
+            base.InvokeAsync(this.onBeginValidateInvoiceDetailDelegate, new object[]
+            {
+            entity
+            }
+
+            , this.onEndValidateInvoiceDetailDelegate, this.onValidateInvoiceDetailCompletedDelegate, userState);
         }
 
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -582,7 +657,12 @@ namespace WAQSWorkshopClient.ClientContext.ServiceReference
         private object[] OnEndValidateInvoice(System.IAsyncResult result)
         {
             WAQS.ClientContext.Interfaces.Errors.Error[] retVal = ((WAQSWorkshopClient.ClientContext.ServiceReference.INorthwindService)(this)).EndValidateInvoice(result);
-            return new object[]{retVal};
+            return new object[]
+            {
+            retVal
+            }
+
+            ;
         }
 
         private void OnValidateInvoiceCompleted(object state)
@@ -616,7 +696,12 @@ namespace WAQSWorkshopClient.ClientContext.ServiceReference
                 this.onValidateInvoiceCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnValidateInvoiceCompleted);
             }
 
-            base.InvokeAsync(this.onBeginValidateInvoiceDelegate, new object[]{entity}, this.onEndValidateInvoiceDelegate, this.onValidateInvoiceCompletedDelegate, userState);
+            base.InvokeAsync(this.onBeginValidateInvoiceDelegate, new object[]
+            {
+            entity
+            }
+
+            , this.onEndValidateInvoiceDelegate, this.onValidateInvoiceCompletedDelegate, userState);
         }
 
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -640,7 +725,12 @@ namespace WAQSWorkshopClient.ClientContext.ServiceReference
         private object[] OnEndValidateOrderDetail(System.IAsyncResult result)
         {
             WAQS.ClientContext.Interfaces.Errors.Error[] retVal = ((WAQSWorkshopClient.ClientContext.ServiceReference.INorthwindService)(this)).EndValidateOrderDetail(result);
-            return new object[]{retVal};
+            return new object[]
+            {
+            retVal
+            }
+
+            ;
         }
 
         private void OnValidateOrderDetailCompleted(object state)
@@ -674,7 +764,12 @@ namespace WAQSWorkshopClient.ClientContext.ServiceReference
                 this.onValidateOrderDetailCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnValidateOrderDetailCompleted);
             }
 
-            base.InvokeAsync(this.onBeginValidateOrderDetailDelegate, new object[]{entity}, this.onEndValidateOrderDetailDelegate, this.onValidateOrderDetailCompletedDelegate, userState);
+            base.InvokeAsync(this.onBeginValidateOrderDetailDelegate, new object[]
+            {
+            entity
+            }
+
+            , this.onEndValidateOrderDetailDelegate, this.onValidateOrderDetailCompletedDelegate, userState);
         }
 
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -698,7 +793,12 @@ namespace WAQSWorkshopClient.ClientContext.ServiceReference
         private object[] OnEndValidateOrder(System.IAsyncResult result)
         {
             WAQS.ClientContext.Interfaces.Errors.Error[] retVal = ((WAQSWorkshopClient.ClientContext.ServiceReference.INorthwindService)(this)).EndValidateOrder(result);
-            return new object[]{retVal};
+            return new object[]
+            {
+            retVal
+            }
+
+            ;
         }
 
         private void OnValidateOrderCompleted(object state)
@@ -732,7 +832,12 @@ namespace WAQSWorkshopClient.ClientContext.ServiceReference
                 this.onValidateOrderCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnValidateOrderCompleted);
             }
 
-            base.InvokeAsync(this.onBeginValidateOrderDelegate, new object[]{entity}, this.onEndValidateOrderDelegate, this.onValidateOrderCompletedDelegate, userState);
+            base.InvokeAsync(this.onBeginValidateOrderDelegate, new object[]
+            {
+            entity
+            }
+
+            , this.onEndValidateOrderDelegate, this.onValidateOrderCompletedDelegate, userState);
         }
 
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -756,7 +861,12 @@ namespace WAQSWorkshopClient.ClientContext.ServiceReference
         private object[] OnEndValidateProduct(System.IAsyncResult result)
         {
             WAQS.ClientContext.Interfaces.Errors.Error[] retVal = ((WAQSWorkshopClient.ClientContext.ServiceReference.INorthwindService)(this)).EndValidateProduct(result);
-            return new object[]{retVal};
+            return new object[]
+            {
+            retVal
+            }
+
+            ;
         }
 
         private void OnValidateProductCompleted(object state)
@@ -790,7 +900,12 @@ namespace WAQSWorkshopClient.ClientContext.ServiceReference
                 this.onValidateProductCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnValidateProductCompleted);
             }
 
-            base.InvokeAsync(this.onBeginValidateProductDelegate, new object[]{entity}, this.onEndValidateProductDelegate, this.onValidateProductCompletedDelegate, userState);
+            base.InvokeAsync(this.onBeginValidateProductDelegate, new object[]
+            {
+            entity
+            }
+
+            , this.onEndValidateProductDelegate, this.onValidateProductCompletedDelegate, userState);
         }
 
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -814,7 +929,12 @@ namespace WAQSWorkshopClient.ClientContext.ServiceReference
         private object[] OnEndValidateCategory(System.IAsyncResult result)
         {
             WAQS.ClientContext.Interfaces.Errors.Error[] retVal = ((WAQSWorkshopClient.ClientContext.ServiceReference.INorthwindService)(this)).EndValidateCategory(result);
-            return new object[]{retVal};
+            return new object[]
+            {
+            retVal
+            }
+
+            ;
         }
 
         private void OnValidateCategoryCompleted(object state)
@@ -848,7 +968,12 @@ namespace WAQSWorkshopClient.ClientContext.ServiceReference
                 this.onValidateCategoryCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnValidateCategoryCompleted);
             }
 
-            base.InvokeAsync(this.onBeginValidateCategoryDelegate, new object[]{entity}, this.onEndValidateCategoryDelegate, this.onValidateCategoryCompletedDelegate, userState);
+            base.InvokeAsync(this.onBeginValidateCategoryDelegate, new object[]
+            {
+            entity
+            }
+
+            , this.onEndValidateCategoryDelegate, this.onValidateCategoryCompletedDelegate, userState);
         }
 
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -873,7 +998,12 @@ namespace WAQSWorkshopClient.ClientContext.ServiceReference
         private object[] OnEndAlreadySoldTo(System.IAsyncResult result)
         {
             bool retVal = ((WAQSWorkshopClient.ClientContext.ServiceReference.INorthwindService)(this)).EndAlreadySoldTo(result);
-            return new object[]{retVal};
+            return new object[]
+            {
+            retVal
+            }
+
+            ;
         }
 
         private void OnAlreadySoldToCompleted(object state)
@@ -907,7 +1037,12 @@ namespace WAQSWorkshopClient.ClientContext.ServiceReference
                 this.onAlreadySoldToCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnAlreadySoldToCompleted);
             }
 
-            base.InvokeAsync(this.onBeginAlreadySoldToDelegate, new object[]{employee, customer}, this.onEndAlreadySoldToDelegate, this.onAlreadySoldToCompletedDelegate, userState);
+            base.InvokeAsync(this.onBeginAlreadySoldToDelegate, new object[]
+            {
+            employee, customer
+            }
+
+            , this.onEndAlreadySoldToDelegate, this.onAlreadySoldToCompletedDelegate, userState);
         }
     }
 }

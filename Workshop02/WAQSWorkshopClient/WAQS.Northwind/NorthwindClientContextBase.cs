@@ -541,7 +541,7 @@ namespace WAQSWorkshopClient.ClientContext
         }
     
     	private List<KeyValuePair<Type, Func<PropertyDescriptor>>> _customPropertyDescriptors;
-    	private List<KeyValuePair<Type, Func<PropertyDescriptor>>> CustomPropertyDescriptors
+    	protected List<KeyValuePair<Type, Func<PropertyDescriptor>>> CustomPropertyDescriptors
     	{
     		get { return _customPropertyDescriptors ?? (_customPropertyDescriptors = new List<KeyValuePair<Type,Func<PropertyDescriptor>>>()); }
     	}

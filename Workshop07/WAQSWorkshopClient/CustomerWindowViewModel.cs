@@ -117,7 +117,7 @@ namespace WAQSWorkshopClient
             }
             catch(ErrorException e)
             {
-                System.Windows.MessageBox.Show(String.Join(Environment.NewLine, e.Errors.OrderByDescending(er => er.Criticity).Select(er => er.ErrorInfo.PropertyName + ": " + er.Message))); // this is not good for an MVVM point of view
+                System.Windows.MessageBox.Show(String.Join(Environment.NewLine, e.Errors.OrderByDescending(er => er.Criticity).Select(er => er.Message))); // this is not good for an MVVM point of view
             }
             catch (Exception e)
             {

@@ -14,7 +14,7 @@ namespace WAQS.EntitiesTracking
 {
     public partial interface IObjectWithChangeTracker
     {
-    	ObjectChangeTracker ChangeTracker { get; }
+    	ObjectChangeTracker ChangeTracker { get; set; }
     	
     	event Action<IObjectWithChangeTracker, ObjectState> StateChanged;
     

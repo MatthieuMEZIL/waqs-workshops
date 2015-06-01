@@ -307,7 +307,7 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.Invoice.Add(error = new Error
+                Errors.Invoice.Add(error = new MetadataError
                 {
                 Criticity = Criticity.Mandatory, Key = "InvoiceRequired", Message = errorInfo.Message, ErrorInfo = errorInfo
                 }
@@ -393,7 +393,7 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.OrderDetail.Add(error = new Error
+                Errors.OrderDetail.Add(error = new MetadataError
                 {
                 Criticity = Criticity.Mandatory, Key = "OrderDetailRequired", Message = errorInfo.Message, ErrorInfo = errorInfo
                 }

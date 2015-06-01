@@ -383,7 +383,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.Order.Add(error = new Error{Criticity = Criticity.Mandatory, Key = "OrderRequired", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.Order.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Mandatory, Key = "OrderRequired", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 
@@ -492,7 +497,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.Product.Add(error = new Error{Criticity = Criticity.Mandatory, Key = "ProductRequired", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.Product.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Mandatory, Key = "ProductRequired", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 

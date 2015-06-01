@@ -130,7 +130,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.Name.Add(error = new Error{Criticity = Criticity.Mandatory, Key = "NameRequired", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.Name.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Mandatory, Key = "NameRequired", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 
@@ -148,7 +153,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.Name.Add(error = new Error{Criticity = Criticity.Error, Key = "NameMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.Name.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Error, Key = "NameMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 
@@ -268,7 +278,12 @@ namespace WAQSWorkshopClient
             }
 
             if (error == null)
-                Errors.QuantityPerUnit.Add(error = new Error{Criticity = Criticity.Error, Key = "QuantityPerUnitMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo});
+                Errors.QuantityPerUnit.Add(error = new MetadataError
+                {
+                Criticity = Criticity.Error, Key = "QuantityPerUnitMaxLength", Message = errorInfo.Message, ErrorInfo = errorInfo
+                }
+
+                );
             return error;
         }
 

@@ -576,7 +576,7 @@ namespace WAQSWorkshopClient.ClientContext
         protected abstract WAQSWorkshopClient.DTO.LastOrderDTO GetDTO(WAQSWorkshopClient.DTO.LastOrderDTO dto, List<WAQSWorkshopClient.DTO.LastOrderDTO> attachedDtosLastOrderDTO, MergeOption? mergeOption = null, bool applyDataTransfer = false);
     
     	private List<KeyValuePair<Type, Func<PropertyDescriptor>>> _customPropertyDescriptors;
-    	private List<KeyValuePair<Type, Func<PropertyDescriptor>>> CustomPropertyDescriptors
+    	protected List<KeyValuePair<Type, Func<PropertyDescriptor>>> CustomPropertyDescriptors
     	{
     		get { return _customPropertyDescriptors ?? (_customPropertyDescriptors = new List<KeyValuePair<Type,Func<PropertyDescriptor>>>()); }
     	}

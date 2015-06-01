@@ -85,13 +85,16 @@ namespace WAQSWorkshopClient.ClientContext
     
         private void EntityAddedOrAttached(WAQSWorkshopClient.Customer entity)
         {
+            if (!ClientEntitySetExtensions.AddEntityInDico(Customers, entity)) 
+    		{
+    			return;
+    		}
     
-            ClientEntitySetExtensions.AddEntityInDico(Customers, entity);
             Customer entityTmp;
             if (CustomersDataTransferDico.TryGetValue(entity.DataTransferEntityKey, out entityTmp))
             {
-                if (entityTmp == entity)
-                    new InvalidOperationException();
+                if (entityTmp != entity)
+                    throw new InvalidOperationException();
             }
             else
                 CustomersDataTransferDico.Add(entity.DataTransferEntityKey, entity);		
@@ -195,6 +198,18 @@ namespace WAQSWorkshopClient.ClientContext
                 }
         }
          
+    	private void DisposeCollectionCustomer()
+    	{
+    		CustomersDataTransferDico.Clear();
+    		CustomersDico.Clear();
+    	}
+    
+    	private void DisposeEntity(WAQSWorkshopClient.Customer entity)
+    	{
+    		ClientEntitySetExtensions.RemoveEntityInDico(entity);
+    		entity.Invoices.CollectionChanged -= Customer_InvoicesCollectionChanged;
+    		entity.Orders.CollectionChanged -= Customer_OrdersCollectionChanged;
+    	}
     
         private void EntityDetached(WAQSWorkshopClient.Customer entity)
         {
@@ -706,13 +721,12 @@ namespace WAQSWorkshopClient.ClientContext
         {
             if (_customers != null)
             {
+    			DisposeCollectionCustomer();
     			var allEntities = _customers.AllEntities.ToArray();
                 for (int ei = 0 ; ei < allEntities.Length ; ei++)
                 {
     				var entity = allEntities[ei];
-                    entity.Invoices.CollectionChanged -= Customer_InvoicesCollectionChanged;
-                    entity.Orders.CollectionChanged -= Customer_OrdersCollectionChanged;
-                    EntityDetached(entity);
+                    DisposeEntity(entity);
                 }
                 _customers.EntityAdded -= EntityAddedOrAttached;
                 _customers.EntityAttached -= EntityAddedOrAttached;
@@ -795,13 +809,16 @@ namespace WAQSWorkshopClient.ClientContext
     
         private void EntityAddedOrAttached(WAQSWorkshopClient.Employee entity)
         {
+            if (!ClientEntitySetExtensions.AddEntityInDico(Employees, entity)) 
+    		{
+    			return;
+    		}
     
-            ClientEntitySetExtensions.AddEntityInDico(Employees, entity);
             Employee entityTmp;
             if (EmployeesDataTransferDico.TryGetValue(entity.DataTransferEntityKey, out entityTmp))
             {
-                if (entityTmp == entity)
-                    new InvalidOperationException();
+                if (entityTmp != entity)
+                    throw new InvalidOperationException();
             }
             else
                 EmployeesDataTransferDico.Add(entity.DataTransferEntityKey, entity);		
@@ -870,6 +887,7 @@ namespace WAQSWorkshopClient.ClientContext
                 if (EmployeesDico.TryGetValue(employeesEmployee1Keys, out employee1))
                     entity.Employee1 = employee1;
             }
+    		entity.Employee1FKsChanged -= EmployeeEmployee1FKsChanged;
             entity.Employee1FKsChanged += EmployeeEmployee1FKsChanged;
     
             for (int sei = 0 ; sei < entity.Orders.Count ; sei++)
@@ -991,6 +1009,25 @@ namespace WAQSWorkshopClient.ClientContext
                     entity.Employee1 = parentEntityInCache;					
             }
         }
+    	private void DisposeCollectionEmployee()
+    	{
+    		EmployeesDataTransferDico.Clear();
+    		EmployeesDico.Clear();
+    		if (_employeesEmployee1FKsDico != null) 
+    		{
+    			_employeesEmployee1FKsDico.Clear();
+    		}
+    	}
+    
+    	private void DisposeEntity(WAQSWorkshopClient.Employee entity)
+    	{
+    		entity.EntityKeyChanged -= ResetEntityKey;
+    		ClientEntitySetExtensions.RemoveEntityInDico(entity);
+    		entity.Employees1.CollectionChanged -= Employee_Employees1CollectionChanged;
+    		entity.Employee1FKsChanged -= EmployeeEmployee1FKsChanged;
+    		entity.Orders.CollectionChanged -= Employee_OrdersCollectionChanged;
+    		entity.NavigationPropertyChanged -= EmployeeNavigationPropertyChanged;
+    	}
     
         private void EntityDetached(WAQSWorkshopClient.Employee entity)
         {
@@ -1679,15 +1716,12 @@ namespace WAQSWorkshopClient.ClientContext
         {
             if (_employees != null)
             {
+    			DisposeCollectionEmployee();
     			var allEntities = _employees.AllEntities.ToArray();
                 for (int ei = 0 ; ei < allEntities.Length ; ei++)
                 {
     				var entity = allEntities[ei];
-                    entity.Employees1.CollectionChanged -= Employee_Employees1CollectionChanged;
-                    entity.Employee1FKsChanged -= EmployeeEmployee1FKsChanged;
-                    entity.Orders.CollectionChanged -= Employee_OrdersCollectionChanged;
-                    entity.NavigationPropertyChanged -= EmployeeNavigationPropertyChanged;
-                    EntityDetached(entity);
+                    DisposeEntity(entity);
                 }
                 _employees.EntityAdded -= EntityAddedOrAttached;
                 _employees.EntityAttached -= EntityAddedOrAttached;
@@ -1775,13 +1809,16 @@ namespace WAQSWorkshopClient.ClientContext
     
         private void EntityAddedOrAttached(WAQSWorkshopClient.Invoice entity)
         {
+            if (!ClientEntitySetExtensions.AddEntityInDico(Invoices, entity)) 
+    		{
+    			return;
+    		}
     
-            ClientEntitySetExtensions.AddEntityInDico(Invoices, entity);
             Invoice entityTmp;
             if (InvoicesDataTransferDico.TryGetValue(entity.DataTransferEntityKey, out entityTmp))
             {
-                if (entityTmp == entity)
-                    new InvalidOperationException();
+                if (entityTmp != entity)
+                    throw new InvalidOperationException();
             }
             else
                 InvoicesDataTransferDico.Add(entity.DataTransferEntityKey, entity);		
@@ -1834,6 +1871,7 @@ namespace WAQSWorkshopClient.ClientContext
                 if (CustomersDico.TryGetValue(invoicesCustomerKeys, out customer))
                     entity.Customer = customer;
             }
+    		entity.CustomerFKsChanged -= InvoiceCustomerFKsChanged;
             entity.CustomerFKsChanged += InvoiceCustomerFKsChanged;
     
             for (int sei = 0 ; sei < entity.InvoiceDetails.Count ; sei++)
@@ -1964,6 +2002,28 @@ namespace WAQSWorkshopClient.ClientContext
                     entity.Order = parentEntityInCache;					
             }
         }
+    	private void DisposeCollectionInvoice()
+    	{
+    		InvoicesDataTransferDico.Clear();
+    		InvoicesDico.Clear();
+    		if (_invoicesCustomerFKsDico != null) 
+    		{
+    			_invoicesCustomerFKsDico.Clear();
+    		}
+    		if (_invoicesOrderFKsDico != null) 
+    		{
+    			_invoicesOrderFKsDico.Clear();
+    		}
+    	}
+    
+    	private void DisposeEntity(WAQSWorkshopClient.Invoice entity)
+    	{
+    		entity.EntityKeyChanged -= ResetEntityKey;
+    		ClientEntitySetExtensions.RemoveEntityInDico(entity);
+    		entity.CustomerFKsChanged -= InvoiceCustomerFKsChanged;
+    		entity.InvoiceDetails.CollectionChanged -= Invoice_InvoiceDetailsCollectionChanged;
+    		entity.NavigationPropertyChanged -= InvoiceNavigationPropertyChanged;
+    	}
     
         private void EntityDetached(WAQSWorkshopClient.Invoice entity)
         {
@@ -2557,14 +2617,12 @@ namespace WAQSWorkshopClient.ClientContext
         {
             if (_invoices != null)
             {
+    			DisposeCollectionInvoice();
     			var allEntities = _invoices.AllEntities.ToArray();
                 for (int ei = 0 ; ei < allEntities.Length ; ei++)
                 {
     				var entity = allEntities[ei];
-                    entity.CustomerFKsChanged -= InvoiceCustomerFKsChanged;
-                    entity.InvoiceDetails.CollectionChanged -= Invoice_InvoiceDetailsCollectionChanged;
-                    entity.NavigationPropertyChanged -= InvoiceNavigationPropertyChanged;
-                    EntityDetached(entity);
+                    DisposeEntity(entity);
                 }
                 _invoices.EntityAdded -= EntityAddedOrAttached;
                 _invoices.EntityAttached -= EntityAddedOrAttached;
@@ -2652,13 +2710,16 @@ namespace WAQSWorkshopClient.ClientContext
     
         private void EntityAddedOrAttached(WAQSWorkshopClient.InvoiceDetail entity)
         {
+            if (!ClientEntitySetExtensions.AddEntityInDico(InvoiceDetails, entity)) 
+    		{
+    			return;
+    		}
     
-            ClientEntitySetExtensions.AddEntityInDico(InvoiceDetails, entity);
             InvoiceDetail entityTmp;
             if (InvoiceDetailsDataTransferDico.TryGetValue(entity.DataTransferEntityKey, out entityTmp))
             {
-                if (entityTmp == entity)
-                    new InvalidOperationException();
+                if (entityTmp != entity)
+                    throw new InvalidOperationException();
             }
             else
                 InvoiceDetailsDataTransferDico.Add(entity.DataTransferEntityKey, entity);		
@@ -2700,6 +2761,7 @@ namespace WAQSWorkshopClient.ClientContext
             WAQSWorkshopClient.Invoice invoice;
             if (InvoicesDico.TryGetValue(invoiceDetailsInvoiceKeys, out invoice))
                 entity.Invoice = invoice;
+    		entity.InvoiceFKsChanged -= InvoiceDetailInvoiceFKsChanged;
             entity.InvoiceFKsChanged += InvoiceDetailInvoiceFKsChanged;
     
             if (! (entity.OrderDetail == null || OrderDetailsInternal.Contains(entity.OrderDetail)))
@@ -2803,6 +2865,27 @@ namespace WAQSWorkshopClient.ClientContext
                     entity.OrderDetail = parentEntityInCache;					
             }
         }
+    	private void DisposeCollectionInvoiceDetail()
+    	{
+    		InvoiceDetailsDataTransferDico.Clear();
+    		InvoiceDetailsDico.Clear();
+    		if (_invoiceDetailsInvoiceFKsDico != null) 
+    		{
+    			_invoiceDetailsInvoiceFKsDico.Clear();
+    		}
+    		if (_invoiceDetailsOrderDetailFKsDico != null) 
+    		{
+    			_invoiceDetailsOrderDetailFKsDico.Clear();
+    		}
+    	}
+    
+    	private void DisposeEntity(WAQSWorkshopClient.InvoiceDetail entity)
+    	{
+    		entity.EntityKeyChanged -= ResetEntityKey;
+    		ClientEntitySetExtensions.RemoveEntityInDico(entity);
+    		entity.InvoiceFKsChanged -= InvoiceDetailInvoiceFKsChanged;
+    		entity.NavigationPropertyChanged -= InvoiceDetailNavigationPropertyChanged;
+    	}
     
         private void EntityDetached(WAQSWorkshopClient.InvoiceDetail entity)
         {
@@ -3329,13 +3412,12 @@ namespace WAQSWorkshopClient.ClientContext
         {
             if (_invoiceDetails != null)
             {
+    			DisposeCollectionInvoiceDetail();
     			var allEntities = _invoiceDetails.AllEntities.ToArray();
                 for (int ei = 0 ; ei < allEntities.Length ; ei++)
                 {
     				var entity = allEntities[ei];
-                    entity.InvoiceFKsChanged -= InvoiceDetailInvoiceFKsChanged;
-                    entity.NavigationPropertyChanged -= InvoiceDetailNavigationPropertyChanged;
-                    EntityDetached(entity);
+                    DisposeEntity(entity);
                 }
                 _invoiceDetails.EntityAdded -= EntityAddedOrAttached;
                 _invoiceDetails.EntityAttached -= EntityAddedOrAttached;
@@ -3428,13 +3510,16 @@ namespace WAQSWorkshopClient.ClientContext
     
         private void EntityAddedOrAttached(WAQSWorkshopClient.Order entity)
         {
+            if (!ClientEntitySetExtensions.AddEntityInDico(Orders, entity)) 
+    		{
+    			return;
+    		}
     
-            ClientEntitySetExtensions.AddEntityInDico(Orders, entity);
             Order entityTmp;
             if (OrdersDataTransferDico.TryGetValue(entity.DataTransferEntityKey, out entityTmp))
             {
-                if (entityTmp == entity)
-                    new InvalidOperationException();
+                if (entityTmp != entity)
+                    throw new InvalidOperationException();
             }
             else
                 OrdersDataTransferDico.Add(entity.DataTransferEntityKey, entity);		
@@ -3487,6 +3572,7 @@ namespace WAQSWorkshopClient.ClientContext
                 if (CustomersDico.TryGetValue(ordersCustomerKeys, out customer))
                     entity.Customer = customer;
             }
+    		entity.CustomerFKsChanged -= OrderCustomerFKsChanged;
             entity.CustomerFKsChanged += OrderCustomerFKsChanged;
     
             if (! (entity.Employee == null || EmployeesInternal.Contains(entity.Employee)))
@@ -3504,6 +3590,7 @@ namespace WAQSWorkshopClient.ClientContext
                 if (EmployeesDico.TryGetValue(ordersEmployeeKeys, out employee))
                     entity.Employee = employee;
             }
+    		entity.EmployeeFKsChanged -= OrderEmployeeFKsChanged;
             entity.EmployeeFKsChanged += OrderEmployeeFKsChanged;
     
             if (! (entity.Invoice == null || InvoicesInternal.Contains(entity.Invoice)))
@@ -3662,6 +3749,33 @@ namespace WAQSWorkshopClient.ClientContext
                     entity.Invoice = parentEntityInCache;					
             }
         }
+    	private void DisposeCollectionOrder()
+    	{
+    		OrdersDataTransferDico.Clear();
+    		OrdersDico.Clear();
+    		if (_ordersCustomerFKsDico != null) 
+    		{
+    			_ordersCustomerFKsDico.Clear();
+    		}
+    		if (_ordersEmployeeFKsDico != null) 
+    		{
+    			_ordersEmployeeFKsDico.Clear();
+    		}
+    		if (_ordersInvoiceFKsDico != null) 
+    		{
+    			_ordersInvoiceFKsDico.Clear();
+    		}
+    	}
+    
+    	private void DisposeEntity(WAQSWorkshopClient.Order entity)
+    	{
+    		entity.EntityKeyChanged -= ResetEntityKey;
+    		ClientEntitySetExtensions.RemoveEntityInDico(entity);
+    		entity.CustomerFKsChanged -= OrderCustomerFKsChanged;
+    		entity.EmployeeFKsChanged -= OrderEmployeeFKsChanged;
+    		entity.OrderDetails.CollectionChanged -= Order_OrderDetailsCollectionChanged;
+    		entity.NavigationPropertyChanged -= OrderNavigationPropertyChanged;
+    	}
     
         private void EntityDetached(WAQSWorkshopClient.Order entity)
         {
@@ -4409,15 +4523,12 @@ namespace WAQSWorkshopClient.ClientContext
         {
             if (_orders != null)
             {
+    			DisposeCollectionOrder();
     			var allEntities = _orders.AllEntities.ToArray();
                 for (int ei = 0 ; ei < allEntities.Length ; ei++)
                 {
     				var entity = allEntities[ei];
-                    entity.CustomerFKsChanged -= OrderCustomerFKsChanged;
-                    entity.EmployeeFKsChanged -= OrderEmployeeFKsChanged;
-                    entity.OrderDetails.CollectionChanged -= Order_OrderDetailsCollectionChanged;
-                    entity.NavigationPropertyChanged -= OrderNavigationPropertyChanged;
-                    EntityDetached(entity);
+                    DisposeEntity(entity);
                 }
                 _orders.EntityAdded -= EntityAddedOrAttached;
                 _orders.EntityAttached -= EntityAddedOrAttached;
@@ -4510,13 +4621,16 @@ namespace WAQSWorkshopClient.ClientContext
     
         private void EntityAddedOrAttached(WAQSWorkshopClient.OrderDetail entity)
         {
+            if (!ClientEntitySetExtensions.AddEntityInDico(OrderDetails, entity)) 
+    		{
+    			return;
+    		}
     
-            ClientEntitySetExtensions.AddEntityInDico(OrderDetails, entity);
             OrderDetail entityTmp;
             if (OrderDetailsDataTransferDico.TryGetValue(entity.DataTransferEntityKey, out entityTmp))
             {
-                if (entityTmp == entity)
-                    new InvalidOperationException();
+                if (entityTmp != entity)
+                    throw new InvalidOperationException();
             }
             else
                 OrderDetailsDataTransferDico.Add(entity.DataTransferEntityKey, entity);		
@@ -4571,6 +4685,7 @@ namespace WAQSWorkshopClient.ClientContext
             WAQSWorkshopClient.Order order;
             if (OrdersDico.TryGetValue(orderDetailsOrderKeys, out order))
                 entity.Order = order;
+    		entity.OrderFKsChanged -= OrderDetailOrderFKsChanged;
             entity.OrderFKsChanged += OrderDetailOrderFKsChanged;
     
             if (! (entity.Product == null || ProductsInternal.Contains(entity.Product)))
@@ -4585,6 +4700,7 @@ namespace WAQSWorkshopClient.ClientContext
             WAQSWorkshopClient.Product product;
             if (ProductsDico.TryGetValue(orderDetailsProductKeys, out product))
                 entity.Product = product;
+    		entity.ProductFKsChanged -= OrderDetailProductFKsChanged;
             entity.ProductFKsChanged += OrderDetailProductFKsChanged;
             entity.IsInitializingRelationships = false;
         }
@@ -4686,6 +4802,32 @@ namespace WAQSWorkshopClient.ClientContext
                     entity.Product = parentEntityInCache;					
             }
         }
+    	private void DisposeCollectionOrderDetail()
+    	{
+    		OrderDetailsDataTransferDico.Clear();
+    		OrderDetailsDico.Clear();
+    		if (_orderDetailsInvoiceDetailFKsDico != null) 
+    		{
+    			_orderDetailsInvoiceDetailFKsDico.Clear();
+    		}
+    		if (_orderDetailsOrderFKsDico != null) 
+    		{
+    			_orderDetailsOrderFKsDico.Clear();
+    		}
+    		if (_orderDetailsProductFKsDico != null) 
+    		{
+    			_orderDetailsProductFKsDico.Clear();
+    		}
+    	}
+    
+    	private void DisposeEntity(WAQSWorkshopClient.OrderDetail entity)
+    	{
+    		entity.EntityKeyChanged -= ResetEntityKey;
+    		ClientEntitySetExtensions.RemoveEntityInDico(entity);
+    		entity.OrderFKsChanged -= OrderDetailOrderFKsChanged;
+    		entity.ProductFKsChanged -= OrderDetailProductFKsChanged;
+    		entity.NavigationPropertyChanged -= OrderDetailNavigationPropertyChanged;
+    	}
     
         private void EntityDetached(WAQSWorkshopClient.OrderDetail entity)
         {
@@ -5302,14 +5444,12 @@ namespace WAQSWorkshopClient.ClientContext
         {
             if (_orderDetails != null)
             {
+    			DisposeCollectionOrderDetail();
     			var allEntities = _orderDetails.AllEntities.ToArray();
                 for (int ei = 0 ; ei < allEntities.Length ; ei++)
                 {
     				var entity = allEntities[ei];
-                    entity.OrderFKsChanged -= OrderDetailOrderFKsChanged;
-                    entity.ProductFKsChanged -= OrderDetailProductFKsChanged;
-                    entity.NavigationPropertyChanged -= OrderDetailNavigationPropertyChanged;
-                    EntityDetached(entity);
+                    DisposeEntity(entity);
                 }
                 _orderDetails.EntityAdded -= EntityAddedOrAttached;
                 _orderDetails.EntityAttached -= EntityAddedOrAttached;
@@ -5387,13 +5527,16 @@ namespace WAQSWorkshopClient.ClientContext
     
         private void EntityAddedOrAttached(WAQSWorkshopClient.Product entity)
         {
+            if (!ClientEntitySetExtensions.AddEntityInDico(Products, entity)) 
+    		{
+    			return;
+    		}
     
-            ClientEntitySetExtensions.AddEntityInDico(Products, entity);
             Product entityTmp;
             if (ProductsDataTransferDico.TryGetValue(entity.DataTransferEntityKey, out entityTmp))
             {
-                if (entityTmp == entity)
-                    new InvalidOperationException();
+                if (entityTmp != entity)
+                    throw new InvalidOperationException();
             }
             else
                 ProductsDataTransferDico.Add(entity.DataTransferEntityKey, entity);		
@@ -5473,6 +5616,18 @@ namespace WAQSWorkshopClient.ClientContext
                 }
         }
          
+    	private void DisposeCollectionProduct()
+    	{
+    		ProductsDataTransferDico.Clear();
+    		ProductsDico.Clear();
+    	}
+    
+    	private void DisposeEntity(WAQSWorkshopClient.Product entity)
+    	{
+    		entity.EntityKeyChanged -= ResetEntityKey;
+    		ClientEntitySetExtensions.RemoveEntityInDico(entity);
+    		entity.OrderDetails.CollectionChanged -= Product_OrderDetailsCollectionChanged;
+    	}
     
         private void EntityDetached(WAQSWorkshopClient.Product entity)
         {
@@ -5900,12 +6055,12 @@ namespace WAQSWorkshopClient.ClientContext
         {
             if (_products != null)
             {
+    			DisposeCollectionProduct();
     			var allEntities = _products.AllEntities.ToArray();
                 for (int ei = 0 ; ei < allEntities.Length ; ei++)
                 {
     				var entity = allEntities[ei];
-                    entity.OrderDetails.CollectionChanged -= Product_OrderDetailsCollectionChanged;
-                    EntityDetached(entity);
+                    DisposeEntity(entity);
                 }
                 _products.EntityAdded -= EntityAddedOrAttached;
                 _products.EntityAttached -= EntityAddedOrAttached;
@@ -6660,6 +6815,8 @@ namespace WAQSWorkshopClient.ClientContext
             IsDisposed = true;
             if (disposing)
             {
+    			EntitiesGot.Clear();
+    			CustomPropertyDescriptors.Clear();
                 ClientEntitySetExtensions.ClearDico(this);
                 DisposeCustomer();
                 DisposeEmployee();
