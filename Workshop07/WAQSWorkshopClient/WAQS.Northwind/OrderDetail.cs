@@ -360,7 +360,7 @@ namespace WAQSWorkshopClient
                     if (_invoiceDetail == null || !_invoiceDetail.IsInitializingRelationships)
                         OnNavigationPropertyChanged("InvoiceDetail");
                     else
-                        NotifyPropertyChanged.RaisePropertyChanged(() => InvoiceDetail);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(InvoiceDetail));
                 }
             }
         }
@@ -410,7 +410,7 @@ namespace WAQSWorkshopClient
                     if (_order == null || !_order.IsInitializingRelationships)
                         OnNavigationPropertyChanged("Order");
                     else
-                        NotifyPropertyChanged.RaisePropertyChanged(() => Order);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(Order));
                 }
             }
         }
@@ -524,7 +524,7 @@ namespace WAQSWorkshopClient
                     if (_product == null || !_product.IsInitializingRelationships)
                         OnNavigationPropertyChanged("Product");
                     else
-                        NotifyPropertyChanged.RaisePropertyChanged(() => Product);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(Product));
                 }
             }
         }
@@ -569,37 +569,6 @@ namespace WAQSWorkshopClient
         protected internal event Action<Product, Product> ProductPropertyChanging;
 #endregion
 #region Specifications
-        private double _previousAmount;
-        public double Amount
-        {
-            get
-            {
-                if (Specifications != null && Specifications.HasAmount)
-                    return Specifications.Amount;
-                return this.UnitPrice * this.Quantity * (1 - this.Discount);
-            }
-
-            set
-            {
-                throw new System.InvalidOperationException();
-                ;
-            }
-        }
-
-        protected virtual void OnAmountPropertyChanging()
-        {
-            if (AmountPropertyChanging != null)
-            {
-                var value = Amount;
-                if (value == _previousAmount)
-                    return;
-                var oldValue = _previousAmount;
-                _previousAmount = value;
-                AmountPropertyChanging(oldValue, value);
-            }
-        }
-
-        protected internal event Action<double, double> AmountPropertyChanging;
         public virtual IEnumerable<Error> ValidateOnClient(bool force = false)
         {
             if (force || ChangeTracker.State == ObjectState.Added || ChangeTracker.State == ObjectState.Modified && ChangeTracker.ModifiedProperties.Contains("Discount"))
@@ -633,6 +602,37 @@ namespace WAQSWorkshopClient
                     yield return er;
         }
 
+        private double _previousAmount;
+        public double Amount
+        {
+            get
+            {
+                if (Specifications != null && Specifications.HasAmount)
+                    return Specifications.Amount;
+                return this.UnitPrice * this.Quantity * (1 - this.Discount);
+            }
+
+            set
+            {
+                throw new System.InvalidOperationException();
+                ;
+            }
+        }
+
+        protected virtual void OnAmountPropertyChanging()
+        {
+            if (AmountPropertyChanging != null)
+            {
+                var value = Amount;
+                if (value == _previousAmount)
+                    return;
+                var oldValue = _previousAmount;
+                _previousAmount = value;
+                AmountPropertyChanging(oldValue, value);
+            }
+        }
+
+        protected internal event Action<double, double> AmountPropertyChanging;
         private string _previousProductFullName;
         public string ProductFullName
         {
@@ -683,7 +683,7 @@ namespace WAQSWorkshopClient
                 {
                     _amount = value;
                     if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((OrderDetail e) => e.Amount);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(Amount));
                 }
             }
 
@@ -700,7 +700,7 @@ namespace WAQSWorkshopClient
                 {
                     _hasAmount = value;
                     if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((OrderDetail e) => e.Amount);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(Amount));
                 }
             }
 
@@ -717,7 +717,7 @@ namespace WAQSWorkshopClient
                 {
                     _productFullName = value;
                     if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((OrderDetail e) => e.ProductFullName);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(ProductFullName));
                 }
             }
 
@@ -734,7 +734,7 @@ namespace WAQSWorkshopClient
                 {
                     _hasProductFullName = value;
                     if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((OrderDetail e) => e.ProductFullName);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(ProductFullName));
                 }
             }
 

@@ -497,7 +497,7 @@ namespace WAQSWorkshopClient
                     if (_category == null || !_category.IsInitializingRelationships)
                         OnNavigationPropertyChanged("Category");
                     else
-                        NotifyPropertyChanged.RaisePropertyChanged(() => Category);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(Category));
                 }
             }
         }
@@ -597,7 +597,7 @@ namespace WAQSWorkshopClient
                 {
                     _fullName = value;
                     if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((Product e) => e.FullName);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(FullName));
                 }
             }
 
@@ -614,7 +614,7 @@ namespace WAQSWorkshopClient
                 {
                     _hasFullName = value;
                     if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((Product e) => e.FullName);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(FullName));
                 }
             }
 

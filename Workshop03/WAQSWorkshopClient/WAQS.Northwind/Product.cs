@@ -452,7 +452,7 @@ namespace WAQSWorkshopClient
                     if (_category == null || !_category.IsInitializingRelationships)
                         OnNavigationPropertyChanged("Category");
                     else
-                        NotifyPropertyChanged.RaisePropertyChanged(() => Category);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(Category));
                 }
             }
         }

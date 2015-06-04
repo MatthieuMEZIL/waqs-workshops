@@ -119,7 +119,7 @@ namespace WAQS.ClientContext
     		set 
     		{ 
     			_isCompleted = value;
-    			NotifyPropertyChanged.RaisePropertyChanged(() => IsCompleted);
+    			NotifyPropertyChanged.RaisePropertyChanged(nameof(IsCompleted));
     		}
     	}
     }

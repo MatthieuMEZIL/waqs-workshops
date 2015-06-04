@@ -360,7 +360,7 @@ namespace WAQSWorkshopClient
                     if (_invoiceDetail == null || !_invoiceDetail.IsInitializingRelationships)
                         OnNavigationPropertyChanged("InvoiceDetail");
                     else
-                        NotifyPropertyChanged.RaisePropertyChanged(() => InvoiceDetail);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(InvoiceDetail));
                 }
             }
         }
@@ -410,7 +410,7 @@ namespace WAQSWorkshopClient
                     if (_order == null || !_order.IsInitializingRelationships)
                         OnNavigationPropertyChanged("Order");
                     else
-                        NotifyPropertyChanged.RaisePropertyChanged(() => Order);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(Order));
                 }
             }
         }
@@ -524,7 +524,7 @@ namespace WAQSWorkshopClient
                     if (_product == null || !_product.IsInitializingRelationships)
                         OnNavigationPropertyChanged("Product");
                     else
-                        NotifyPropertyChanged.RaisePropertyChanged(() => Product);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(Product));
                 }
             }
         }
@@ -683,7 +683,7 @@ namespace WAQSWorkshopClient
                 {
                     _amount = value;
                     if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((OrderDetail e) => e.Amount);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(Amount));
                 }
             }
 
@@ -700,7 +700,7 @@ namespace WAQSWorkshopClient
                 {
                     _hasAmount = value;
                     if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((OrderDetail e) => e.Amount);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(Amount));
                 }
             }
 
@@ -717,7 +717,7 @@ namespace WAQSWorkshopClient
                 {
                     _productFullName = value;
                     if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((OrderDetail e) => e.ProductFullName);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(ProductFullName));
                 }
             }
 
@@ -734,7 +734,7 @@ namespace WAQSWorkshopClient
                 {
                     _hasProductFullName = value;
                     if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((OrderDetail e) => e.ProductFullName);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(ProductFullName));
                 }
             }
 

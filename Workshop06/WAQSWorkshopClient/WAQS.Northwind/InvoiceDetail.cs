@@ -287,7 +287,7 @@ namespace WAQSWorkshopClient
                     if (_invoice == null || !_invoice.IsInitializingRelationships)
                         OnNavigationPropertyChanged("Invoice");
                     else
-                        NotifyPropertyChanged.RaisePropertyChanged(() => Invoice);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(Invoice));
                 }
             }
         }
@@ -373,7 +373,7 @@ namespace WAQSWorkshopClient
                     if (_orderDetail == null || !_orderDetail.IsInitializingRelationships)
                         OnNavigationPropertyChanged("OrderDetail");
                     else
-                        NotifyPropertyChanged.RaisePropertyChanged(() => OrderDetail);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(OrderDetail));
                 }
             }
         }

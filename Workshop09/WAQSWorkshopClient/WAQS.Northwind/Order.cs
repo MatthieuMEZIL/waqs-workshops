@@ -747,7 +747,7 @@ namespace WAQSWorkshopClient
                     if (_customer == null || !_customer.IsInitializingRelationships)
                         OnNavigationPropertyChanged("Customer");
                     else
-                        NotifyPropertyChanged.RaisePropertyChanged(() => Customer);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(Customer));
                 }
             }
         }
@@ -800,7 +800,7 @@ namespace WAQSWorkshopClient
                     if (_employee == null || !_employee.IsInitializingRelationships)
                         OnNavigationPropertyChanged("Employee");
                     else
-                        NotifyPropertyChanged.RaisePropertyChanged(() => Employee);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(Employee));
                 }
             }
         }
@@ -863,7 +863,7 @@ namespace WAQSWorkshopClient
                     if (_invoice == null || !_invoice.IsInitializingRelationships)
                         OnNavigationPropertyChanged("Invoice");
                     else
-                        NotifyPropertyChanged.RaisePropertyChanged(() => Invoice);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(Invoice));
                 }
             }
         }
@@ -1096,6 +1096,37 @@ namespace WAQSWorkshopClient
                     yield return er;
         }
 
+        private bool _previousHasInvoice;
+        public bool HasInvoice
+        {
+            get
+            {
+                if (Specifications != null && Specifications.HasHasInvoice)
+                    return Specifications.HasInvoice;
+                return this.Invoice != null;
+            }
+
+            set
+            {
+                throw new System.InvalidOperationException();
+                ;
+            }
+        }
+
+        protected virtual void OnHasInvoicePropertyChanging()
+        {
+            if (HasInvoicePropertyChanging != null)
+            {
+                var value = HasInvoice;
+                if (value == _previousHasInvoice)
+                    return;
+                var oldValue = _previousHasInvoice;
+                _previousHasInvoice = value;
+                HasInvoicePropertyChanging(oldValue, value);
+            }
+        }
+
+        protected internal event Action<bool, bool> HasInvoicePropertyChanging;
         private string _previousCustomerCompanyName;
         public string CustomerCompanyName
         {
@@ -1129,37 +1160,6 @@ namespace WAQSWorkshopClient
         }
 
         protected internal event Action<string, string> CustomerCompanyNamePropertyChanging;
-        private bool _previousHasInvoice;
-        public bool HasInvoice
-        {
-            get
-            {
-                if (Specifications != null && Specifications.HasHasInvoice)
-                    return Specifications.HasInvoice;
-                return this.Invoice != null;
-            }
-
-            set
-            {
-                throw new System.InvalidOperationException();
-                ;
-            }
-        }
-
-        protected virtual void OnHasInvoicePropertyChanging()
-        {
-            if (HasInvoicePropertyChanging != null)
-            {
-                var value = HasInvoice;
-                if (value == _previousHasInvoice)
-                    return;
-                var oldValue = _previousHasInvoice;
-                _previousHasInvoice = value;
-                HasInvoicePropertyChanging(oldValue, value);
-            }
-        }
-
-        protected internal event Action<bool, bool> HasInvoicePropertyChanging;
         private string _previousCustomerContactName;
         public string CustomerContactName
         {
@@ -1250,7 +1250,7 @@ namespace WAQSWorkshopClient
                 {
                     _hasInvoice = value;
                     if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((Order e) => e.HasInvoice);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(HasInvoice));
                 }
             }
 
@@ -1267,7 +1267,7 @@ namespace WAQSWorkshopClient
                 {
                     _hasHasInvoice = value;
                     if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((Order e) => e.HasInvoice);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(HasInvoice));
                 }
             }
 
@@ -1284,7 +1284,7 @@ namespace WAQSWorkshopClient
                 {
                     _customerCompanyName = value;
                     if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((Order e) => e.CustomerCompanyName);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(CustomerCompanyName));
                 }
             }
 
@@ -1301,7 +1301,7 @@ namespace WAQSWorkshopClient
                 {
                     _hasCustomerCompanyName = value;
                     if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((Order e) => e.CustomerCompanyName);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(CustomerCompanyName));
                 }
             }
 
@@ -1318,7 +1318,7 @@ namespace WAQSWorkshopClient
                 {
                     _customerContactName = value;
                     if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((Order e) => e.CustomerContactName);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(CustomerContactName));
                 }
             }
 
@@ -1335,7 +1335,7 @@ namespace WAQSWorkshopClient
                 {
                     _hasCustomerContactName = value;
                     if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((Order e) => e.CustomerContactName);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(CustomerContactName));
                 }
             }
 
@@ -1352,7 +1352,7 @@ namespace WAQSWorkshopClient
                 {
                     _total = value;
                     if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((Order e) => e.Total);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(Total));
                 }
             }
 
@@ -1369,7 +1369,7 @@ namespace WAQSWorkshopClient
                 {
                     _hasTotal = value;
                     if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((Order e) => e.Total);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(Total));
                 }
             }
 

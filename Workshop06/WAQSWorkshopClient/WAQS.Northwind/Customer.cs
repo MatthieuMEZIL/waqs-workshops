@@ -1303,7 +1303,7 @@ namespace WAQSWorkshopClient
                 {
                     _fullName = value;
                     if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((Customer e) => e.FullName);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(FullName));
                 }
             }
 
@@ -1320,7 +1320,7 @@ namespace WAQSWorkshopClient
                 {
                     _hasFullName = value;
                     if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((Customer e) => e.FullName);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(FullName));
                 }
             }
 
@@ -1337,7 +1337,7 @@ namespace WAQSWorkshopClient
                 {
                     _totalSpent = value;
                     if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((Customer e) => e.TotalSpent);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(TotalSpent));
                 }
             }
 
@@ -1354,7 +1354,7 @@ namespace WAQSWorkshopClient
                 {
                     _hasTotalSpent = value;
                     if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((Customer e) => e.TotalSpent);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(TotalSpent));
                 }
             }
 

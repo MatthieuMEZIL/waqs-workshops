@@ -398,7 +398,7 @@ namespace WAQSWorkshopClient
                     if (_customer == null || !_customer.IsInitializingRelationships)
                         OnNavigationPropertyChanged("Customer");
                     else
-                        NotifyPropertyChanged.RaisePropertyChanged(() => Customer);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(Customer));
                 }
             }
         }
@@ -537,7 +537,7 @@ namespace WAQSWorkshopClient
                     if (_order == null || !_order.IsInitializingRelationships)
                         OnNavigationPropertyChanged("Order");
                     else
-                        NotifyPropertyChanged.RaisePropertyChanged(() => Order);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(Order));
                 }
             }
         }

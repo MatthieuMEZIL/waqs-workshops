@@ -64,7 +64,7 @@ namespace WAQS.ClientContext
             set
             {
                 _pageIndex = value;
-                NotifyPropertyChanged.RaisePropertyChanged(() => PageIndex);
+                NotifyPropertyChanged.RaisePropertyChanged(nameof(PageIndex));
                 if (PageIndexChanged != null)
                     PageIndexChanged();
                 LoadPage(value);
@@ -90,8 +90,8 @@ namespace WAQS.ClientContext
             {
                 _count = value;
                 _isCounting = false;
-                NotifyPropertyChanged.RaisePropertyChanged(() => Count);
-                NotifyPropertyChanged.RaisePropertyChanged(() => MaxPage);
+                NotifyPropertyChanged.RaisePropertyChanged(nameof(Count));
+                NotifyPropertyChanged.RaisePropertyChanged(nameof(MaxPage));
             }
         }
             
@@ -140,7 +140,7 @@ namespace WAQS.ClientContext
             if (_identifiers == identifiers)
             {
                 _pageIndex = result.PageIndex + 1;
-                NotifyPropertyChanged.RaisePropertyChanged(() => PageIndex);
+                NotifyPropertyChanged.RaisePropertyChanged(nameof(PageIndex));
                 if (PageIndexChanged != null)
                     PageIndexChanged();
                 Items.Clear();

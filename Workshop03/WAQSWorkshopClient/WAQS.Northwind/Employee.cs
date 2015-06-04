@@ -1064,7 +1064,7 @@ namespace WAQSWorkshopClient
                     if (_employee1 == null || !_employee1.IsInitializingRelationships)
                         OnNavigationPropertyChanged("Employee1");
                     else
-                        NotifyPropertyChanged.RaisePropertyChanged(() => Employee1);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(Employee1));
                 }
             }
         }

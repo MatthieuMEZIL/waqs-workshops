@@ -707,7 +707,7 @@ namespace WAQSWorkshopClient
                     if (_customer == null || !_customer.IsInitializingRelationships)
                         OnNavigationPropertyChanged("Customer");
                     else
-                        NotifyPropertyChanged.RaisePropertyChanged(() => Customer);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(Customer));
                 }
             }
         }
@@ -760,7 +760,7 @@ namespace WAQSWorkshopClient
                     if (_employee == null || !_employee.IsInitializingRelationships)
                         OnNavigationPropertyChanged("Employee");
                     else
-                        NotifyPropertyChanged.RaisePropertyChanged(() => Employee);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(Employee));
                 }
             }
         }
@@ -815,7 +815,7 @@ namespace WAQSWorkshopClient
                     if (_invoice == null || !_invoice.IsInitializingRelationships)
                         OnNavigationPropertyChanged("Invoice");
                     else
-                        NotifyPropertyChanged.RaisePropertyChanged(() => Invoice);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(Invoice));
                 }
             }
         }
@@ -1105,7 +1105,7 @@ namespace WAQSWorkshopClient
                 {
                     _total = value;
                     if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((Order e) => e.Total);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(Total));
                 }
             }
 
@@ -1122,7 +1122,7 @@ namespace WAQSWorkshopClient
                 {
                     _hasTotal = value;
                     if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((Order e) => e.Total);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(Total));
                 }
             }
 

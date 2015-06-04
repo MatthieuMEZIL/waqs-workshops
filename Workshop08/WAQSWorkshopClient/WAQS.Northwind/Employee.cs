@@ -1082,7 +1082,7 @@ namespace WAQSWorkshopClient
                     if (_employee1 == null || !_employee1.IsInitializingRelationships)
                         OnNavigationPropertyChanged("Employee1");
                     else
-                        NotifyPropertyChanged.RaisePropertyChanged(() => Employee1);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(Employee1));
                 }
             }
         }
@@ -1341,7 +1341,7 @@ namespace WAQSWorkshopClient
                 {
                     _fullName = value;
                     if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((Employee e) => e.FullName);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(FullName));
                 }
             }
 
@@ -1358,7 +1358,7 @@ namespace WAQSWorkshopClient
                 {
                     _hasFullName = value;
                     if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((Employee e) => e.FullName);
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(FullName));
                 }
             }
 
