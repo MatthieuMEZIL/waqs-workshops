@@ -28,10 +28,22 @@ namespace WAQS.Entities
     	public IEntity Owner { get; set; }
     	public string Name { get; set; }
     
-    	public void Attach(T item)
-    	{
-    		TrackableCollectionExtensions.AttachAction(Owner, item, Name);
-    	}
+        public void AddRange(IEnumerable<T> items)
+        {
+            foreach (T item in items)
+                Add(item);
+        }
+        
+        public void Attach(T item)
+        {
+        	TrackableCollectionExtensions.AttachAction(Owner, item, Name);
+        }
+    
+        public void AttachRange(IEnumerable<T> items)
+        {
+            foreach (T item in items)
+                Attach(item);
+        }
     
     	public bool IsAttachingOrDetaching { get; set; }
     

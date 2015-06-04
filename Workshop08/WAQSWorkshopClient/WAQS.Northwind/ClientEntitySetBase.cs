@@ -19,7 +19,7 @@ using WAQS.ClientContext.Interfaces;
 
 namespace WAQS.ClientContext
 {
-    public abstract class ClientEntitySetBase<ClientContext> : IClientEntitySet<ClientContext>, IDisposable, INotifyCollectionChanged
+    public abstract partial class ClientEntitySetBase<ClientContext> : IClientEntitySet<ClientContext>, IDisposable, INotifyCollectionChanged
         where ClientContext : class, IClientContext
     {
         public ClientEntitySetBase(string entitySetName, ClientContext context, IList entities, HashSet<IObjectWithChangeTracker> hashSet, Func<IObjectWithChangeTracker, object> getEntityKey)
@@ -92,7 +92,7 @@ namespace WAQS.ClientContext
             entity.ChangeTracker.ChangeTrackingEnabled = true;
             return AddEntity(entity, checkIfAlreadyExist);
         }
-                    
+    
         protected bool AddEntity(IObjectWithChangeTracker entity, bool checkIfAlreadyExist = true)
         {
             if (checkIfAlreadyExist && EntitiesContains(entity))
@@ -104,7 +104,9 @@ namespace WAQS.ClientContext
             {
                 if (entityInEntitySet == entity)
                         return false;
-                throw new InvalidOperationException("Another entity with the same key already exists in the context");
+                string messageError = "Another entity with the same key already exists in the context";
+    			SetMessageAddEntityInvalidOperation(ref messageError, entity);
+    			throw new InvalidOperationException(messageError);
             }
             else
             {
@@ -116,6 +118,7 @@ namespace WAQS.ClientContext
                     NotifyCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, entity));
             return true;
         }
+    	partial void SetMessageAddEntityInvalidOperation(ref string message, IObjectWithChangeTracker entity);
             
         protected virtual bool Replace(ref IObjectWithChangeTracker entity)
         {
@@ -287,7 +290,7 @@ namespace WAQS.ClientContext
         }
         protected virtual IEnumerable GetEnumerable()
         {
-            return Entities.OfType<IObjectWithChangeTracker>().Where(e => (e.ChangeTracker.State & ObjectState.Deleted) == 0);
+            return Entities == null ? new IObjectWithChangeTracker[0] : Entities.OfType<IObjectWithChangeTracker>().Where(e => (e.ChangeTracker.State & ObjectState.Deleted) == 0);
         }
         protected abstract Type GetEntityType();
                                             

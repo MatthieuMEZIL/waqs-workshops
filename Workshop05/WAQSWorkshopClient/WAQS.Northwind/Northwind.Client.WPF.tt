@@ -1,4 +1,4 @@
-<#@ include file="WAQS.VS14.NET45.Client.WPF.ttinclude"#>
+<#@ include file="WAQS.VS14.NET46.Client.WPF.ttinclude"#>
 <#
 WriteClient("Northwind.Client.WPF.waqs", "WAQSWorkshopClient");
 #>

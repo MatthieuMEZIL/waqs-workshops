@@ -1,1 +1,1 @@
-<#@ include file="WAQS.VS14.NET45.Client.WPF.Fx.ClientContext.Interfaces.ttinclude"#><#WriteClientFxClientContextInterfaces("WAQS.ComponentModel", "WAQS.EntitiesTracking", null, "WAQS.ClientContext.Interfaces", true);#>
+<#@ include file="WAQS.VS14.NET46.Client.WPF.Fx.ClientContext.Interfaces.ttinclude"#><#WriteClientFxClientContextInterfaces("WAQS.ComponentModel", "WAQS.EntitiesTracking", null, "WAQS.ClientContext.Interfaces", true);#>

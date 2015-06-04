@@ -1,1 +1,1 @@
-<#@ include file="WAQS.VS14.NET45.Client.WPF.Fx.Converters.ttinclude"#><#WriteClientFxConverters("WAQS.Controls.Converters");#>
+<#@ include file="WAQS.VS14.NET46.Client.WPF.Fx.Converters.ttinclude"#><#WriteClientFxConverters("WAQS.Controls.Converters");#>

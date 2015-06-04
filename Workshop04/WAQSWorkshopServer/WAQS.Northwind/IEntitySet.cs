@@ -18,7 +18,9 @@ namespace WAQS.DAL.Interfaces
         where T : class, IEntity
     {
         void Add(T item);
+        void AddRange(IEnumerable<T> items);
         void Attach(T item);
+        void AttachRange(IEnumerable<T> item);
         void AttachAsModified(T item);
         void AttachAsDeleted(T item);
         void Detach(T item);

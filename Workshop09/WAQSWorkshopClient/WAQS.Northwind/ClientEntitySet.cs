@@ -46,6 +46,14 @@ namespace WAQS.ClientContext
             if (base.Add(entity))
                 OnEntityAdded(entity);
         }
+    
+    	public virtual void AddRange(IEnumerable<EntityType> entities)
+        {
+            foreach (var item in entities)
+            {
+                Add(item);
+            }
+        }
         
         public virtual void AddWithoutCheckingIfAlreadyExist(EntityType entity)
         {
@@ -59,6 +67,14 @@ namespace WAQS.ClientContext
                 OnEntityAttached(entity);
         }
         
+    	public virtual void AttachRange(IEnumerable<EntityType> entities)
+        {
+            foreach (var item in entities)
+            {
+                Attach(item);
+            }
+        }
+    
         public virtual void AttachWithoutCheckingIfAlreadyExist(EntityType entity)
         {
             if (base.Attach(entity, false))

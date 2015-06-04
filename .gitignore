@@ -3,6 +3,7 @@
 ################################################################################
 
 /Workshop*/.vs
+/Workshop*/.ldf
 /Workshop*/**/*.csproj.user
 /Workshop*/packages
 /Workshop*/WAQSWorkshopServer/bin

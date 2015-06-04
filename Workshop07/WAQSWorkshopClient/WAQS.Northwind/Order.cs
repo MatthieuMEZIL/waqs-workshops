@@ -1237,40 +1237,6 @@ namespace WAQSWorkshopClient
         [DataContract(Namespace = "http://Northwind/Entities")]
         public partial class OrderSpecifications
         {
-            string _customerCompanyName;
-            [DataMember]
-            public string CustomerCompanyName
-            {
-                get
-                {
-                    return _customerCompanyName;
-                }
-
-                set
-                {
-                    _customerCompanyName = value;
-                    if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((Order e) => e.CustomerCompanyName);
-                }
-            }
-
-            bool _hasCustomerCompanyName;
-            [DataMember]
-            public bool HasCustomerCompanyName
-            {
-                get
-                {
-                    return _hasCustomerCompanyName;
-                }
-
-                set
-                {
-                    _hasCustomerCompanyName = value;
-                    if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged((Order e) => e.CustomerCompanyName);
-                }
-            }
-
             bool _hasInvoice;
             [DataMember]
             public bool HasInvoice
@@ -1302,6 +1268,40 @@ namespace WAQSWorkshopClient
                     _hasHasInvoice = value;
                     if (NotifyPropertyChanged != null)
                         NotifyPropertyChanged.RaisePropertyChanged((Order e) => e.HasInvoice);
+                }
+            }
+
+            string _customerCompanyName;
+            [DataMember]
+            public string CustomerCompanyName
+            {
+                get
+                {
+                    return _customerCompanyName;
+                }
+
+                set
+                {
+                    _customerCompanyName = value;
+                    if (NotifyPropertyChanged != null)
+                        NotifyPropertyChanged.RaisePropertyChanged((Order e) => e.CustomerCompanyName);
+                }
+            }
+
+            bool _hasCustomerCompanyName;
+            [DataMember]
+            public bool HasCustomerCompanyName
+            {
+                get
+                {
+                    return _hasCustomerCompanyName;
+                }
+
+                set
+                {
+                    _hasCustomerCompanyName = value;
+                    if (NotifyPropertyChanged != null)
+                        NotifyPropertyChanged.RaisePropertyChanged((Order e) => e.CustomerCompanyName);
                 }
             }
 

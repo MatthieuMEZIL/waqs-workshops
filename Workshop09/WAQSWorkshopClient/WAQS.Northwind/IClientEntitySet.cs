@@ -45,5 +45,7 @@ namespace WAQS.ClientContext.Interfaces
         void Remove(EntityType entity);
         void Detach(EntityType entity);
         void Replace(ref EntityType entity);
+    	void AddRange(IEnumerable<EntityType> entities);
+    	void AttachRange(IEnumerable<EntityType> entities);
     }
 }

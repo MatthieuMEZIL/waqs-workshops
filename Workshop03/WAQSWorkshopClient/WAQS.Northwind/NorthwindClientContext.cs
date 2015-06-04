@@ -482,14 +482,8 @@ namespace WAQSWorkshopClient.ClientContext
             entityInCache.IsDeserializing = isDeserializing;
         }
     
-        public void RefreshCurrentValues(WAQSWorkshopClient.Category entityInCache, WAQSWorkshopClient.Category entity)
-        {
-            RefreshCurrentValues(entityInCache, entity, false);
-        }
-        public void RefreshCurrentValues(WAQSWorkshopClient.Category entityInCache, WAQSWorkshopClient.Category entity, bool applyState = false)
-        {
-            bool isDeserializing = entityInCache.IsDeserializing;
-            entityInCache.IsDeserializing = true;
+    	private void InternalRefreshCurrentValues(WAQSWorkshopClient.Category entityInCache, WAQSWorkshopClient.Category entity)
+    	{
             if (entityInCache.Id != entity.Id)
                 entityInCache.Id = entity.Id;
             if (entityInCache.Name != entity.Name)
@@ -498,6 +492,16 @@ namespace WAQSWorkshopClient.ClientContext
                 entityInCache.Description = entity.Description;
             if (entityInCache.Picture != entity.Picture)
                 entityInCache.Picture = entity.Picture;
+    	}
+        public void RefreshCurrentValues(WAQSWorkshopClient.Category entityInCache, WAQSWorkshopClient.Category entity)
+        {
+            RefreshCurrentValues(entityInCache, entity, applyState: false);
+        }
+        public void RefreshCurrentValues(WAQSWorkshopClient.Category entityInCache, WAQSWorkshopClient.Category entity, bool applyState = false)
+        {
+            bool isDeserializing = entityInCache.IsDeserializing;
+            entityInCache.IsDeserializing = true;
+    		InternalRefreshCurrentValues(entityInCache, entity);    
             entityInCache.IsDeserializing = isDeserializing;
             if (applyState)
             {
@@ -1093,14 +1097,8 @@ namespace WAQSWorkshopClient.ClientContext
             entityInCache.IsDeserializing = isDeserializing;
         }
     
-        public void RefreshCurrentValues(WAQSWorkshopClient.Customer entityInCache, WAQSWorkshopClient.Customer entity)
-        {
-            RefreshCurrentValues(entityInCache, entity, false);
-        }
-        public void RefreshCurrentValues(WAQSWorkshopClient.Customer entityInCache, WAQSWorkshopClient.Customer entity, bool applyState = false)
-        {
-            bool isDeserializing = entityInCache.IsDeserializing;
-            entityInCache.IsDeserializing = true;
+    	private void InternalRefreshCurrentValues(WAQSWorkshopClient.Customer entityInCache, WAQSWorkshopClient.Customer entity)
+    	{
             if (entityInCache.Id != entity.Id)
                 entityInCache.Id = entity.Id;
             if (entityInCache.CompanyName != entity.CompanyName)
@@ -1125,6 +1123,16 @@ namespace WAQSWorkshopClient.ClientContext
                 entityInCache.Fax = entity.Fax;
             if (entityInCache.IsVIP != entity.IsVIP)
                 entityInCache.IsVIP = entity.IsVIP;
+    	}
+        public void RefreshCurrentValues(WAQSWorkshopClient.Customer entityInCache, WAQSWorkshopClient.Customer entity)
+        {
+            RefreshCurrentValues(entityInCache, entity, applyState: false);
+        }
+        public void RefreshCurrentValues(WAQSWorkshopClient.Customer entityInCache, WAQSWorkshopClient.Customer entity, bool applyState = false)
+        {
+            bool isDeserializing = entityInCache.IsDeserializing;
+            entityInCache.IsDeserializing = true;
+    		InternalRefreshCurrentValues(entityInCache, entity);    
             entityInCache.IsDeserializing = isDeserializing;
             if (applyState)
             {
@@ -1980,14 +1988,8 @@ namespace WAQSWorkshopClient.ClientContext
             entityInCache.IsDeserializing = isDeserializing;
         }
     
-        public void RefreshCurrentValues(WAQSWorkshopClient.Employee entityInCache, WAQSWorkshopClient.Employee entity)
-        {
-            RefreshCurrentValues(entityInCache, entity, false);
-        }
-        public void RefreshCurrentValues(WAQSWorkshopClient.Employee entityInCache, WAQSWorkshopClient.Employee entity, bool applyState = false)
-        {
-            bool isDeserializing = entityInCache.IsDeserializing;
-            entityInCache.IsDeserializing = true;
+    	private void InternalRefreshCurrentValues(WAQSWorkshopClient.Employee entityInCache, WAQSWorkshopClient.Employee entity)
+    	{
             if (entityInCache.Id != entity.Id)
                 entityInCache.Id = entity.Id;
             if (entityInCache.LastName != entity.LastName)
@@ -2024,6 +2026,16 @@ namespace WAQSWorkshopClient.ClientContext
                 entityInCache.ReportsTo = entity.ReportsTo;
             if (entityInCache.PhotoPath != entity.PhotoPath)
                 entityInCache.PhotoPath = entity.PhotoPath;
+    	}
+        public void RefreshCurrentValues(WAQSWorkshopClient.Employee entityInCache, WAQSWorkshopClient.Employee entity)
+        {
+            RefreshCurrentValues(entityInCache, entity, applyState: false);
+        }
+        public void RefreshCurrentValues(WAQSWorkshopClient.Employee entityInCache, WAQSWorkshopClient.Employee entity, bool applyState = false)
+        {
+            bool isDeserializing = entityInCache.IsDeserializing;
+            entityInCache.IsDeserializing = true;
+    		InternalRefreshCurrentValues(entityInCache, entity);    
             entityInCache.IsDeserializing = isDeserializing;
             if (applyState)
             {
@@ -2982,14 +2994,8 @@ namespace WAQSWorkshopClient.ClientContext
             entityInCache.IsDeserializing = isDeserializing;
         }
     
-        public void RefreshCurrentValues(WAQSWorkshopClient.Invoice entityInCache, WAQSWorkshopClient.Invoice entity)
-        {
-            RefreshCurrentValues(entityInCache, entity, false);
-        }
-        public void RefreshCurrentValues(WAQSWorkshopClient.Invoice entityInCache, WAQSWorkshopClient.Invoice entity, bool applyState = false)
-        {
-            bool isDeserializing = entityInCache.IsDeserializing;
-            entityInCache.IsDeserializing = true;
+    	private void InternalRefreshCurrentValues(WAQSWorkshopClient.Invoice entityInCache, WAQSWorkshopClient.Invoice entity)
+    	{
             if (entityInCache.OrderId != entity.OrderId)
                 entityInCache.OrderId = entity.OrderId;
             if (entityInCache.CustomerId != entity.CustomerId)
@@ -3004,6 +3010,16 @@ namespace WAQSWorkshopClient.ClientContext
                 entityInCache.Dicount = entity.Dicount;
             if (entityInCache.Paid != entity.Paid)
                 entityInCache.Paid = entity.Paid;
+    	}
+        public void RefreshCurrentValues(WAQSWorkshopClient.Invoice entityInCache, WAQSWorkshopClient.Invoice entity)
+        {
+            RefreshCurrentValues(entityInCache, entity, applyState: false);
+        }
+        public void RefreshCurrentValues(WAQSWorkshopClient.Invoice entityInCache, WAQSWorkshopClient.Invoice entity, bool applyState = false)
+        {
+            bool isDeserializing = entityInCache.IsDeserializing;
+            entityInCache.IsDeserializing = true;
+    		InternalRefreshCurrentValues(entityInCache, entity);    
             entityInCache.IsDeserializing = isDeserializing;
             if (applyState)
             {
@@ -3796,14 +3812,8 @@ namespace WAQSWorkshopClient.ClientContext
             entityInCache.IsDeserializing = isDeserializing;
         }
     
-        public void RefreshCurrentValues(WAQSWorkshopClient.InvoiceDetail entityInCache, WAQSWorkshopClient.InvoiceDetail entity)
-        {
-            RefreshCurrentValues(entityInCache, entity, false);
-        }
-        public void RefreshCurrentValues(WAQSWorkshopClient.InvoiceDetail entityInCache, WAQSWorkshopClient.InvoiceDetail entity, bool applyState = false)
-        {
-            bool isDeserializing = entityInCache.IsDeserializing;
-            entityInCache.IsDeserializing = true;
+    	private void InternalRefreshCurrentValues(WAQSWorkshopClient.InvoiceDetail entityInCache, WAQSWorkshopClient.InvoiceDetail entity)
+    	{
             if (entityInCache.OrderDetailId != entity.OrderDetailId)
                 entityInCache.OrderDetailId = entity.OrderDetailId;
             if (entityInCache.InvoiceId != entity.InvoiceId)
@@ -3816,6 +3826,16 @@ namespace WAQSWorkshopClient.ClientContext
                 entityInCache.Discount = entity.Discount;
             if (entityInCache.Amount != entity.Amount)
                 entityInCache.Amount = entity.Amount;
+    	}
+        public void RefreshCurrentValues(WAQSWorkshopClient.InvoiceDetail entityInCache, WAQSWorkshopClient.InvoiceDetail entity)
+        {
+            RefreshCurrentValues(entityInCache, entity, applyState: false);
+        }
+        public void RefreshCurrentValues(WAQSWorkshopClient.InvoiceDetail entityInCache, WAQSWorkshopClient.InvoiceDetail entity, bool applyState = false)
+        {
+            bool isDeserializing = entityInCache.IsDeserializing;
+            entityInCache.IsDeserializing = true;
+    		InternalRefreshCurrentValues(entityInCache, entity);    
             entityInCache.IsDeserializing = isDeserializing;
             if (applyState)
             {
@@ -4795,14 +4815,8 @@ namespace WAQSWorkshopClient.ClientContext
             entityInCache.IsDeserializing = isDeserializing;
         }
     
-        public void RefreshCurrentValues(WAQSWorkshopClient.Order entityInCache, WAQSWorkshopClient.Order entity)
-        {
-            RefreshCurrentValues(entityInCache, entity, false);
-        }
-        public void RefreshCurrentValues(WAQSWorkshopClient.Order entityInCache, WAQSWorkshopClient.Order entity, bool applyState = false)
-        {
-            bool isDeserializing = entityInCache.IsDeserializing;
-            entityInCache.IsDeserializing = true;
+    	private void InternalRefreshCurrentValues(WAQSWorkshopClient.Order entityInCache, WAQSWorkshopClient.Order entity)
+    	{
             if (entityInCache.Id != entity.Id)
                 entityInCache.Id = entity.Id;
             if (entityInCache.CustomerId != entity.CustomerId)
@@ -4831,6 +4845,16 @@ namespace WAQSWorkshopClient.ClientContext
                 entityInCache.ShipPostalCode = entity.ShipPostalCode;
             if (entityInCache.ShipCountry != entity.ShipCountry)
                 entityInCache.ShipCountry = entity.ShipCountry;
+    	}
+        public void RefreshCurrentValues(WAQSWorkshopClient.Order entityInCache, WAQSWorkshopClient.Order entity)
+        {
+            RefreshCurrentValues(entityInCache, entity, applyState: false);
+        }
+        public void RefreshCurrentValues(WAQSWorkshopClient.Order entityInCache, WAQSWorkshopClient.Order entity, bool applyState = false)
+        {
+            bool isDeserializing = entityInCache.IsDeserializing;
+            entityInCache.IsDeserializing = true;
+    		InternalRefreshCurrentValues(entityInCache, entity);    
             entityInCache.IsDeserializing = isDeserializing;
             if (applyState)
             {
@@ -5798,14 +5822,8 @@ namespace WAQSWorkshopClient.ClientContext
             entityInCache.IsDeserializing = isDeserializing;
         }
     
-        public void RefreshCurrentValues(WAQSWorkshopClient.OrderDetail entityInCache, WAQSWorkshopClient.OrderDetail entity)
-        {
-            RefreshCurrentValues(entityInCache, entity, false);
-        }
-        public void RefreshCurrentValues(WAQSWorkshopClient.OrderDetail entityInCache, WAQSWorkshopClient.OrderDetail entity, bool applyState = false)
-        {
-            bool isDeserializing = entityInCache.IsDeserializing;
-            entityInCache.IsDeserializing = true;
+    	private void InternalRefreshCurrentValues(WAQSWorkshopClient.OrderDetail entityInCache, WAQSWorkshopClient.OrderDetail entity)
+    	{
             if (entityInCache.Id != entity.Id)
                 entityInCache.Id = entity.Id;
             if (entityInCache.OrderId != entity.OrderId)
@@ -5818,6 +5836,16 @@ namespace WAQSWorkshopClient.ClientContext
                 entityInCache.Quantity = entity.Quantity;
             if (entityInCache.Discount != entity.Discount)
                 entityInCache.Discount = entity.Discount;
+    	}
+        public void RefreshCurrentValues(WAQSWorkshopClient.OrderDetail entityInCache, WAQSWorkshopClient.OrderDetail entity)
+        {
+            RefreshCurrentValues(entityInCache, entity, applyState: false);
+        }
+        public void RefreshCurrentValues(WAQSWorkshopClient.OrderDetail entityInCache, WAQSWorkshopClient.OrderDetail entity, bool applyState = false)
+        {
+            bool isDeserializing = entityInCache.IsDeserializing;
+            entityInCache.IsDeserializing = true;
+    		InternalRefreshCurrentValues(entityInCache, entity);    
             entityInCache.IsDeserializing = isDeserializing;
             if (applyState)
             {
@@ -6606,14 +6634,8 @@ namespace WAQSWorkshopClient.ClientContext
             entityInCache.IsDeserializing = isDeserializing;
         }
     
-        public void RefreshCurrentValues(WAQSWorkshopClient.Product entityInCache, WAQSWorkshopClient.Product entity)
-        {
-            RefreshCurrentValues(entityInCache, entity, false);
-        }
-        public void RefreshCurrentValues(WAQSWorkshopClient.Product entityInCache, WAQSWorkshopClient.Product entity, bool applyState = false)
-        {
-            bool isDeserializing = entityInCache.IsDeserializing;
-            entityInCache.IsDeserializing = true;
+    	private void InternalRefreshCurrentValues(WAQSWorkshopClient.Product entityInCache, WAQSWorkshopClient.Product entity)
+    	{
             if (entityInCache.Id != entity.Id)
                 entityInCache.Id = entity.Id;
             if (entityInCache.Name != entity.Name)
@@ -6628,6 +6650,16 @@ namespace WAQSWorkshopClient.ClientContext
                 entityInCache.UnitPrice = entity.UnitPrice;
             if (entityInCache.Discontinued != entity.Discontinued)
                 entityInCache.Discontinued = entity.Discontinued;
+    	}
+        public void RefreshCurrentValues(WAQSWorkshopClient.Product entityInCache, WAQSWorkshopClient.Product entity)
+        {
+            RefreshCurrentValues(entityInCache, entity, applyState: false);
+        }
+        public void RefreshCurrentValues(WAQSWorkshopClient.Product entityInCache, WAQSWorkshopClient.Product entity, bool applyState = false)
+        {
+            bool isDeserializing = entityInCache.IsDeserializing;
+            entityInCache.IsDeserializing = true;
+    		InternalRefreshCurrentValues(entityInCache, entity);    
             entityInCache.IsDeserializing = isDeserializing;
             if (applyState)
             {

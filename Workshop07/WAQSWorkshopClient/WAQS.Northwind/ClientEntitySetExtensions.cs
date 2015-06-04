@@ -59,13 +59,18 @@ namespace WAQS.ClientContext
                 else
                 {
                     if (entitySetInDico.Target != entitySet)
-                        throw new InvalidOperationException("An entity can be attached only on one context");
+    				{
+    					string messageError = "An entity can be attached only on one context";
+        				SetMessageAttachEntityOneContextInvalidOperation(ref messageError, entity);
+        				throw new InvalidOperationException(messageError);                    
+    				}                
                     return false;
                 }
             }
             entitySetPerEntityForEntityType.TryAdd(entity.UniqueIdentifier, new WeakReference(entitySet));
             return true;
         }
+    	static partial void SetMessageAttachEntityOneContextInvalidOperation(ref string message, IObjectWithChangeTracker entity);
             
         public static IClientEntitySet GetClientEntitySet(IObjectWithChangeTracker entity)
         {
