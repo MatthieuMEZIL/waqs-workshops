@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Threading;
 using Microsoft.Practices.Unity;
+using WAQS.ClientContext.Interfaces;
 using WAQS.ComponentModel;
 using WAQS.Controls;
 using WAQSWorkshopClient.ClientContext.Interfaces;
@@ -48,6 +49,7 @@ namespace WAQSWorkshopClient
         {
             unityContainer.RegisterType<INorthwindService, NorthwindServiceClient>(new InjectionConstructor());
             unityContainer.RegisterType<INorthwindClientContext, NorthwindClientContext>();
+            ClientContextFactory<INorthwindClientContext>.Factory = () => unityContainer.Resolve<INorthwindClientContext>();
         }
     }
 }

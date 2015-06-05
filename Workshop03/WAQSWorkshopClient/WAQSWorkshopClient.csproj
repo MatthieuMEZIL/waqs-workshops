@@ -129,6 +129,9 @@
     <Compile Include="WAQS.Northwind\CategoryKeys.cs">
       <DependentUpon>Keys.tt</DependentUpon>
     </Compile>
+    <Compile Include="WAQS.Northwind\ClientContextFactory.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
     <Compile Include="WAQS.Northwind\ClientEntitySet.cs">
       <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.tt</DependentUpon>
     </Compile>

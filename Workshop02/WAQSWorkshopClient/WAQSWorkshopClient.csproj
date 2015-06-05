@@ -123,6 +123,9 @@
     <Compile Include="WAQS.Northwind\ByStepQuery.cs">
       <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.tt</DependentUpon>
     </Compile>
+    <Compile Include="WAQS.Northwind\ClientContextFactory.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.Interfaces.tt</DependentUpon>
+    </Compile>
     <Compile Include="WAQS.Northwind\ClientEntitySet.cs">
       <DependentUpon>WAQS.Client.WPF.Fx.ClientContext.tt</DependentUpon>
     </Compile>

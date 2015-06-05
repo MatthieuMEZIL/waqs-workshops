@@ -19,12 +19,10 @@ namespace WAQSWorkshopClient
     public class MainWindowViewModel : ViewModelBase
     {
         private INorthwindClientContext _context;
-        private Func<INorthwindClientContext> _contextFactory;
 
-        public MainWindowViewModel(INorthwindClientContext context, Func<INorthwindClientContext> contextFactory) : base(context)
+        public MainWindowViewModel(INorthwindClientContext context) : base(context)
         {
             _context = context;
-            _contextFactory = contextFactory;
         }
 
         private IEnumerable<CustomerInfo> _customers;
@@ -71,7 +69,7 @@ namespace WAQSWorkshopClient
                 return _editCommand ?? (_editCommand = new RelayCommand(c =>
                   {
                       var customerWindow = new CustomerWindow(); // this is not good for an MVVM point of view
-                      var customerWindowViewModel = new CustomerWindowViewModel(_contextFactory(), ((CustomerInfo)c).Id, customerWindow);
+                      var customerWindowViewModel = new CustomerWindowViewModel(ClientContextFactory<INorthwindClientContext>.Create(), ((CustomerInfo)c).Id, customerWindow);
                       customerWindow.DataContext = customerWindowViewModel;
                       customerWindow.Show();
                   }));
@@ -85,4 +83,4 @@ namespace WAQSWorkshopClient
             public double TotalSpent { get; set; }
         }
     }
-}
+}   
