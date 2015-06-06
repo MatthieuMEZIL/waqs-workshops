@@ -112,13 +112,13 @@ namespace WAQS.ClientContext
         }
         
         private bool _load;
-        public PaginatedQuery<T> LoadPage(int? pageIndex = null, Action callBack = null)
+        public PaginatedQuery<T> LoadPage(int? pageIndex = null)
         {
             _load = true;
-            LoadPageBodyAsync(pageIndex, callBack).ConfigureAwait(true);
+            LoadPageBodyAsync(pageIndex).ConfigureAwait(true);
             return this;
         }
-        private async Task LoadPageBodyAsync(int? pageIndex, Action callBack)
+        private async Task LoadPageBodyAsync(int? pageIndex)
         {
             Items.Clear();
             int pageIndexValue = pageIndex ?? PageIndex;

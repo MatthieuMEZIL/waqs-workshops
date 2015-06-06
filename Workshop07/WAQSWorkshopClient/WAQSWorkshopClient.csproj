@@ -315,6 +315,9 @@
     <Compile Include="WAQS.Northwind\IsKnownByServerAttribute.cs">
       <DependentUpon>WAQS.Client.WPF.Fx.Entities.Tracking.tt</DependentUpon>
     </Compile>
+    <Compile Include="WAQS.Northwind\IsNullConverter.cs">
+      <DependentUpon>WAQS.Client.WPF.Fx.Controls.Converters.tt</DependentUpon>
+    </Compile>
     <Compile Include="WAQS.Northwind\ITrackableCollection.cs">
       <DependentUpon>WAQS.Client.WPF.Fx.Entities.tt</DependentUpon>
     </Compile>
