@@ -120,8 +120,12 @@ namespace WAQS.ClientContext
     		{ 
     			_isCompleted = value;
     			NotifyPropertyChanged.RaisePropertyChanged(nameof(IsCompleted));
+    			if (value && Completed != null)
+    				Completed();
     		}
     	}
+    
+    	public event Action Completed;
     }
     
     public static class ByStepQueryExtension
