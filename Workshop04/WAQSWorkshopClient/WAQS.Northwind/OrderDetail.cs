@@ -534,8 +534,8 @@ namespace WAQSWorkshopClient
 
             set
             {
-                throw new System.InvalidOperationException();
-                ;
+                GetSpecifications().Amount = value;
+                Specifications.HasAmount = true;
             }
         }
 
@@ -590,8 +590,8 @@ namespace WAQSWorkshopClient
 
             set
             {
-                throw new System.InvalidOperationException();
-                ;
+                GetSpecifications().ProductFullName = value;
+                Specifications.HasProductFullName = true;
             }
         }
 
@@ -703,6 +703,16 @@ namespace WAQSWorkshopClient
                 if (_specifications != null)
                     _specifications.NotifyPropertyChanged = NotifyPropertyChanged;
             }
+        }
+
+        protected OrderDetailSpecifications GetSpecifications()
+        {
+            return Specifications ?? (Specifications = GetSpecificationsOrderDetail());
+        }
+
+        protected virtual OrderDetailSpecifications GetSpecificationsOrderDetail()
+        {
+            return new OrderDetailSpecifications();
         }
 
         protected virtual void OnAmountChanged(bool raise = true, bool validate = true)

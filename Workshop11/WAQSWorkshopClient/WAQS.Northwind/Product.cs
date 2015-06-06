@@ -561,8 +561,8 @@ namespace WAQSWorkshopClient
 
             set
             {
-                throw new System.InvalidOperationException();
-                ;
+                GetSpecifications().FullName = value;
+                Specifications.HasFullName = true;
             }
         }
 
@@ -640,6 +640,16 @@ namespace WAQSWorkshopClient
                 if (_specifications != null)
                     _specifications.NotifyPropertyChanged = NotifyPropertyChanged;
             }
+        }
+
+        protected ProductSpecifications GetSpecifications()
+        {
+            return Specifications ?? (Specifications = GetSpecificationsProduct());
+        }
+
+        protected virtual ProductSpecifications GetSpecificationsProduct()
+        {
+            return new ProductSpecifications();
         }
 
         protected virtual void OnFullNameChanged(bool raise = true, bool validate = true)

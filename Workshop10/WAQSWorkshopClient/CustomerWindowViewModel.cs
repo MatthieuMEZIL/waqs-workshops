@@ -103,7 +103,7 @@ namespace WAQSWorkshopClient
 
         private async Task CreateInvoiceAsync()
         {
-            SelectedOrder.Specifications.HasInvoice = true;
+            SelectedOrder.HasInvoice = true;
             RefreshCreateInvoiceCanExecute();
             await _context.AddInvoiceAsync(SelectedOrder.Id);
         }

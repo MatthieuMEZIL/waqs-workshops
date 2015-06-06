@@ -1108,8 +1108,8 @@ namespace WAQSWorkshopClient
 
             set
             {
-                throw new System.InvalidOperationException();
-                ;
+                GetSpecifications().HasInvoice = value;
+                Specifications.HasHasInvoice = true;
             }
         }
 
@@ -1141,8 +1141,8 @@ namespace WAQSWorkshopClient
 
             set
             {
-                throw new System.InvalidOperationException();
-                ;
+                GetSpecifications().CustomerCompanyName = value;
+                Specifications.HasCustomerCompanyName = true;
             }
         }
 
@@ -1174,8 +1174,8 @@ namespace WAQSWorkshopClient
 
             set
             {
-                throw new System.InvalidOperationException();
-                ;
+                GetSpecifications().CustomerContactName = value;
+                Specifications.HasCustomerContactName = true;
             }
         }
 
@@ -1214,8 +1214,8 @@ namespace WAQSWorkshopClient
 
             set
             {
-                throw new System.InvalidOperationException();
-                ;
+                GetSpecifications().Total = value;
+                Specifications.HasTotal = true;
             }
         }
 
@@ -1297,40 +1297,6 @@ namespace WAQSWorkshopClient
         [DataContract(Namespace = "http://Northwind/Entities")]
         public partial class OrderSpecifications
         {
-            bool _hasInvoice;
-            [DataMember]
-            public bool HasInvoice
-            {
-                get
-                {
-                    return _hasInvoice;
-                }
-
-                set
-                {
-                    _hasInvoice = value;
-                    if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged(nameof(HasInvoice));
-                }
-            }
-
-            bool _hasHasInvoice;
-            [DataMember]
-            public bool HasHasInvoice
-            {
-                get
-                {
-                    return _hasHasInvoice;
-                }
-
-                set
-                {
-                    _hasHasInvoice = value;
-                    if (NotifyPropertyChanged != null)
-                        NotifyPropertyChanged.RaisePropertyChanged(nameof(HasInvoice));
-                }
-            }
-
             string _customerCompanyName;
             [DataMember]
             public string CustomerCompanyName
@@ -1362,6 +1328,40 @@ namespace WAQSWorkshopClient
                     _hasCustomerCompanyName = value;
                     if (NotifyPropertyChanged != null)
                         NotifyPropertyChanged.RaisePropertyChanged(nameof(CustomerCompanyName));
+                }
+            }
+
+            bool _hasInvoice;
+            [DataMember]
+            public bool HasInvoice
+            {
+                get
+                {
+                    return _hasInvoice;
+                }
+
+                set
+                {
+                    _hasInvoice = value;
+                    if (NotifyPropertyChanged != null)
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(HasInvoice));
+                }
+            }
+
+            bool _hasHasInvoice;
+            [DataMember]
+            public bool HasHasInvoice
+            {
+                get
+                {
+                    return _hasHasInvoice;
+                }
+
+                set
+                {
+                    _hasHasInvoice = value;
+                    if (NotifyPropertyChanged != null)
+                        NotifyPropertyChanged.RaisePropertyChanged(nameof(HasInvoice));
                 }
             }
 
@@ -1455,6 +1455,16 @@ namespace WAQSWorkshopClient
                 if (_specifications != null)
                     _specifications.NotifyPropertyChanged = NotifyPropertyChanged;
             }
+        }
+
+        protected OrderSpecifications GetSpecifications()
+        {
+            return Specifications ?? (Specifications = GetSpecificationsOrder());
+        }
+
+        protected virtual OrderSpecifications GetSpecificationsOrder()
+        {
+            return new OrderSpecifications();
         }
 
         protected virtual void OnTotalChanged(bool raise = true, bool validate = true)

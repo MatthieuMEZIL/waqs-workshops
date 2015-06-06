@@ -1106,8 +1106,8 @@ namespace WAQSWorkshopClient
 
             set
             {
-                throw new System.InvalidOperationException();
-                ;
+                GetSpecifications().FullName = value;
+                Specifications.HasFullName = true;
             }
         }
 
@@ -1146,8 +1146,8 @@ namespace WAQSWorkshopClient
 
             set
             {
-                throw new System.InvalidOperationException();
-                ;
+                GetSpecifications().TotalSpent = value;
+                Specifications.HasTotalSpent = true;
             }
         }
 
@@ -1259,6 +1259,16 @@ namespace WAQSWorkshopClient
                 if (_specifications != null)
                     _specifications.NotifyPropertyChanged = NotifyPropertyChanged;
             }
+        }
+
+        protected CustomerSpecifications GetSpecifications()
+        {
+            return Specifications ?? (Specifications = GetSpecificationsCustomer());
+        }
+
+        protected virtual CustomerSpecifications GetSpecificationsCustomer()
+        {
+            return new CustomerSpecifications();
         }
 
         protected virtual void OnTotalSpentChanged(bool raise = true, bool validate = true)

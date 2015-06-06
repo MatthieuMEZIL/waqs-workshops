@@ -1069,8 +1069,8 @@ namespace WAQSWorkshopClient
 
             set
             {
-                throw new System.InvalidOperationException();
-                ;
+                GetSpecifications().Total = value;
+                Specifications.HasTotal = true;
             }
         }
 
@@ -1148,6 +1148,16 @@ namespace WAQSWorkshopClient
                 if (_specifications != null)
                     _specifications.NotifyPropertyChanged = NotifyPropertyChanged;
             }
+        }
+
+        protected OrderSpecifications GetSpecifications()
+        {
+            return Specifications ?? (Specifications = GetSpecificationsOrder());
+        }
+
+        protected virtual OrderSpecifications GetSpecificationsOrder()
+        {
+            return new OrderSpecifications();
         }
 
         protected virtual void OnTotalChanged(bool raise = true, bool validate = true)

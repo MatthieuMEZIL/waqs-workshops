@@ -1291,8 +1291,8 @@ namespace WAQSWorkshopClient
 
             set
             {
-                throw new System.InvalidOperationException();
-                ;
+                GetSpecifications().FullName = value;
+                Specifications.HasFullName = true;
             }
         }
 
@@ -1384,6 +1384,16 @@ namespace WAQSWorkshopClient
                 if (_specifications != null)
                     _specifications.NotifyPropertyChanged = NotifyPropertyChanged;
             }
+        }
+
+        protected EmployeeSpecifications GetSpecifications()
+        {
+            return Specifications ?? (Specifications = GetSpecificationsEmployee());
+        }
+
+        protected virtual EmployeeSpecifications GetSpecificationsEmployee()
+        {
+            return new EmployeeSpecifications();
         }
 
         protected virtual void OnFullNameChanged(bool raise = true, bool validate = true)

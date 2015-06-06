@@ -569,6 +569,37 @@ namespace WAQSWorkshopClient
         protected internal event Action<Product, Product> ProductPropertyChanging;
 #endregion
 #region Specifications
+        private double _previousAmount;
+        public double Amount
+        {
+            get
+            {
+                if (Specifications != null && Specifications.HasAmount)
+                    return Specifications.Amount;
+                return this.UnitPrice * this.Quantity * (1 - this.Discount);
+            }
+
+            set
+            {
+                GetSpecifications().Amount = value;
+                Specifications.HasAmount = true;
+            }
+        }
+
+        protected virtual void OnAmountPropertyChanging()
+        {
+            if (AmountPropertyChanging != null)
+            {
+                var value = Amount;
+                if (value == _previousAmount)
+                    return;
+                var oldValue = _previousAmount;
+                _previousAmount = value;
+                AmountPropertyChanging(oldValue, value);
+            }
+        }
+
+        protected internal event Action<double, double> AmountPropertyChanging;
         public virtual IEnumerable<Error> ValidateOnClient(bool force = false)
         {
             if (force || ChangeTracker.State == ObjectState.Added || ChangeTracker.State == ObjectState.Modified && ChangeTracker.ModifiedProperties.Contains("Discount"))
@@ -602,37 +633,6 @@ namespace WAQSWorkshopClient
                     yield return er;
         }
 
-        private double _previousAmount;
-        public double Amount
-        {
-            get
-            {
-                if (Specifications != null && Specifications.HasAmount)
-                    return Specifications.Amount;
-                return this.UnitPrice * this.Quantity * (1 - this.Discount);
-            }
-
-            set
-            {
-                throw new System.InvalidOperationException();
-                ;
-            }
-        }
-
-        protected virtual void OnAmountPropertyChanging()
-        {
-            if (AmountPropertyChanging != null)
-            {
-                var value = Amount;
-                if (value == _previousAmount)
-                    return;
-                var oldValue = _previousAmount;
-                _previousAmount = value;
-                AmountPropertyChanging(oldValue, value);
-            }
-        }
-
-        protected internal event Action<double, double> AmountPropertyChanging;
         private string _previousProductFullName;
         public string ProductFullName
         {
@@ -647,8 +647,8 @@ namespace WAQSWorkshopClient
 
             set
             {
-                throw new System.InvalidOperationException();
-                ;
+                GetSpecifications().ProductFullName = value;
+                Specifications.HasProductFullName = true;
             }
         }
 
@@ -760,6 +760,16 @@ namespace WAQSWorkshopClient
                 if (_specifications != null)
                     _specifications.NotifyPropertyChanged = NotifyPropertyChanged;
             }
+        }
+
+        protected OrderDetailSpecifications GetSpecifications()
+        {
+            return Specifications ?? (Specifications = GetSpecificationsOrderDetail());
+        }
+
+        protected virtual OrderDetailSpecifications GetSpecificationsOrderDetail()
+        {
+            return new OrderDetailSpecifications();
         }
 
         protected virtual void OnAmountChanged(bool raise = true, bool validate = true)
