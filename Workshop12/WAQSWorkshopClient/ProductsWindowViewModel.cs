@@ -45,7 +45,9 @@ namespace WAQSWorkshopClient
                   (from p in _context.Products.AsAsyncQueryable()
                    let fullName = p.FullName
                    orderby fullName, p.Id
-                   select new Product { Id = p.Id, FullName = fullName }).ToPaginatedQuery(10, callBack: () => NotifyPropertyChanged.RaisePropertyChanged(() => SelectedProduct)));
+                   select new Product { Id = p.Id, FullName = fullName })
+                  .ToPaginatedQuery(10, 
+                      callBack: () => NotifyPropertyChanged.RaisePropertyChanged(() => SelectedProduct)));
             }
         }
 
