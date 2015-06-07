@@ -3,8 +3,8 @@
 ################################################################################
 
 /Workshop*/.vs
-/Workshop*/.ldf
-/Workshop*/**/*.csproj.user
+*.ldf
+*.csproj.user
 /Workshop*/packages
 /Workshop*/WAQSWorkshopServer/bin
 /Workshop*/WAQSWorkshopServer/obj
