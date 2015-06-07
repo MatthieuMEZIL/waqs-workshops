@@ -83,7 +83,7 @@ namespace WAQSWorkshopClient
                 return _stopSearchCommand ??
                     (_stopSearchCommand = new RelayCommand(
                         () => ProductsByStepQuery.Cancel(),
-                        () => _productsByStepQuery != null && !_productsByStepQuery.IsCompleted));
+                        () => ProductsByStepQuery != null && !ProductsByStepQuery.IsCompleted));
             }
         }
 
