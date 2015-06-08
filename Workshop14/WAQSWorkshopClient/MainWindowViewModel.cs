@@ -27,19 +27,21 @@ namespace WAQSWorkshopClient
             LoadEmployeesAsync().ConfigureAwait(true);
             LoadLastOrderAsync().ConfigureAwait(true);
 
-            _context.AddProperty<Employee, bool>("IsSelected", e => _selectedEmployees.Contains(e), (e, value) =>
-            {
-                if (value)
-                {
-                    _selectedEmployees.Add(e);
-                }
-                else
-                {
-                    _selectedEmployees.Remove(e);
-                }
-                Customers = null;
-                LoadCustomersAsync().ConfigureAwait(true);
-            });
+            _context.AddProperty<Employee, bool>("IsSelected", 
+                e => _selectedEmployees.Contains(e), 
+                (e, value) =>
+                    {
+                        if (value)
+                        {
+                            _selectedEmployees.Add(e);
+                        }
+                        else
+                        {
+                            _selectedEmployees.Remove(e);
+                        }
+                        Customers = null;
+                        LoadCustomersAsync().ConfigureAwait(true);
+                    });
         }
 
         private HashSet<Employee> _selectedEmployees = new HashSet<Employee>();
