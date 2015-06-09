@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<WAQS.Client EdmxPath="..\..\WAQSWorkshopServer\Northwind.edmx">
+  <Specifications>
+    <Specification SlnFilePath="..\..\WAQSWorkshop.sln" CsprojPath="..\..\WAQSWorkshopServer\WAQSWorkshopServer.csproj" FolderPath="..\..\WAQSWorkshopServer\Specifications\" />
+  </Specifications>
+  <DTOs>
+    <DTO SlnFilePath="..\..\WAQSWorkshop.sln" CsprojPath="..\..\WAQSWorkshopServer\WAQSWorkshopServer.csproj" FolderPath="..\..\WAQSWorkshopServer\DTO\" />
+  </DTOs>
+  <Entities UTC="false" />
+  <ClientContext WSDL="http://localhost:18115/Northwind.svc?wsdl" />
+  <ClientContextInterfaces />
+  <Framework>
+    <ComponentModel NamespaceName="WAQS.ComponentModel" Generate="true" />
+    <EntitiesTracking NamespaceName="WAQS.EntitiesTracking" Generate="true"/>
+    <ClientContext NamespaceName="WAQS.ClientContext" Generate="true" />
+    <ClientContextInterfaces NamespaceName="WAQS.ClientContext.Interfaces" Generate="true" />
+    <Entities NamespaceName="WAQS.Entities" Generate="true" />
+    <Controls NamespaceName="WAQS.Controls" Generate="true" />
+  </Framework>
+  <WAQS.Server>
+    <Entities SlnFilePath="..\..\WAQSWorkshop.sln" CsprojPath="..\..\WAQSWorkshopServer\WAQSWorkshopServer.csproj" FolderPath="..\..\WAQSWorkshopServer\WAQS.Northwind\" NamespaceName="WAQSWorkshopServer" />
+    <Framework>
+      <Common NamespaceName="WAQS.Common" />
+      <Specifications NamespaceName="WAQS.Specifications" />
+      <DALInterfaces NamespaceName="WAQS.DAL.Interfaces" />
+      <ServiceInterfaces NamespaceName="WAQS.Service.Interfaces" />
+    </Framework>
+  </WAQS.Server>
+</WAQS.Client>
