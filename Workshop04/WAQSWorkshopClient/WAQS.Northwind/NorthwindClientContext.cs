@@ -7341,7 +7341,10 @@ namespace WAQSWorkshopClient.ClientContext
                 var clientContext = GetModifiedEntities();
                 var sentContext = GetSerializableContext(clientContext);
                 var saveResult = await TrySavingAsync(() => ProxyHelper.ExecuteFuncAsync(ServiceFactory, service => Task.Factory.FromAsync(service.BeginSaveChanges(sentContext, null, null), ar => service.EndSaveChanges(ar)), 0));
-                Refresh(clientContext, saveResult);
+    			if (saveResult != null) 
+    			{
+    				Refresh(clientContext, saveResult);
+    			}
             }
             SavedChanges();
         }
