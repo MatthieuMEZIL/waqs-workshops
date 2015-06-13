@@ -34,6 +34,7 @@ namespace WAQSWorkshopClient
             set
             {
                 _fullNameSearch = value;
+                NotifyPropertyChanged.RaisePropertyChanged(nameof(FullNameSearch));
                 if (ProductsByStepQuery != null)
                 {
                     ProductsByStepQuery.Completed -= ProductsByStepQueryCompleted;
