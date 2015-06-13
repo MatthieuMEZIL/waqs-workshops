@@ -204,6 +204,8 @@ namespace WAQSWorkshopClient.ClientContext
                 else
                 {
                     var result = await ProxyHelper.ExecuteFuncAsync(ServiceFactory, service => Task.Factory.FromAsync(service.BeginExecute(MakeQuerySerialization(query), null, null), ar => service.EndExecute(ar)), 0);
+    				if (IsDisposed || cancel != null && cancel())
+                        return null;
                     EntitiesGot.Clear();
                     if (getEntityOption == GetEntityAsyncOption.AllMergeOption || (mergeOption == MergeOption.NoTracking && (int)getEntityOption >= (int)GetEntityAsyncOption.NoTrackingOnly)) 
     				{
