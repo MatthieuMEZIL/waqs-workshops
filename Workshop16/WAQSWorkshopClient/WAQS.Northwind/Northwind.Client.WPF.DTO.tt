@@ -1,0 +1,1 @@
+<#@ include file="WAQS.VS14.NET46.Client.WPF.DTO.ttinclude"#><#WriteClientDTOs(new SpecificationPath[] { new SpecificationPath { Sln = @"..\..\WAQSWorkshop.sln", Csproj = @"..\..\WAQSWorkshopServer\WAQSWorkshopServer.csproj", Folder = @"..\..\WAQSWorkshopServer\DTO\"} }, "http://Northwind/DTO", new Dictionary<string, string>(), @"WAQSWorkshopClient.DTO");#>

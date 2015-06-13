@@ -1,0 +1,1 @@
+<#@ include file="WAQS.VS14.NET46.Server.Fx.Entities.ttinclude"#><#WriteServerFxEntities("WAQS.Entities");#>
